@@ -14,6 +14,10 @@ const zinsenJob = require('../../jobs/cronJob_zinsen');
 const checkActiveItems = require('../../jobs/cronJob_checkActiveItems');
 const checkVoiceChannels = require('../../jobs/cronJob_checkVoicechannels');
 const Config = require('../../models/Config');
+const {
+  maintenanceActive,
+  checkMaintenance,
+} = require('../../utils/checkMaintenance');
 
 async function checkVoice(client) {
   let isTwoMembers = false;
@@ -34,6 +38,20 @@ async function checkVoice(client) {
 module.exports = {
   once: true,
   run: async (client) => {
+    console.log(`Checking Maintenance...`);
+    try {
+      await checkMaintenance();
+      if (maintenanceActive.size > 0) {
+        console.log(`Maintenance is active for the following guilds:`);
+        maintenanceActive.forEach((id) => {
+          console.log(`- ${id}`);
+        });
+      } else {
+        console.log(`Maintenance is not active.`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     console.log(`Starting Jobs...`);
     try {
       const jobsActive = await Config.findOne({ key: 'jobsActive' });
