@@ -5,55 +5,27 @@ let status = [
   /*
   {
     activities: [{
-      name: 'Serverhymne',
+      name: 'Platzhalter',
       type: ActivityType.Streaming,
       url: 'https://www.youtube.com/watch?v=k0jvsZ6HQOM'
     }], status: 'online'
   },
   {
     activities: [{
-      name: 'Unterwasserdokumentation',
-      type: ActivityType.Watching
-    }], status: 'online'
-  },
-  {
-    activities: [{
-      name: 'dem Rauschen der Wellen',
-      type: ActivityType.Listening
-    }], status: 'idle'
-  },
-  {
-    activities: [{
-      name: 'cooking simulator',
-      type: ActivityType.Playing
-    }], status: 'online'
-  },
-  {
-    activities: [{
-      name: 'Erhöht die Preise',
+      name: 'Platzhalter',
       type: ActivityType.Custom
     }], status: 'dnd'
   },
   {
     activities: [{
-      name: 'Schatzsuche',
+      name: 'Platzhalter',
       type: ActivityType.Competing
     }], status: 'dnd'
   }, 
-  
-    {
-    activities: [
-      {
-        name: 'alleine',
-        type: ActivityType.Playing,
-      },
-    ],
-    status: 'online',
-  },
   {
     activities: [
       {
-        name: 'dir',
+        name: 'Platzhalter',
         type: ActivityType.Listening,
       },
     ],
@@ -62,7 +34,7 @@ let status = [
   {
     activities: [
       {
-        name: 'in die Ferne',
+        name: 'Platzhalter',
         type: ActivityType.Watching,
       },
     ],
@@ -71,31 +43,13 @@ let status = [
   {
     activities: [
       {
-        name: 'mit deinen Gefühlen',
+        name: 'Platzhalter',
         type: ActivityType.Playing,
       },
     ],
     status: 'online',
   },
   */
-  {
-    activities: [
-      {
-        name: 'Erhöht die Preise',
-        type: ActivityType.Custom,
-      },
-    ],
-    status: 'dnd',
-  },
-  {
-    activities: [
-      {
-        name: 'Wartet auf das Essen',
-        type: ActivityType.Custom,
-      },
-    ],
-    status: 'online',
-  },
   {
     activities: [
       {
