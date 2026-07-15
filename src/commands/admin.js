@@ -8,6 +8,7 @@ const doJobCommands = require('../utils/commands/admin/job');
 const doloescheCommand = require('../utils/commands/admin/loesche');
 const doInformedInactiveCommand = require('../utils/commands/admin/informedInactive');
 const doPrintSelectMenuCommand = require('../utils/commands/admin/printSelectMenu');
+const doDbCommand = require('../utils/commands/admin/db');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -141,6 +142,69 @@ module.exports = {
             ),
         ),
     )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('db-insert')
+        .setDescription('Fügt Daten in die Datenbank ein.')
+        .addStringOption((option) =>
+          option
+            .setName('database')
+            .setDescription(
+              'Die Datenbank in die Daten eingetragen werden sollen.',
+            )
+            .setRequired(true)
+            .addChoices(
+              { name: 'Config', value: 'Config' },
+              { name: 'Items', value: 'Items' },
+              { name: 'LevelRoles', value: 'LevelRoles' },
+              { name: 'QuizQuestion', value: 'QuizQuestion' },
+              { name: 'RoleSelectionRoles', value: 'RoleSelectionRoles' },
+              { name: 'ServerConfig', value: 'ServerConfig' },
+            ),
+        ),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('db-delete')
+        .setDescription('Löscht Daten aus der Datenbank.')
+        .addStringOption((option) =>
+          option
+            .setName('database')
+            .setDescription(
+              'Die Datenbank aus der Daten gelöscht werden sollen.',
+            )
+            .setRequired(true)
+            .addChoices(
+              { name: 'Config', value: 'Config' },
+              { name: 'Items', value: 'Items' },
+              { name: 'LevelRoles', value: 'LevelRoles' },
+              { name: 'QuizQuestion', value: 'QuizQuestion' },
+              { name: 'RoleSelectionRoles', value: 'RoleSelectionRoles' },
+              { name: 'ServerConfig', value: 'ServerConfig' },
+            ),
+        ),
+    )
+    .addSubcommand((subcommand) =>
+      subcommand
+        .setName('db-update')
+        .setDescription('Aktualisiert Daten in der Datenbank.')
+        .addStringOption((option) =>
+          option
+            .setName('database')
+            .setDescription(
+              'Die Datenbank in der Daten aktualisiert werden sollen.',
+            )
+            .setRequired(true)
+            .addChoices(
+              { name: 'Config', value: 'Config' },
+              { name: 'Items', value: 'Items' },
+              { name: 'LevelRoles', value: 'LevelRoles' },
+              { name: 'QuizQuestion', value: 'QuizQuestion' },
+              { name: 'RoleSelectionRoles', value: 'RoleSelectionRoles' },
+              { name: 'ServerConfig', value: 'ServerConfig' },
+            ),
+        ),
+    )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setContexts([
       InteractionContextType.Guild,
@@ -161,6 +225,8 @@ module.exports = {
         await doInformedInactiveCommand(interaction);
       } else if (subcommand === 'printselectmenu') {
         await doPrintSelectMenuCommand(interaction);
+      } else if (subcommand.includes('db')) {
+        await doDbCommand(interaction);
       }
     } catch (error) {
       console.log(error);
