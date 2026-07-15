@@ -12,7 +12,7 @@ const doPrintSelectMenuCommand = require('../utils/commands/admin/printSelectMen
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('admin')
-    .setDescription('Sendet ein zufälliges GIF zu einem Begriff.')
+    .setDescription('Verschiedene Admin-Befehle.')
     .addSubcommand((subcommand) =>
       subcommand
         .setName('job-start')
