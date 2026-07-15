@@ -32,11 +32,14 @@ jobs:
             git reset --hard origin/main
 
             # 3. .env Datei frisch aus den GitHub Secrets generieren
-            echo "DISCORD_TOKEN=${{ secrets.DISCORD_TOKEN }}" > .env
-            echo "MONGO_URI=${{ secrets.MONGO_URI }}" >> .env
-
-            # (Optional: Hier weitere API-Keys hinzufügen, z.B.:)
-            # echo "OPENAI_KEY=${{ secrets.OPENAI_KEY }}" >> .env
+            echo "TOKEN=${{ secrets.TOKEN }}" > .env
+            echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
+            echo "AI_API=${{ secrets.AI_API }}" >> .env
+            echo "CAT_API=${{ secrets.CAT_API }}" >> .env
+            echo "DOG_API=${{ secrets.DOG_API }}" >> .env
+            echo "GIPHY_API=${{ secrets.GIPHY_API }}" >> .env
+            echo "HERO_API=${{ secrets.HERO_API }}" >> .env
+            echo "SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}" >> .env
 
             # 4. Docker-Image neu bauen
             docker build -t baerchenbot-live .
