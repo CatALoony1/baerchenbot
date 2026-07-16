@@ -56,8 +56,10 @@ async function databaseModal(interaction) {
       }
     }
   }
-  if (type === 'update') {
-  } else if (type === 'delete') {
+  if (type === 'updatesearch') {
+    //TODO
+  } else if (type === 'deletesearch') {
+    //TODO
   } else if (type === 'insert') {
     const newDocument = new dbModel(
       spalten.reduce((acc, spalte) => {

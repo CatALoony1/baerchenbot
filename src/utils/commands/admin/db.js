@@ -53,16 +53,16 @@ async function doDbCommand(interaction) {
       });
     const subcommandtype =
       subcommand === 'db-update'
-        ? 'update'
+        ? 'updatesearch'
         : subcommand === 'db-delete'
-          ? 'delete'
+          ? 'deletesearch'
           : subcommand === 'db-insert'
             ? 'insert'
             : null;
     let modalTitle;
-    if (subcommandtype === 'update') {
+    if (subcommandtype === 'updatesearch') {
       modalTitle = 'Wonach willst du zum updaten suchen?';
-    } else if (subcommandtype === 'delete') {
+    } else if (subcommandtype === 'deletesearch') {
       modalTitle = 'Wonach willst du zum löschen suchen?';
     } else if (subcommandtype === 'insert') {
       modalTitle = 'Welche Daten willst du einfügen?';
