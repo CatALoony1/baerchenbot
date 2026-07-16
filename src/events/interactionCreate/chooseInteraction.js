@@ -9,6 +9,7 @@ const selectMenuButton = require('../../utils/interactions/selectMenuButton');
 const shopButtons = require('../../utils/interactions/shopButtons');
 const spieleLeaderboardPage = require('../../utils/interactions/spieleLeaderboardPage');
 const useItems = require('../../utils/interactions/useItems');
+const databaseModal = require('../../utils/interactions/databaseModal');
 
 module.exports = {
   run: async (interaction, client) => {
@@ -28,6 +29,8 @@ module.exports = {
         await ownAnimalsButtons(interaction);
       } else if (customId.includes(`quizadd-${interaction.user.id}`)) {
         await quizModals(interaction);
+      } else if (customId.includes('database')) {
+        await databaseModal(interaction);
       }
     } else if (interaction.isButton()) {
       if (customId.includes('lPage')) {

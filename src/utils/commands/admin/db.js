@@ -74,7 +74,7 @@ async function doDbCommand(interaction) {
       let input;
       if (type === 'String') {
         input = new TextInputBuilder()
-          .setCustomId(`database-${subcommandtype}-${name}`)
+          .setCustomId(`${name}`)
           .setStyle(TextInputStyle.Short)
           .setRequired(false)
           .setMaxLength(100);
@@ -83,7 +83,7 @@ async function doDbCommand(interaction) {
           .setTextInputComponent(input);
       } else if (type === 'Number' || type === 'Date') {
         input = new TextInputBuilder()
-          .setCustomId(`database-${subcommandtype}-${name}`)
+          .setCustomId(`${name}`)
           .setStyle(TextInputStyle.Short)
           .setRequired(false)
           .setMaxLength(10);
@@ -92,7 +92,7 @@ async function doDbCommand(interaction) {
           .setTextInputComponent(input);
       } else if (type === 'Boolean') {
         input = new RadioGroupBuilder()
-          .setCustomId(`database-${subcommandtype}-${name}`)
+          .setCustomId(`${name}`)
           .setRequired(false)
           .addOptions(
             { label: 'True', value: 'true' },
@@ -103,7 +103,7 @@ async function doDbCommand(interaction) {
           .setRadioGroupComponent(input);
       } else if (type === 'Array') {
         input = new TextInputBuilder()
-          .setCustomId(`database-${subcommandtype}-${name}`)
+          .setCustomId(`${name}`)
           .setStyle(TextInputStyle.Paragraph)
           .setRequired(false)
           .setMaxLength(500);
