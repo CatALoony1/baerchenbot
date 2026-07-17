@@ -6,7 +6,7 @@ const doGeburtstagCommand = require('../utils/commands/add/geburtstag');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('add')
-    .setDescription('Sendet ein zufälliges GIF zu einem Begriff.')
+    .setDescription('Verschiedene Befehle zum Hinzufügen von Daten.')
     .addSubcommand((subcommand) =>
       subcommand
         .setName('geburtstag')
