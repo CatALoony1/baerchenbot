@@ -52,18 +52,14 @@ async function doDbCommand(interaction) {
         };
       });
     const subcommandtype =
-      subcommand === 'db-update'
-        ? 'updatesearch'
-        : subcommand === 'db-delete'
-          ? 'deletesearch'
-          : subcommand === 'db-insert'
-            ? 'insert'
-            : null;
+      subcommand === 'db-search'
+        ? 'search'
+        : subcommand === 'db-insert'
+          ? 'insert'
+          : null;
     let modalTitle;
-    if (subcommandtype === 'updatesearch') {
-      modalTitle = 'Wonach willst du zum updaten suchen?';
-    } else if (subcommandtype === 'deletesearch') {
-      modalTitle = 'Wonach willst du zum löschen suchen?';
+    if (subcommandtype === 'search') {
+      modalTitle = 'Wonach willst du suchen?';
     } else if (subcommandtype === 'insert') {
       modalTitle = 'Welche Daten willst du einfügen?';
     }
@@ -81,7 +77,7 @@ async function doDbCommand(interaction) {
         const inputLabel = new LabelBuilder()
           .setLabel(name)
           .setTextInputComponent(input);
-      } else if (type === 'Number' || type === 'Date') {
+      } else if (type === 'Number') {
         input = new TextInputBuilder()
           .setCustomId(`${name}`)
           .setStyle(TextInputStyle.Short)
@@ -101,15 +97,6 @@ async function doDbCommand(interaction) {
         const inputLabel = new LabelBuilder()
           .setLabel(name)
           .setRadioGroupComponent(input);
-      } else if (type === 'Array') {
-        input = new TextInputBuilder()
-          .setCustomId(`${name}`)
-          .setStyle(TextInputStyle.Paragraph)
-          .setRequired(false)
-          .setMaxLength(500);
-        const inputLabel = new LabelBuilder()
-          .setLabel(name)
-          .setTextInputComponent(input);
       }
       modal.addLabelComponents(inputLabel);
       await interaction.showModal(modal);

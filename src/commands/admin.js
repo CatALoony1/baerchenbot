@@ -157,7 +157,6 @@ module.exports = {
               { name: 'Config', value: 'Config' },
               { name: 'Items', value: 'Items' },
               { name: 'LevelRoles', value: 'LevelRoles' },
-              { name: 'QuizQuestion', value: 'QuizQuestion' },
               { name: 'RoleSelectionRoles', value: 'RoleSelectionRoles' },
               { name: 'ServerConfig', value: 'ServerConfig' },
             ),
@@ -165,35 +164,12 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName('db-delete')
-        .setDescription('Löscht Daten aus der Datenbank.')
+        .setName('db-search')
+        .setDescription('Suche nach Datenbankeinträgen zum löschen o. ändern')
         .addStringOption((option) =>
           option
             .setName('database')
-            .setDescription(
-              'Die Datenbank aus der Daten gelöscht werden sollen.',
-            )
-            .setRequired(true)
-            .addChoices(
-              { name: 'Config', value: 'Config' },
-              { name: 'Items', value: 'Items' },
-              { name: 'LevelRoles', value: 'LevelRoles' },
-              { name: 'QuizQuestion', value: 'QuizQuestion' },
-              { name: 'RoleSelectionRoles', value: 'RoleSelectionRoles' },
-              { name: 'ServerConfig', value: 'ServerConfig' },
-            ),
-        ),
-    )
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName('db-update')
-        .setDescription('Aktualisiert Daten in der Datenbank.')
-        .addStringOption((option) =>
-          option
-            .setName('database')
-            .setDescription(
-              'Die Datenbank in der Daten aktualisiert werden sollen.',
-            )
+            .setDescription('Die Datenbank in der Daten gesucht werden sollen.')
             .setRequired(true)
             .addChoices(
               { name: 'Config', value: 'Config' },
