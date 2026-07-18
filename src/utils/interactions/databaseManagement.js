@@ -4,6 +4,10 @@ const {
   ButtonBuilder,
   ActionRowBuilder,
   ButtonStyle,
+  ModalBuilder,
+  LabelBuilder,
+  CheckboxGroupBuilder,
+  RadioGroupBuilder,
 } = require('discord.js');
 const Config = require('../../models/Config');
 const Items = require('../../models/Items');
@@ -133,11 +137,11 @@ async function databaseModal(interaction) {
       .setColor('Blue');
 
     const deleteButton = new ButtonBuilder()
-      .setCustomId('db_delete_button')
+      .setCustomId(`db_delete_button_${name}`)
       .setLabel('Einträge löschen')
       .setStyle(ButtonStyle.Danger);
     const updateButton = new ButtonBuilder()
-      .setCustomId('db_update_button')
+      .setCustomId(`db_update_button_${name}`)
       .setLabel('Eintrag bearbeiten')
       .setStyle(ButtonStyle.Primary);
     const row = new ActionRowBuilder().addComponents(
@@ -173,7 +177,47 @@ async function databaseModal(interaction) {
   }
 }
 async function databaseButtons(interaction) {
-  //TODO
+  const [, type, , name] = interaction.customId.split('_');
+  const cachedIds = searchCache.get(interaction.user.id);
+  if (!cachedIds || cachedIds.length < 1) {
+    await interaction.reply({
+      content: 'Suche ist zu alt, bitte suche neu!',
+      flags: MessageFlags.Ephemeral,
+    });
+    return;
+  }
+  let modalTitle;
+  let inputLabel;
+  const options = cachedIds.map((id, index) => ({
+    label: (index + 1).toString(),
+    value: id.toString(),
+  }));
+  if (type === 'delete') {
+    const input = new CheckboxGroupBuilder()
+      .setCustomId(`${name}`)
+      .setRequired(true)
+      .addOptions(...options)
+      .setMinValues(1);
+    inputLabel = new LabelBuilder()
+      .setLabel('Eintrag wählen:')
+      .setRadioGroupComponent(input);
+    modalTitle = 'Welche Einträge soll gelöscht werden?';
+  } else {
+    const input = new RadioGroupBuilder()
+      .setCustomId(`${name}`)
+      .setRequired(true)
+      .addOptions(...options);
+    inputLabel = new LabelBuilder()
+      .setLabel('Eintrag wählen:')
+      .setRadioGroupComponent(input);
+    modalTitle = 'Welcher Eintrag soll bearbeitet werden?';
+  }
+  const modal = new ModalBuilder.setTitle(modalTitle).setCustomId(
+    `database-${type}-${name}`,
+  );
+  modal.addLabelComponents(inputLabel);
+  await interaction.showModal(modal);
+  searchCache.del(interaction.user.id);
 }
 async function allRequired(spaltenMitWerten) {
   let isValid = true;
