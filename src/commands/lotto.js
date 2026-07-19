@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const Lottozahlen = require('../models/Lottozahlen');
 const giveMoney = require('../utils/giveMoney');
-const GameUser = require('../models/GameUser');
 
 module.exports = {
   data: new SlashCommandBuilder()

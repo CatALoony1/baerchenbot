@@ -67,33 +67,38 @@ async function doDbCommand(interaction) {
       .setTitle(modalTitle)
       .setCustomId(`database-${subcommandtype}-${database}`);
     for (const { name, type, required } of spalten) {
+      let inputLabel;
+      let isRequired = false;
+      if (subcommandtype === 'insert') {
+        isRequired = required;
+      }
       if (type === 'String') {
         const input = new TextInputBuilder()
           .setCustomId(`${name}`)
           .setStyle(TextInputStyle.Short)
-          .setRequired(false)
+          .setRequired(isRequired)
           .setMaxLength(100);
-        const inputLabel = new LabelBuilder()
+        inputLabel = new LabelBuilder()
           .setLabel(name)
           .setTextInputComponent(input);
       } else if (type === 'Number') {
         const input = new TextInputBuilder()
           .setCustomId(`${name}`)
           .setStyle(TextInputStyle.Short)
-          .setRequired(false)
+          .setRequired(isRequired)
           .setMaxLength(10);
-        const inputLabel = new LabelBuilder()
+        inputLabel = new LabelBuilder()
           .setLabel(name)
           .setTextInputComponent(input);
       } else if (type === 'Boolean') {
         const input = new RadioGroupBuilder()
           .setCustomId(`${name}`)
-          .setRequired(false)
+          .setRequired(isRequired)
           .setOptions([
             { label: 'True', value: 'true' },
             { label: 'False', value: 'false' },
           ]);
-        const inputLabel = new LabelBuilder()
+        inputLabel = new LabelBuilder()
           .setLabel(name)
           .setRadioGroupComponent(input);
       }
