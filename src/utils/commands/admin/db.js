@@ -103,8 +103,8 @@ async function doDbCommand(interaction) {
           .setRadioGroupComponent(input);
       }
       modal.addLabelComponents(inputLabel);
-      await interaction.showModal(modal);
     }
+    await interaction.showModal(modal);
   } catch (error) {
     console.log(error);
   }
