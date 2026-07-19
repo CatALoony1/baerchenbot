@@ -72,21 +72,12 @@ async function doDbCommand(interaction) {
       if (subcommandtype === 'insert') {
         isRequired = required;
       }
-      if (type === 'String') {
+      if (type === 'String' || type === 'Number') {
         const input = new TextInputBuilder()
           .setCustomId(`${name}`)
           .setStyle(TextInputStyle.Short)
           .setRequired(isRequired)
           .setMaxLength(100);
-        inputLabel = new LabelBuilder()
-          .setLabel(name)
-          .setTextInputComponent(input);
-      } else if (type === 'Number') {
-        const input = new TextInputBuilder()
-          .setCustomId(`${name}`)
-          .setStyle(TextInputStyle.Short)
-          .setRequired(isRequired)
-          .setMaxLength(10);
         inputLabel = new LabelBuilder()
           .setLabel(name)
           .setTextInputComponent(input);
