@@ -29,6 +29,14 @@ client.commands = new Discord.Collection();
 
 (async () => {
   await logToFile.run(client);
+  process.on('uncaughtException', (err) => {
+    console.log(`FATAL UNCAUGHT EXCEPTION:`, err.stack || err);
+    setTimeout(() => process.exit(1), 500);
+  });
+
+  process.on('unhandledRejection', (reason) => {
+    console.log(`UNHANDLED PROMISE REJECTION:`, reason);
+  });
   await registerCommands(process.env.GUILD_ID);
   const commandsPath = path.join(__dirname, 'commands');
   const getFiles = (dir) => {

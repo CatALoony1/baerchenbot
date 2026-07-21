@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bot Logs</title>
+    <style>
+      .log-container {
+        background-color: #1e1e1e;
+        color: #d4d4d4;
+        font-family: 'Consolas', 'Courier New', monospace;
+        padding: 15px;
+        border-radius: 6px;
+        height: 500px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      .toolbar {
+        margin-bottom: 15px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Bot Logs</h1>
+    <div class="toolbar">
+      <label for="logSelect">Log-Datei wählen: </label>
+      <select id="logSelect" onchange="changeLogFile(this.value)">
+        <% logFiles.forEach(function(file) { %>
+          <option value="<%= file %>" <%= file === selectedFile ? 'selected' : '' %>>
+            <%= file %>
+          </option>
+        <% }); %>
+      </select>
+    </div>
+
+    <div class="log-container" id="logBox"><%= logData %></div>
+
+    <script>
+      const logBox = document.getElementById('logBox');
+      logBox.scrollTop = logBox.scrollHeight;
+      function changeLogFile(filename) {
+        window.location.href = `/logs?file=${encodeURIComponent(filename)}`;
+      }
+    </script>
+
+    <br /><br />
+    <a href="/">Zurück zur Startseite</a>
+  </body>
+</html>

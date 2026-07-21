@@ -10,7 +10,7 @@ const {
   pronounRoles,
   regionRoles,
   countryRoles,
-} = require('../utils/selectMenuRoles');
+} = require('../selectMenuRoles');
 
 async function selectMenuButton(interaction) {
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });

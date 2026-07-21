@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Datenbank - Dashboard</title>
+  </head>
+  <body>
+    <h1>Server & Datenbank</h1>
+    <% if (error) { %>
+    <div class="error-box">
+      <strong>Fehler:</strong>
+      <%= error %>
+    </div>
+    <% } %>
+    <form action="/read-database" method="GET">
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId">
+        <option value="">-- Bitte wählen --</option>
+            <% servers.forEach(function(server) { %>
+                <option value="<%= server.id %>" <%= server.id === selectedServerId ? 'selected' : '' %>>
+                    <%= server.name %>
+                </option>
+            <% }); %>
+        </select>
+        <label for="table">Wähle eine Tabelle:</label>
+        <select name="table" id="table">
+            <option value="">-- Bitte wählen --</option>
+            <% tabellen.forEach(function(tabelle) { %>
+                <option value="<%= tabelle %>" <%= tabelle === selectedTable ? 'selected' : '' %>>
+                    <%= tabelle %>
+                </option>
+            <% }); %>
+      </select>
+      <button type="submit">Tabellen laden</button>
+    </form>
+
+    <br />
+    <hr />
+    <br />
+
+    <% if (selectedServerId && selectedTable && alleDaten.length > 0) { %>
+    <h2>Gefundene Einträge:</h2>
+    <table border="1" cellpadding="5" style="border-collapse: collapse">
+      <thead>
+        <tr>
+          <% let alleKeys = new Set(); alleDaten.forEach(item => {
+          Object.keys(item).forEach(key => alleKeys.add(key)); }); const spalten
+          = Array.from(alleKeys).filter(k => k !== '_id' && k !== '__v'); %> <%
+          spalten.forEach(key => { %>
+          <th><%= key %></th>
+          <% }); %>
+        </tr>
+      </thead>
+      <tbody>
+        <% alleDaten.forEach(item => { %>
+        <tr>
+          <% spalten.forEach(key => { %>
+          <td>
+            <% 
+                               const value = item[key];
+                            %>
+            <%= (value === undefined || value === null) ? '' : (typeof value === 'object' ? JSON.stringify(value) : value) %>
+          </td>
+          <% }); %>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } else if (selectedServerId && selectedTable) { %>
+    <p>Es gibt keine Datensätze</p>
+    <% } %>
+
+    <br /><br />
+    <a href="/">Zurück zur Startseite</a>
+  </body>
+</html>

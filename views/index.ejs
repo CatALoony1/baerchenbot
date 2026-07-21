@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bot Dashboard</title>
+  </head>
+  <body>
+    <h1>Willkommen im Control Panel!</h1>
+    <% if (message) { %>
+    <p id="flash-message" style="color: red; font-weight: bold">
+      <%= message %>
+    </p>
+
+    <script>
+      setTimeout(function () {
+        const msgElement = document.getElementById('flash-message');
+        if (msgElement) {
+          msgElement.style.display = 'none';
+        }
+      }, 4000);
+    </script>
+    <% } %>
+    <br /><br />
+    <a
+      href="/user-activity"
+      style="
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Nutzeraktivität</a
+    >
+    <a
+      href="/kanaele"
+      style="
+        padding: 10px;
+        background-color: #28a745;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Kanäle anzeigen</a
+    >
+    <a
+      href="/logout"
+      style="
+        padding: 10px;
+        background-color: #d30909;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Logout</a
+    >
+    <a
+      href="/change-password"
+      style="
+        padding: 10px;
+        background-color: #09b5d3;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Passwort ändern</a
+    >
+    <% if (guildIds === 'all') { %>
+    <br /><br />
+    <p>Admin Bereich</p>
+    <a
+      href="/user-management"
+      style="
+        padding: 10px;
+        background-color: #bd6f16;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >User Management</a
+    >
+    <a
+      href="/read-database"
+      style="
+        padding: 10px;
+        background-color: #a12597;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Datenbank auslesen</a
+    >
+    <a
+      href="/jobs"
+      style="
+        padding: 10px;
+        background-color: #c26abb;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Jobs steuern</a
+    >
+    <a
+      href="/logs"
+      style="
+        padding: 10px;
+        background-color: #99d8c8;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      "
+      >Logs anschauen</a
+    >
+    <% } %>
+  </body>
+</html>
