@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
     const allowedIds = allowedGuilds.split(',').map((id) => id.trim());
     servers = servers.filter((server) => allowedIds.includes(server.id));
   }
-  const selectedServerId = req.query.serverId;
+  const selectedServerId = req.query.serverId || servers[0]?.id;
   let users = [];
   let away = '';
   const allowedIds =

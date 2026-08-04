@@ -27,7 +27,7 @@ async function giveXP(member, xpToGive, channel, message) {
   try {
     const level = await Level.findOne(query);
     let confQuery = {
-      guildId: process.env.GUILD_ID,
+      guildId: member.guild.id,
       key: 'xpMultiplier',
     };
     let conf = await Config.findOne(confQuery);

@@ -12,41 +12,44 @@ function startJob(client) {
     return;
   }
   bumpReminderJob = cron.schedule('* * * * *', async function () {
-    const query = {
-      guildId: process.env.GUILD_ID,
-    };
-    try {
-      const bumpEntry = await Bump.findOne(query);
-      if (bumpEntry) {
-        if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
-          let guild = client.guilds.cache.get(process.env.GUILD_ID);
-          let role = guild.roles.cache.find(
-            (role) => role.name === 'Bump-Ping',
-          );
-          const gifUrl = await getGifById('SQD2LlZy731O8');
-          if (!gifUrl.includes('http')) {
-            console.log('ERROR Bump gif');
-            return;
+    const guilds = await client.guilds.cache;
+    for (const guild of guilds) {
+      const guildId = guild.id;
+      const query = {
+        guildId: guildId,
+      };
+      try {
+        const bumpEntry = await Bump.findOne(query);
+        if (bumpEntry) {
+          if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
+            let role = guild.roles.cache.find(
+              (role) => role.name === 'Bump-Ping',
+            );
+            const gifUrl = await getGifById('SQD2LlZy731O8');
+            if (!gifUrl.includes('http')) {
+              console.log('ERROR Bump gif');
+              return;
+            }
+            const bump = new Discord.EmbedBuilder()
+              .setColor(0x0033cc)
+              .setTitle('Es ist Zeit zu bumpen!')
+              .setImage(gifUrl);
+            const targetChannel = await client.channels.fetch(
+              process.env.BUMP_ID,
+            );
+            const message = await targetChannel.send({
+              content: `${role}`,
+              embeds: [bump],
+            });
+            console.log('Bump reminded');
+            bumpEntry.remindedId = message.id;
+            bumpEntry.reminded = 'J';
+            bumpEntry.save();
           }
-          const bump = new Discord.EmbedBuilder()
-            .setColor(0x0033cc)
-            .setTitle('Es ist Zeit zu bumpen!')
-            .setImage(gifUrl);
-          const targetChannel = await client.channels.fetch(
-            process.env.BUMP_ID,
-          );
-          const message = await targetChannel.send({
-            content: `${role}`,
-            embeds: [bump],
-          });
-          console.log('Bump reminded');
-          bumpEntry.remindedId = message.id;
-          bumpEntry.reminded = 'J';
-          bumpEntry.save();
         }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
   });
   console.log('BumpReminder-Job started.');

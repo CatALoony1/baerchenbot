@@ -18,10 +18,9 @@ const getFiles = (dir) => {
 };
 
 /**
- * Registriert alle Slash-Commands bei Discord nur wenn Änderungen vorliegen
- * @param {string} guildId - Optionale Guild ID für sofortige Registrierung
+ * Registriert alle Slash-Commands global bei Discord nur wenn Änderungen vorliegen
  */
-async function registerCommands(guildId) {
+async function registerCommands() {
   const commands = [];
   const commandsPath = path.join(__dirname, '..', 'commands');
   const cachePath = path.join(__dirname, '..', '..', 'command-cache.json');
@@ -49,25 +48,22 @@ async function registerCommands(guildId) {
       return;
     }
   }
-  const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+  const token = process.env.TOKEN;
+  if (!token) {
+    console.error('[Error] Kein TOKEN in den Umgebungsvariablen gefunden.');
+    return;
+  }
+  const clientId = process.env.CLIENT_ID;
+  const rest = new REST({ version: '10' }).setToken(token);
   try {
-    const clientId = process.env.CLIENT_ID;
-    if (guildId) {
-      console.log(
-        `[System] Registering ${commands.length} commands for Guild: ${guildId}`,
-      );
-      await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-        body: commands,
-      });
-    } else {
-      console.log(
-        `[System] Registering ${commands.length} commands globally...`,
-      );
-      await rest.put(Routes.applicationCommands(clientId), { body: commands });
-    }
+    console.log(
+      `[System] Registriere ${commands.length} Commands global für alle Server...`,
+    );
+    // Globale Registrierung
+    await rest.put(Routes.applicationCommands(clientId), { body: commands });
     fs.writeFileSync(cachePath, currentHash);
     console.log(
-      '[System] Commands erfolgreich synchronisiert und Cache aktualisiert.',
+      '[System] Global Commands erfolgreich synchronisiert und Cache aktualisiert.',
     );
   } catch (error) {
     console.error('[Error] Fehler beim Registrieren der Commands:', error);

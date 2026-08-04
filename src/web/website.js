@@ -1,4 +1,6 @@
 require('dotenv').config();
+const fs = require('fs');
+const path = require('path');
 const express = require('express');
 const session = require('express-session');
 const calculatorRouter = require('./routes/calculator');
@@ -9,14 +11,17 @@ const changePassword = require('./routes/change-password');
 const userActivity = require('./routes/user-activity');
 const logs = require('./routes/logs');
 const jobs = require('./routes/jobs');
+const channelselection = require('./routes/channelselection');
+const serverconfig = require('./routes/serverconfig');
 const app = express();
 const port = 3000;
 const WebUser = require('../models/WebUser');
 const bcrypt = require('bcrypt');
 
 app.set('view engine', 'ejs');
-
+app.set('trust proxy', true);
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, '../../public')));
 
 app.use(
   session({
@@ -63,6 +68,11 @@ function startWebsite(client) {
       res.redirect('/');
     } else {
       res.render('login', { error: 'Falsches Passwort!' });
+      const clientIp = req.ip || req.connection.remoteAddress;
+      const logMessage = `${new Date().toISOString()} FAILED_LOGIN IP=${clientIp} user=${submittedName}\n`;
+      fs.appendFile('/var/log/bot-login.log', logMessage, (err) => {
+        if (err) console.error('Fehler beim Schreiben des Auth-Logs:', err);
+      });
     }
   });
   app.get('/logout', (req, res) => {
@@ -84,6 +94,8 @@ function startWebsite(client) {
   app.use('/change-password', requireLogin, changePassword);
   app.use('/user-activity', requireLogin, userActivity);
   app.use('/logs', requireLogin, logs);
+  app.use('/channelselection', requireLogin, channelselection);
+  app.use('/serverconfig', requireLogin, serverconfig);
 
   app.get(/(.*)/, (req, res) => {
     res.redirect('/');

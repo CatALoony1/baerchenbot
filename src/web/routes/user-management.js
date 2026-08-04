@@ -11,13 +11,13 @@ router.get('/', async (req, res) => {
       return res.redirect('/');
     }
     const allUsers = await WebUser.find({}).select('-password -__v').lean();
-    res.render('user-management', {
+    return res.render('user-management', {
       allUsers: allUsers,
       error: null,
     });
   } catch (error) {
     console.log(error);
-    res.render('user-management', {
+    return res.render('user-management', {
       allUsers: null,
       error: error.message,
     });
@@ -27,24 +27,33 @@ router.get('/', async (req, res) => {
 router.post('/delete', async (req, res) => {
   const { userId } = req.body;
   await WebUser.findByIdAndDelete(userId);
-  res.redirect('/user-management');
+  return res.redirect('/user-management');
 });
 
 router.post('/create', async (req, res) => {
   try {
     const { name, password, serverids } = req.body;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const newUser = new WebUser({
-      user: name,
-      password: hashedPassword,
-      guildIds: serverids,
-      initialPWD: true,
-    });
-    await newUser.save();
-    res.redirect('/user-management');
+    const existing = await WebUser.findOne({ user: name });
+    if (!existing) {
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const newUser = new WebUser({
+        user: name,
+        password: hashedPassword,
+        guildIds: serverids,
+        initialPWD: true,
+      });
+      await newUser.save();
+      return res.redirect('/user-management');
+    } else {
+      const allUsers = await WebUser.find({}).select('-password -__v').lean();
+      return res.render('user-management', {
+        allUsers: allUsers,
+        error: 'Der Nutzername ist bereits vergeben!',
+      });
+    }
   } catch (error) {
     console.log(error);
-    res.render('user-management', {
+    return res.render('user-management', {
       allUsers: null,
       error: error.message,
     });

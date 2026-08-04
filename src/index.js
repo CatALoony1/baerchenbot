@@ -37,7 +37,7 @@ client.commands = new Discord.Collection();
   process.on('unhandledRejection', (reason) => {
     console.log(`UNHANDLED PROMISE REJECTION:`, reason);
   });
-  await registerCommands(process.env.GUILD_ID);
+  await registerCommands();
   const commandsPath = path.join(__dirname, 'commands');
   const getFiles = (dir) => {
     let files = [];

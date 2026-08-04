@@ -9,7 +9,7 @@ async function getAIResult(prompt, sysInstruction) {
     console.log(`AI-Input:${prompt}`);
 
     response = await genAI.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-2.6-flash',
       contents: [{ role: 'user', parts: [{ text: prompt }] }],
       config: {
         systemInstruction: sysInstruction,
