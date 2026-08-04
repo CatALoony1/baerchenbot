@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>User Management</title>
+  </head>
+  <body>
+    <h1>User Management</h1>
+    <% if (error) { %>
+    <div class="error-box">
+      <strong>Fehler:</strong>
+      <%= error %>
+    </div>
+    <% } %>
+    <% if (allUsers && allUsers.length > 0) { %>
+    <h2>Gefundene User:</h2>
+    <table border="1" cellpadding="5" style="border-collapse: collapse">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Zugelassene Server</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% allUsers.forEach(function(user) { %>
+        <tr>
+          <td><%= user._id %></td>
+          <td><%= user.user %></td>
+          <td><%= user.guildIds %></td>
+          <td>
+            <% if(user.user !== "Jonas"){ %>
+            <form
+              action="/user-management/delete"
+              method="POST"
+              style="display: inline"
+              onsubmit="return confirm('Wirklich löschen?');"
+            >
+              <input type="hidden" name="userId" value="<%= user._id %>" />
+              <button type="submit">Löschen</button>
+            </form>
+            <% } %>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <p>Es gibt keine User.</p>
+    <% } %>
+
+    <br /><br />
+    <form action="/user-management/create" method="POST">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required />
+      <label for="password">Startkennwort:</label>
+      <input type="password" id="password" name="password" required />
+      <label for="serverIds">ServerIds:</label>
+      <input type="text" id="serverids" name="serverids" required />
+      <button type="submit">User eintragen</button>
+    </form>
+    <br /><br />
+    <a href="/">Zurück zur Startseite</a>
+  </body>
+</html>

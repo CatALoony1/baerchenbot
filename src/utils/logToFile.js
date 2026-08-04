@@ -76,27 +76,21 @@ module.exports = {
         const targetChannel = await client.channels.fetch(process.env.LOG_ID);
         let d = new Date();
         string = `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()},${d.getMilliseconds()}|${string}`;
-        if (string.includes('TESTJG')) {
-          await fs.appendFile(
-            './logs/chat._log',
-            string.replace('TESTJG', ''),
-            function (err) {
-              if (err) throw err;
-            },
-          );
-        } else {
-          await fs.appendFile('./logs/bot._log', string, function (err) {
-            if (err) throw err;
+        await fs.appendFile('./logs/bot._log', string, function (err) {
+          if (err) throw err;
+        });
+        const logFile = './logs/bot._log';
+        const fileAttachments = fs.existsSync(logFile) ? [logFile] : [];
+        if (string.includes('connect ECONNREFUSED')) {
+          await targetChannel.send({
+            content: `DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`,
+            files: fileAttachments,
           });
-          if (string.includes('connect ECONNREFUSED')) {
-            targetChannel.send(
-              `DB connection ERROR <@${process.env.ADMIN_ID}> please check DB`,
-            );
-          } else if (string.toLowerCase().includes('error')) {
-            targetChannel.send(
-              `ERROR <@${process.env.ADMIN_ID}> please check log`,
-            );
-          }
+        } else if (string.toLowerCase().includes('error')) {
+          await targetChannel.send({
+            content: `ERROR <@${process.env.ADMIN_ID}> please check log`,
+            files: fileAttachments,
+          });
         }
       },
       true,

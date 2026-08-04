@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kanäle - Dashboard</title>
+  </head>
+  <body>
+    <h1>Server & Kanäle</h1>
+
+    <!-- Formular nutzt GET, da wir nur Daten abfragen (URL wird zu /kanaele?serverId=123) -->
+    <form action="/kanaele" method="GET">
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId">
+        <option value="">-- Bitte wählen --</option>
+
+        <!-- Schleife durch alle Server -->
+        <% servers.forEach(function(server) { %>
+            <option value="<%= server.id %>" <%= server.id === selectedServerId ? 'selected' : '' %>>
+                <%= server.name %>
+            </option>
+        <% }); %>
+      </select>
+
+      <button type="submit">Kanäle laden</button>
+    </form>
+
+    <br />
+    <hr />
+    <br />
+
+    <!-- Wenn ein Server ausgewählt wurde und Kanäle vorhanden sind, zeigen wir die Tabelle -->
+    <% if (selectedServerId && channels.length > 0) { %>
+    <h2>Gefundene Kanäle:</h2>
+    <table border="1" cellpadding="5" style="border-collapse: collapse">
+      <thead>
+        <tr>
+          <th>Kanal-Name</th>
+          <th>Kanal-ID</th>
+          <th>Typ (0=Text, 2=Voice)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Schleife durch alle Kanäle des Servers -->
+        <% channels.forEach(function(channel) { %>
+        <tr>
+          <td>
+            <strong
+              >#
+              <%= channel.name %></strong
+            >
+          </td>
+          <td><%= channel.id %></td>
+          <td><%= channel.type %></td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } else if (selectedServerId) { %>
+    <p>
+      Auf diesem Server gibt es keine Kanäle (oder der Bot sieht sie nicht).
+    </p>
+    <% } %>
+
+    <br /><br />
+    <a href="/">Zurück zur Startseite</a>
+  </body>
+</html>

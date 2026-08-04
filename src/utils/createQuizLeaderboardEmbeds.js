@@ -1,9 +1,9 @@
 const { EmbedBuilder } = require('discord.js');
 const QuizStats = require('../models/QuizStats');
-async function createQuizLeaderboardEmbeds(page, client) {
-  const guild = client.guilds.cache.get(process.env.GUILD_ID);
+async function createQuizLeaderboardEmbeds(page, client, guildId) {
+  const guild = client.guilds.cache.get(guildId);
   const fetchedStats = await QuizStats.find({
-    guildId: process.env.GUILD_ID,
+    guildId: guildId,
   });
 
   if (fetchedStats.length === 0) {

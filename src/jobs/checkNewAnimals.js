@@ -54,6 +54,11 @@ async function jobFunction(client) {
   }
 }
 
+function isRunning() {
+  return false;
+}
+
 module.exports = {
   jobFunction,
+  isRunning,
 };

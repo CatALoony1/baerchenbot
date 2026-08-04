@@ -1,31 +1,58 @@
 const { ActivityType } = require('discord.js');
 const cron = require('node-cron');
-require('dotenv').config();
 let status = [
   /*
   {
     activities: [{
-      name: 'Platzhalter',
+      name: 'Serverhymne',
       type: ActivityType.Streaming,
       url: 'https://www.youtube.com/watch?v=k0jvsZ6HQOM'
     }], status: 'online'
   },
   {
     activities: [{
-      name: 'Platzhalter',
+      name: 'Unterwasserdokumentation',
+      type: ActivityType.Watching
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'dem Rauschen der Wellen',
+      type: ActivityType.Listening
+    }], status: 'idle'
+  },
+  {
+    activities: [{
+      name: 'cooking simulator',
+      type: ActivityType.Playing
+    }], status: 'online'
+  },
+  {
+    activities: [{
+      name: 'Erhöht die Preise',
       type: ActivityType.Custom
     }], status: 'dnd'
   },
   {
     activities: [{
-      name: 'Platzhalter',
+      name: 'Schatzsuche',
       type: ActivityType.Competing
     }], status: 'dnd'
   }, 
+  
+    {
+    activities: [
+      {
+        name: 'alleine',
+        type: ActivityType.Playing,
+      },
+    ],
+    status: 'online',
+  },
   {
     activities: [
       {
-        name: 'Platzhalter',
+        name: 'dir',
         type: ActivityType.Listening,
       },
     ],
@@ -34,7 +61,7 @@ let status = [
   {
     activities: [
       {
-        name: 'Platzhalter',
+        name: 'in die Ferne',
         type: ActivityType.Watching,
       },
     ],
@@ -43,13 +70,31 @@ let status = [
   {
     activities: [
       {
-        name: 'Platzhalter',
+        name: 'mit deinen Gefühlen',
         type: ActivityType.Playing,
       },
     ],
     status: 'online',
   },
   */
+  {
+    activities: [
+      {
+        name: 'Erhöht die Preise',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'dnd',
+  },
+  {
+    activities: [
+      {
+        name: 'Wartet auf das Essen',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'online',
+  },
   {
     activities: [
       {

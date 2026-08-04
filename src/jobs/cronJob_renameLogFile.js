@@ -1,7 +1,37 @@
 const cron = require('node-cron');
 const fs = require('fs');
-
+const path = require('path');
 let renameLogFileJob = null;
+function deleteOldLogs() {
+  const logDir = './logs';
+  const tenDaysInMs = 10 * 24 * 60 * 60 * 1000;
+  const now = Date.now();
+  if (!fs.existsSync(logDir)) return;
+  fs.readdir(logDir, (err, files) => {
+    if (err) {
+      console.error('Fehler beim Lesen des Log-Verzeichnisses:', err);
+      return;
+    }
+    files.forEach((file) => {
+      const filePath = path.join(logDir, file);
+      fs.stat(filePath, (err, stats) => {
+        if (err) {
+          console.error(`Fehler beim Abrufen der Stats für ${file}:`, err);
+          return;
+        }
+        if (now - stats.mtimeMs > tenDaysInMs) {
+          fs.unlink(filePath, (err) => {
+            if (err) {
+              console.error(`Fehler beim Löschen von ${file}:`, err);
+            } else {
+              console.log(`Alte Log-Datei gelöscht: ${file}`);
+            }
+          });
+        }
+      });
+    });
+  });
+}
 
 function startJob(client) {
   if (renameLogFileJob) {
@@ -12,11 +42,14 @@ function startJob(client) {
     console.log(`RenameLogFile-Job started...`);
     if (fs.existsSync('./logs/bot._log')) {
       const d = new Date();
-      const newFilename = `./logs/bot._log${d.getFullYear()}${d.getMonth() + 1}${d.getDate()}`;
+      const month = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      const newFilename = `./logs/bot._log_${d.getFullYear()}-${month}-${day}`;
       fs.rename('./logs/bot._log', newFilename, function (err) {
         if (err) throw err;
       });
     }
+    deleteOldLogs();
     console.log(`RenameLogFile-Job finished`);
   });
   console.log('RenameLogFile-Job started.');
@@ -41,7 +74,6 @@ module.exports = {
   stopJob,
   isRunning,
 };
-
 /*
   * * * * * *
   | | | | | |

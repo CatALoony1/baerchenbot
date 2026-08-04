@@ -12,7 +12,7 @@ const {
   regionRoles,
   countryRoles,
   hogwartsRoles,
-} = require('../utils/selectMenuRoles');
+} = require('../selectMenuRoles');
 
 async function roleSelect(interaction) {
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });

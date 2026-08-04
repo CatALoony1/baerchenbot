@@ -11,7 +11,6 @@ const configSchema = new Schema({
   },
   value: {
     type: String,
-    required: true,
   },
 });
 
