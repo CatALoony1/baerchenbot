@@ -2,7 +2,6 @@ const {
   SlashCommandBuilder,
   InteractionContextType,
   PermissionFlagsBits,
-  MessageFlags,
 } = require('discord.js');
 const doloescheCommand = require('../utils/commands/admin/loesche');
 const doPrintSelectMenuCommand = require('../utils/commands/admin/printSelectMenu');

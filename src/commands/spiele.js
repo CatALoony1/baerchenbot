@@ -8,7 +8,7 @@ const handleSpieleCommands = require('../utils/handleSpieleCommands.js');
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('spiele')
-    .setDescription('Zeigt all deine Level-Bezogenen Daten.')
+    .setDescription('Zeigt all deine Spiele-Bezogenen Daten.')
     .addSubcommand((subcommand) =>
       subcommand.setName('shop').setDescription('Zeigt den Item-Shop an.'),
     )
@@ -18,7 +18,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName('gamestats')
-        .setDescription('Zeigt all deine Level-Bezogenen Daten.'),
+        .setDescription('Zeigt all deine Spiele-Bezogenen Daten.'),
     )
     .addSubcommand((subcommand) =>
       subcommand

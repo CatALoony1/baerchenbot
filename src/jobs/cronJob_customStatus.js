@@ -1,4 +1,4 @@
-const { ActivityType, Client } = require('discord.js');
+const { ActivityType } = require('discord.js');
 const cron = require('node-cron');
 let status = [
   /*

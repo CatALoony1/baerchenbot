@@ -1,7 +1,6 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const Lottozahlen = require('../models/Lottozahlen');
 const giveMoney = require('../utils/giveMoney');
-const GameUser = require('../models/GameUser');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -64,25 +63,25 @@ module.exports = {
       await newLottozahl.save();
       let anzahlNullen = 0;
       if (lottozahl % 10000000 === 0) {
-        moneyToGive = 2000000;
+        moneyToGive = 200000;
         anzahlNullen = 7;
       } else if (lottozahl % 1000000 === 0) {
-        moneyToGive = 750000;
+        moneyToGive = 75000;
         anzahlNullen = 6;
       } else if (lottozahl % 100000 === 0) {
-        moneyToGive = 500000;
+        moneyToGive = 50000;
         anzahlNullen = 5;
       } else if (lottozahl % 10000 === 0) {
-        moneyToGive = 250000;
+        moneyToGive = 25000;
         anzahlNullen = 4;
       } else if (lottozahl % 1000 === 0) {
-        moneyToGive = 100000;
+        moneyToGive = 10000;
         anzahlNullen = 3;
       } else if (lottozahl % 100 === 0) {
-        moneyToGive = 50000;
+        moneyToGive = 5000;
         anzahlNullen = 2;
       } else if (lottozahl % 10 === 0) {
-        moneyToGive = 5000;
+        moneyToGive = 500;
         anzahlNullen = 1;
       } else {
         interaction.editReply(
@@ -104,7 +103,7 @@ module.exports = {
       interaction.editReply(
         `Glückwunsch <@${targetUserId}> du hast den Jackpot mit der Zahl ${lottozahl} geknackt und erhälst somit 1.000.000 XP`,
       );
-      moneyToGive = 10000000;
+      moneyToGive = 1000000;
       let lottoRole = interaction.guild.roles.cache.find(
         (role) => role.name === 'Lottogewinner',
       );
