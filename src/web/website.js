@@ -3,8 +3,6 @@ const fs = require('fs');
 const path = require('path');
 const express = require('express');
 const session = require('express-session');
-const calculatorRouter = require('./routes/calculator');
-const channelsRouter = require('./routes/channels');
 const readDatabaseRouter = require('./routes/read-database');
 const userManagement = require('./routes/user-management');
 const changePassword = require('./routes/change-password');
@@ -86,8 +84,6 @@ function startWebsite(client) {
     req.session.message = null;
     res.render('index', { message: message, guildIds: req.session.guildIds });
   });
-  app.use('/rechner', requireLogin, calculatorRouter);
-  app.use('/kanaele', requireLogin, channelsRouter);
   app.use('/read-database', requireLogin, readDatabaseRouter);
   app.use('/user-management', requireLogin, userManagement);
   app.use('/jobs', requireLogin, jobs);
