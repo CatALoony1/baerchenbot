@@ -4,7 +4,7 @@ const {
   MessageFlags,
 } = require('discord.js');
 const getGif = require('../utils/getGif');
-const wordList = require('../utils/wordList').wordList;
+const wordList = require('../utils/data/wordList').gifWordList;
 
 function getRandom(min, max) {
   min = Math.ceil(min);

@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { EmbedBuilder } = require('discord.js');
 const getGifById = require('../../utils/getGifById');
-const { letterEmojiMap } = require('../../utils/letterEmojiMap');
 module.exports = {
   run: async (oldMember, newMember) => {
     const oldStatus = oldMember.premiumSince;
@@ -34,12 +33,6 @@ module.exports = {
           content: `||<@${newMember.id}>||`,
           embeds: [boost],
         });
-        await message.react(letterEmojiMap.get('D'));
-        await message.react(letterEmojiMap.get('A'));
-        await message.react(letterEmojiMap.get('N'));
-        await message.react(letterEmojiMap.get('K'));
-        await message.react(letterEmojiMap.get('E'));
-        await message.react(letterEmojiMap.get('!'));
       } catch (error) {
         console.log(error);
       }

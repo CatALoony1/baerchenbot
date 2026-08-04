@@ -3,6 +3,7 @@ const router = express.Router();
 const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
 const { ChannelType } = require('discord.js');
+const { refreshServerConfCache } = require('../../utils/data/cache');
 const ALLOWED_CHANNELS = new Set([
   'allgemein',
   'bye',
@@ -157,8 +158,9 @@ router.post('/change-channel-:chosenobj', async (req, res) => {
         variableName: searchString,
         objectId: channelId,
       });
-      newSrvCfg.save();
+      await newSrvCfg.save();
     }
+    await refreshServerConfCache(guildId);
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);

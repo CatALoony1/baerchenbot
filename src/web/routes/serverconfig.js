@@ -4,6 +4,10 @@ const router = express.Router();
 const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
 const Config = require('../../models/Config');
+const {
+  refreshServerConfCache,
+  refreshConfCache,
+} = require('../../utils/data/cache');
 
 router.get('/', async (req, res) => {
   try {
@@ -97,8 +101,9 @@ router.post('/change-member-role', async (req, res) => {
         variableName: variableName,
         objectId: roleId,
       });
-      newSrvConf.save();
+      await newSrvConf.save();
     }
+    await refreshServerConfCache(guildId);
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
@@ -187,6 +192,7 @@ async function addToDb(giphyId, text, header, guildId, identifier) {
     });
     await newHeaderCfg.save();
   }
+  await refreshConfCache(guildId);
 }
 
 function addToList(identifier, content, map, kind) {
