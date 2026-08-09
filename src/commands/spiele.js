@@ -4,11 +4,12 @@ const {
   MessageFlags,
 } = require('discord.js');
 const handleSpieleCommands = require('../utils/handleSpieleCommands.js');
+const { serverConfCache } = require('../utils/data/cache.js');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('spiele')
-    .setDescription('Zeigt all deine Level-Bezogenen Daten.')
+    .setDescription('Zeigt all deine Spiele-Bezogenen Daten.')
     .addSubcommand((subcommand) =>
       subcommand.setName('shop').setDescription('Zeigt den Item-Shop an.'),
     )
@@ -18,7 +19,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName('gamestats')
-        .setDescription('Zeigt all deine Level-Bezogenen Daten.'),
+        .setDescription('Zeigt all deine Spiele-Bezogenen Daten.'),
     )
     .addSubcommand((subcommand) =>
       subcommand
@@ -50,11 +51,14 @@ module.exports = {
     }
     const subcommand = interaction.options.getSubcommand();
     if (
-      interaction.channel.id != process.env.SPIELE_ID &&
+      (!serverConfCache.get(interaction.guild.id) ||
+        !serverConfCache.get(interaction.guild.id).get('SPIELE_ID') ||
+        interaction.channel.id !=
+          serverConfCache.get(interaction.guild.id).get('SPIELE_ID')) &&
       subcommand == 'gamestats'
     ) {
       await interaction.reply({
-        content: `Dieser Befehl ist nur im Channel <#${process.env.SPIELE_ID} erlaubt!`,
+        content: `Dieser Befehl ist hier nicht erlaubt!`,
         flags: MessageFlags.Ephemeral,
       });
       return;

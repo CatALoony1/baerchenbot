@@ -40,6 +40,8 @@ jobs:
             echo "GIPHY_API=${{ secrets.GIPHY_API }}" >> .env
             echo "HERO_API=${{ secrets.HERO_API }}" >> .env
             echo "SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}" >> .env
+            echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
+            echo "ADMIN_ID=${{ secrets.ADMIN_ID }}" >> .env
 
             # 4. Docker-Image neu bauen
             docker build -t baerchenbot-live .

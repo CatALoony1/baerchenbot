@@ -9,6 +9,10 @@ const selectMenuButton = require('../../utils/interactions/selectMenuButton');
 const shopButtons = require('../../utils/interactions/shopButtons');
 const spieleLeaderboardPage = require('../../utils/interactions/spieleLeaderboardPage');
 const useItems = require('../../utils/interactions/useItems');
+const {
+  databaseModal,
+  databaseButtons,
+} = require('../../utils/interactions/databaseManagement');
 
 module.exports = {
   run: async (interaction, client) => {
@@ -28,6 +32,8 @@ module.exports = {
         await ownAnimalsButtons(interaction);
       } else if (customId.includes(`quizadd-${interaction.user.id}`)) {
         await quizModals(interaction);
+      } else if (customId.includes('database')) {
+        await databaseModal(interaction);
       }
     } else if (interaction.isButton()) {
       if (customId.includes('lPage')) {
@@ -44,6 +50,8 @@ module.exports = {
         await shopButtons(interaction);
       } else if (customId.includes('spieleLeader')) {
         await spieleLeaderboardPage(interaction);
+      } else if (customId.includes('db_')) {
+        await databaseButtons(interaction);
       }
     } else if (interaction.isStringSelectMenu()) {
       if (customId.includes('select') && !customId.includes('_')) {

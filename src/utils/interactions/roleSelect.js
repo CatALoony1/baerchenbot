@@ -1,5 +1,5 @@
 const { MessageFlags } = require('discord.js');
-require('dotenv').config();
+const { serverConfCache } = require('../data/cache');
 
 const {
   ageRoles,
@@ -12,7 +12,7 @@ const {
   regionRoles,
   countryRoles,
   hogwartsRoles,
-} = require('../utils/selectMenuRoles');
+} = require('../selectMenuRoles');
 
 async function roleSelect(interaction) {
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
@@ -70,13 +70,20 @@ async function roleSelect(interaction) {
       await interaction.editReply(
         'Der Server ist ab 18, solltest du dich nicht verklickt haben und unter 18 sein würden wir dich bitten den Server zu verlassen.',
       );
-      const targetChannel =
-        interaction.guild.channels.cache.get(process.env.LOG_ID) ||
-        (await interaction.guild.channels.fetch(process.env.LOG_ID));
-      await targetChannel.send(
-        `${usertag} ist unter 18.<@${process.env.ADMIN_ROLE_ID}>`,
-      );
-      return;
+      if (
+        serverConfCache.get(interaction.guild.id) &&
+        serverConfCache.get(interaction.guild.id).get('LOG_ID')
+      ) {
+        const targetChannel =
+          interaction.guild.channels.cache.get(
+            serverConfCache.get(interaction.guild.id).get('LOG_ID'),
+          ) ||
+          (await interaction.guild.channels.fetch(
+            serverConfCache.get(interaction.guild.id).get('LOG_ID'),
+          ));
+        await targetChannel.send(`${usertag} ist unter 18.`);
+        return;
+      }
     } else {
       if (
         interaction.member.roles.cache.some(

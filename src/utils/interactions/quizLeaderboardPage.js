@@ -12,7 +12,13 @@ async function quizLeaderboardPage(interaction, client) {
       if (page != 1) {
         let newPage = +page;
         await interaction.update({
-          embeds: [await createQuizLeaderboardEmbeds(newPage - 2, client)],
+          embeds: [
+            await createQuizLeaderboardEmbeds(
+              newPage - 2,
+              client,
+              interaction.guildId,
+            ),
+          ],
           components: [targetMessage.components[0]],
         });
         return;
@@ -31,7 +37,13 @@ async function quizLeaderboardPage(interaction, client) {
       if (page != maxpage) {
         let newPage = +page;
         await interaction.update({
-          embeds: [await createQuizLeaderboardEmbeds(newPage, client)],
+          embeds: [
+            await createQuizLeaderboardEmbeds(
+              newPage,
+              client,
+              interaction.guildId,
+            ),
+          ],
           components: [targetMessage.components[0]],
         });
         return;

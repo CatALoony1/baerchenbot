@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nutzeraktivität</title>
+  </head>
+  <body>
+    <h1>Nutzeraktivität</h1>
+
+    <form action="/user-activity" method="GET">
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId" onchange="this.form.submit()">
+        <option value="" <%= !selectedServerId ? 'disabled' : '' %>>-- Bitte wählen --</option>
+    <% servers.forEach(function(server, index) { %>
+      <% 
+        const isSelected = selectedServerId 
+          ? server.id === selectedServerId 
+          : index === 0; 
+      %>
+      <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
+                <%= server.name %>
+            </option>
+        <% }); %>
+      </select>
+    </form>
+
+    <br />
+    <hr />
+    <br />
+    <% if (selectedServerId && users.length > 0) { %>
+    <h2>Gefundene User:</h2>
+    <table
+      border="1"
+      cellpadding="5"
+      style="border-collapse: collapse"
+      id="sortableTable"
+    >
+      <thead>
+        <tr>
+          <th onclick="sortTable(0)">Username</th>
+          <th onclick="sortTable(1)">Anzahl Nachrichten</th>
+          <th onclick="sortTable(2)">Zeit im Voice</th>
+          <th onclick="sortTable(3)">Letzte Aktivität(in Tage)</th>
+          <th>Aktionen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% users.forEach(function(user) { %>
+        <tr>
+          <td>
+            <strong><%= user.name %></strong>
+          </td>
+          <td><%= user.messages %></td>
+          <td><%= user.voiceTime %></td>
+          <td><%= user.lastMessage %></td>
+          <% const awayList = away ? away.split(',').map(name => name.trim()) : []; %>
+          <% if (awayList.includes(user.name)) { %>
+          <td><form action="/user-activity/back" method="POST" style="display: inline">
+            <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
+            <input type="hidden" name="username" value="<%= user.name %>" />
+            <button type="submit">
+              Abwesenheitsprüfung aktivieren
+            </button>
+          </form></td>
+          <% } else { %>
+          <td><form action="/user-activity/away" method="POST" style="display: inline">
+            <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
+            <input type="hidden" name="username" value="<%= user.name %>" />
+            <button type="submit">
+              Abwesenheitsprüfung deaktivieren
+            </button>
+          </form></td>
+          <% } %>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } else if (selectedServerId) { %>
+    <p>Auf diesem Server gibt es keine User (oder der Bot sieht sie nicht).</p>
+    <% } %>
+
+    <br /><br />
+    <a href="/">Zurück zur Startseite</a>
+    <script>
+      function sortTable(columnIndex) {
+        const table = document.getElementById('sortableTable');
+        const tbody = table.querySelector('tbody');
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        const isAscending =
+          table.dataset.sortCol == columnIndex &&
+          table.dataset.sortOrder === 'asc';
+        rows.sort((rowA, rowB) => {
+          const cellA = rowA.children[columnIndex].innerText.trim();
+          const cellB = rowB.children[columnIndex].innerText.trim();
+          const numA = parseFloat(cellA);
+          const numB = parseFloat(cellB);
+          if (!isNaN(numA) && !isNaN(numB)) {
+            return isAscending ? numB - numA : numA - numB;
+          }
+          return isAscending
+            ? cellB.localeCompare(cellA)
+            : cellA.localeCompare(cellB);
+        });
+        rows.forEach((row) => tbody.appendChild(row));
+        table.dataset.sortCol = columnIndex;
+        table.dataset.sortOrder = isAscending ? 'desc' : 'asc';
+      }
+    </script>
+  </body>
+</html>

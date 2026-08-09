@@ -1,4 +1,4 @@
-require('dotenv').config();
+const { serverConfCache } = require('../utils/data/cache');
 const cron = require('node-cron');
 const giveXP = require('../utils/giveXP');
 
@@ -17,13 +17,20 @@ function startJob(client) {
   }
   voiceXpJob = cron.schedule('*/5 * * * *', async function () {
     console.log(`VoiceXP-Job started...`);
-    const targetChannel = await client.channels.fetch(process.env.ALLGEMEIN_ID);
     await client.channels.cache.forEach(async (channel) => {
       if (channel.type == 2 && channel.id != '1387018292228653148') {
         if (channel.members.size >= 2) {
           channel.members.forEach(async (member) => {
-            let xpToGive = 5 * getRandomXp(1, 5);
-            await giveXP(member, xpToGive, targetChannel, false);
+            if (
+              serverConfCache.get(member.guild.id) &&
+              serverConfCache.get(member.guild.id).get('ALLGEMEIN_ID')
+            ) {
+              const targetChannel = await client.channels.fetch(
+                serverConfCache.get(member.guild.id).get('ALLGEMEIN_ID'),
+              );
+              let xpToGive = 5 * getRandomXp(1, 5);
+              await giveXP(member, xpToGive, targetChannel, false);
+            }
           });
         }
       }

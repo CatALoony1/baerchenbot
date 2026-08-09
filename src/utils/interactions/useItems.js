@@ -23,6 +23,7 @@ const VoiceChannel = require('../../models/VoiceChannel');
 const removeMoney = require('../removeMoney.js');
 const giveMoney = require('../giveMoney.js');
 const getGifById = require('../getGifById.js');
+const { serverConfCache } = require('../data/cache');
 
 const hugTexts = [
   (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
@@ -665,12 +666,21 @@ async function useItemFarbrolle(interaction) {
   const rolename = interaction.fields.getTextInputValue(
     'useItem_farbrolle_name',
   );
-  let targetChannel =
-    interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) ||
-    (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
-  await targetChannel.send(
-    `${interaction.member} hat die Farbrolle **${rolename}** mit der Farbe **${color}** gekauft! Bitte erstellen!`,
-  );
+  if (
+    serverConfCache.get(interaction.guild.id) &&
+    serverConfCache.get(interaction.guild.id).get('ADMIN_C_ID')
+  ) {
+    let targetChannel =
+      interaction.guild.channels.cache.get(
+        serverConfCache.get(interaction.guild.id).get('ADMIN_C_ID'),
+      ) ||
+      (await interaction.guild.channels.fetch(
+        serverConfCache.get(interaction.guild.id).get('ADMIN_C_ID'),
+      ));
+    await targetChannel.send(
+      `${interaction.member} hat die Farbrolle **${rolename}** mit der Farbe **${color}** gekauft! Bitte erstellen!`,
+    );
+  }
   await interaction.editReply({
     content: `Die Farbrolle **${rolename}** mit der Farbe **${color}** wurde erfolgreich an die Admins weitergeleitet!`,
     flags: MessageFlags.Ephemeral,
@@ -701,34 +711,40 @@ async function useItemVoiceChannel(interaction, client) {
   const channelname = interaction.fields.getTextInputValue(
     'useItem_voicechannel_name',
   );
-
-  const kategorie = await client.channels.fetch(process.env.PERMANENT_VOICE_ID);
-  const channel = await kategorie.children.create({
-    name: channelname,
-    type: ChannelType.GuildVoice,
-    permissionOverwrites: [
-      {
-        id: interaction.user.id,
-        allow: [
-          PermissionsBitField.Flags.ManageChannels,
-          PermissionsBitField.Flags.ManageRoles,
-        ],
-      },
-    ],
-  });
-  const newVoiceChannel = new VoiceChannel({
-    name: channelname,
-    permanent: true,
-    guildId: interaction.guild.id,
-    channelId: channel.id,
-    creationTime: Date.now(),
-    nutzer: 0,
-    userId: interaction.user.id,
-  });
-  await newVoiceChannel.save().catch((e) => {
-    console.log(`Error saving updated VoiceChannel ${e}`);
-    return;
-  });
+  if (
+    serverConfCache.get(interaction.guild.id) &&
+    serverConfCache.get(interaction.guild.id).get('PERMANENT_VOICE_ID')
+  ) {
+    const kategorie = await client.channels.fetch(
+      serverConfCache.get(interaction.guild.id).get('PERMANENT_VOICE_ID'),
+    );
+    const channel = await kategorie.children.create({
+      name: channelname,
+      type: ChannelType.GuildVoice,
+      permissionOverwrites: [
+        {
+          id: interaction.user.id,
+          allow: [
+            PermissionsBitField.Flags.ManageChannels,
+            PermissionsBitField.Flags.ManageRoles,
+          ],
+        },
+      ],
+    });
+    const newVoiceChannel = new VoiceChannel({
+      name: channelname,
+      permanent: true,
+      guildId: interaction.guild.id,
+      channelId: channel.id,
+      creationTime: Date.now(),
+      nutzer: 0,
+      userId: interaction.user.id,
+    });
+    await newVoiceChannel.save().catch((e) => {
+      console.log(`Error saving updated VoiceChannel ${e}`);
+      return;
+    });
+  }
   await interaction.editReply({
     content: `Der Voicechannel **${channelname}** wurde erfolgreich erstellt.`,
     flags: MessageFlags.Ephemeral,
@@ -759,12 +775,21 @@ async function useItemRolleNamensliste(interaction) {
   const channelname = interaction.fields.getTextInputValue(
     'useItem_rolleNamensliste_name',
   );
-  let targetChannel =
-    interaction.guild.channels.cache.get(process.env.ADMIN_C_ID) ||
-    (await interaction.guild.channels.fetch(process.env.ADMIN_C_ID));
-  await targetChannel.send(
-    `${interaction.member} hat die Rolle (Namensliste) **${channelname}** gekauft! Bitte erstellen!`,
-  );
+  if (
+    serverConfCache.get(interaction.guild.id) &&
+    serverConfCache.get(interaction.guild.id).get('ADMIN_C_ID')
+  ) {
+    let targetChannel =
+      interaction.guild.channels.cache.get(
+        serverConfCache.get(interaction.guild.id).get('ADMIN_C_ID'),
+      ) ||
+      (await interaction.guild.channels.fetch(
+        serverConfCache.get(interaction.guild.id).get('ADMIN_C_ID'),
+      ));
+    await targetChannel.send(
+      `${interaction.member} hat die Rolle (Namensliste) **${channelname}** gekauft! Bitte erstellen!`,
+    );
+  }
   await interaction.editReply({
     content: `Die Rolle (Namensliste) **${channelname}** wurde erfolgreich an die Admins weitergeleitet!`,
     flags: MessageFlags.Ephemeral,
@@ -834,17 +859,26 @@ async function useItemDoppelteXp(interaction) {
       itemType: 'Doppelte XP',
     });
   }
-  const targetChannel =
-    interaction.guild.channels.cache.get(process.env.ALLGEMEIN_ID) ||
-    (await interaction.guild.channels.fetch(process.env.ALLGEMEIN_ID));
-  if (alreadyActive) {
-    await targetChannel.send(
-      `${interaction.user} hat Doppelte XP um 3 Stunde verlängert!`,
-    );
-  } else {
-    await targetChannel.send(
-      `${interaction.user} hat Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 3 Stunde.`,
-    );
+  if (
+    serverConfCache.get(interaction.guild.id) &&
+    serverConfCache.get(interaction.guild.id).get('ALLGEMEIN_ID')
+  ) {
+    const targetChannel =
+      interaction.guild.channels.cache.get(
+        serverConfCache.get(interaction.guild.id).get('ALLGEMEIN_ID'),
+      ) ||
+      (await interaction.guild.channels.fetch(
+        serverConfCache.get(interaction.guild.id).get('ALLGEMEIN_ID'),
+      ));
+    if (alreadyActive) {
+      await targetChannel.send(
+        `${interaction.user} hat Doppelte XP um 3 Stunde verlängert!`,
+      );
+    } else {
+      await targetChannel.send(
+        `${interaction.user} hat Doppelte XP aktiviert! Alle erhalten nun doppelte XP für 3 Stunde.`,
+      );
+    }
   }
 }
 

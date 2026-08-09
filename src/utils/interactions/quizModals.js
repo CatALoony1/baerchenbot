@@ -18,7 +18,7 @@ async function quizModals(interaction) {
     right: richtig,
     wrong: wrong,
     participants: participants,
-    guildId: process.env.GUILD_ID,
+    guildId: interaction.guildId,
   });
   await newQuestion.save();
   const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
