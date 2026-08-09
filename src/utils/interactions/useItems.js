@@ -786,10 +786,10 @@ async function useItemRolleNamensliste(interaction) {
       (await interaction.guild.channels.fetch(
         serverConfCache.get(interaction.guild.id).get('ADMIN_C_ID'),
       ));
+    await targetChannel.send(
+      `${interaction.member} hat die Rolle (Namensliste) **${channelname}** gekauft! Bitte erstellen!`,
+    );
   }
-  await targetChannel.send(
-    `${interaction.member} hat die Rolle (Namensliste) **${channelname}** gekauft! Bitte erstellen!`,
-  );
   await interaction.editReply({
     content: `Die Rolle (Namensliste) **${channelname}** wurde erfolgreich an die Admins weitergeleitet!`,
     flags: MessageFlags.Ephemeral,
