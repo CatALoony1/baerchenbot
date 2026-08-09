@@ -12,7 +12,7 @@ const jobs = require('./routes/jobs');
 const channelselection = require('./routes/channelselection');
 const serverconfig = require('./routes/serverconfig');
 const app = express();
-const port = 3000;
+const port = 3003;
 const WebUser = require('../models/WebUser');
 const bcrypt = require('bcrypt');
 
@@ -97,7 +97,7 @@ function startWebsite(client) {
     res.redirect('/');
   });
   app.listen(port, () => {
-    console.log(`[Dashboard] Webserver läuft auf http://localhost:${port}`);
+    console.log(`[Dashboard] Webserver läuft auf Port:${port}`);
   });
 }
 
