@@ -6,4 +6,4 @@ RUN npm ci --omit=dev
 
 COPY . .
 
-CMD ["node", "index.js"]
+CMD ["node", "src/index.js"]
