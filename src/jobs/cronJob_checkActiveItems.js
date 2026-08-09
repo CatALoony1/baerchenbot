@@ -1,10 +1,10 @@
-require('dotenv').config();
 const cron = require('node-cron');
 const ActiveItems = require('../models/ActiveItems.js');
 const Config = require('../models/Config.js');
 const removeMoney = require('../utils/removeMoney.js');
 const giveMoney = require('../utils/giveMoney.js');
 const getGifById = require('../utils/getGifById.js');
+const { serverConfCache } = require('../utils/data/cache');
 
 let checkActiveItemsJob = null;
 
@@ -17,92 +17,108 @@ function startJob(client) {
     const guilds = await client.guilds.cache;
     for (const guild of guilds) {
       try {
-        const activeItems = await ActiveItems.find({});
-        const targetChannel =
-          guild.channels.cache.get(process.env.SPIELE_ID) ||
-          (await guild.channels.fetch(process.env.SPIELE_ID));
-        const mainChannel =
-          guild.channels.cache.get(process.env.ALLGEMEIN_ID) ||
-          (await guild.channels.fetch(process.env.ALLGEMEIN_ID));
-        const toBeDeleted = [];
-        if (activeItems.length > 0) {
-          for (const activeItem of activeItems) {
-            if (activeItem.endTime < new Date()) {
-              toBeDeleted.push(activeItem._id);
-              if (activeItem.itemType == 'Bombe') {
-                const amount = getRandom(20000, 40000);
-                const usedOnObj =
-                  (await guild.members.cache.get(activeItem.usedOn)) ||
-                  (await guild.members.fetch(activeItem.usedOn));
-                if (usedOnObj) {
-                  await removeMoney(usedOnObj, amount);
-                  const gifUrl = await getGifById('mZryFzM65MtpJ5fOMj');
-                  if (!gifUrl.includes('http')) {
-                    console.log('ERROR Bombe gif');
-                    return;
+        if (
+          serverConfCache.get(guild.id) &&
+          serverConfCache.get(guild.id).get('SPIELE_ID') &&
+          serverConfCache.get(guild.id).get('ALLGEMEIN_ID')
+        ) {
+          const activeItems = await ActiveItems.find({});
+          const targetChannel =
+            guild.channels.cache.get(
+              serverConfCache.get(guild.id).get('SPIELE_ID'),
+            ) ||
+            (await guild.channels.fetch(
+              serverConfCache.get(guild.id).get('SPIELE_ID'),
+            ));
+          const mainChannel =
+            guild.channels.cache.get(
+              serverConfCache.get(guild.id).get('ALLGEMEIN_ID'),
+            ) ||
+            (await guild.channels.fetch(
+              serverConfCache.get(guild.id).get('ALLGEMEIN_ID'),
+            ));
+          const toBeDeleted = [];
+          if (activeItems && activeItems.length > 0) {
+            for (const activeItem of activeItems) {
+              if (activeItem.endTime < new Date()) {
+                toBeDeleted.push(activeItem._id);
+                if (activeItem.itemType == 'Bombe') {
+                  const amount = getRandom(20000, 40000);
+                  const usedOnObj =
+                    (await guild.members.cache.get(activeItem.usedOn)) ||
+                    (await guild.members.fetch(activeItem.usedOn));
+                  if (usedOnObj) {
+                    await removeMoney(usedOnObj, amount);
+                    const gifUrl = await getGifById('mZryFzM65MtpJ5fOMj');
+                    if (!gifUrl.includes('http')) {
+                      console.log('ERROR Bombe gif');
+                      return;
+                    }
+                    await targetChannel.send({
+                      content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
+                      files: [gifUrl],
+                    });
                   }
-                  await targetChannel.send({
-                    content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
-                    files: [gifUrl],
-                  });
-                }
-              } else if (activeItem.itemType == 'Doppelte XP') {
-                const xpMultiplier = await Config.findOne({
-                  key: 'xpMultiplier',
-                  guildId: guild.id,
-                });
-                if (!xpMultiplier) {
-                  await Config.create({
-                    name: 'key',
-                    value: 1,
+                } else if (activeItem.itemType == 'Doppelte XP') {
+                  const xpMultiplier = await Config.findOne({
+                    key: 'xpMultiplier',
                     guildId: guild.id,
                   });
-                } else {
-                  xpMultiplier.value = '1';
-                  await xpMultiplier.save();
-                }
-                await mainChannel.send('Die Doppelte XP sind nun abgelaufen.');
-              } else if (activeItem.itemType == 'Schuldschein') {
-                targetChannel.send(
-                  `<@${activeItem.user}> dein Schuldschein bei <@${activeItem.usedOn}> ist nun abgelaufen.`,
-                );
-              } else if (activeItem.itemType == 'Oberster Platz') {
-                const targetUserObj = await guild.members.fetch(
-                  activeItem.user,
-                );
-                const role =
-                  guild.roles.cache.get('1387041004179296439') ||
-                  (await guild.roles.fetch('1387041004179296439'));
-                if (!role || !targetUserObj) {
-                  console.log(
-                    'ERROR Job Oberster Platz: Cant find User or Role',
+                  if (!xpMultiplier) {
+                    await Config.create({
+                      name: 'key',
+                      value: 1,
+                      guildId: guild.id,
+                    });
+                  } else {
+                    xpMultiplier.value = '1';
+                    await xpMultiplier.save();
+                  }
+                  await mainChannel.send(
+                    'Die Doppelte XP sind nun abgelaufen.',
                   );
-                } else {
-                  await targetUserObj.roles.remove(role);
-                }
-              }
-            } else if (activeItem.itemType == 'Schuldschein') {
-              if (activeItem.extras != new Date().toLocaleDateString()) {
-                activeItem.extras = new Date().toLocaleDateString();
-                activeItem.save();
-                const userObj =
-                  (await guild.members.cache.get(activeItem.user)) ||
-                  (await guild.members.fetch(activeItem.user));
-                const usedOnObj =
-                  (await guild.members.cache.get(activeItem.usedOn)) ||
-                  (await guild.members.fetch(activeItem.usedOn));
-                if (userObj && usedOnObj) {
-                  await removeMoney(usedOnObj, 1000);
-                  await giveMoney(userObj, 1000);
+                } else if (activeItem.itemType == 'Schuldschein') {
                   await targetChannel.send(
-                    `Von <@${activeItem.usedOn}> wurden 1000 Blattläuse Schulden an <@${activeItem.user}> übergeben.`,
+                    `<@${activeItem.user}> dein Schuldschein bei <@${activeItem.usedOn}> ist nun abgelaufen.`,
                   );
+                } else if (activeItem.itemType == 'Oberster Platz') {
+                  const targetUserObj = await guild.members.fetch(
+                    activeItem.user,
+                  );
+                  const role =
+                    guild.roles.cache.get('1387041004179296439') ||
+                    (await guild.roles.fetch('1387041004179296439'));
+                  if (!role || !targetUserObj) {
+                    console.log(
+                      'ERROR Job Oberster Platz: Cant find User or Role',
+                    );
+                  } else {
+                    await targetUserObj.roles.remove(role);
+                  }
+                }
+              } else if (activeItem.itemType == 'Schuldschein') {
+                if (activeItem.extras != new Date().toLocaleDateString()) {
+                  activeItem.extras = new Date().toLocaleDateString();
+                  await activeItem.save();
+                  const userObj =
+                    (await guild.members.cache.get(activeItem.user)) ||
+                    (await guild.members.fetch(activeItem.user));
+                  const usedOnObj =
+                    (await guild.members.cache.get(activeItem.usedOn)) ||
+                    (await guild.members.fetch(activeItem.usedOn));
+                  if (userObj && usedOnObj) {
+                    await removeMoney(usedOnObj, 1000);
+                    await giveMoney(userObj, 1000);
+                    await targetChannel.send(
+                      `Von <@${activeItem.usedOn}> wurden 1000 Blattläuse Schulden an <@${activeItem.user}> übergeben.`,
+                    );
+                  }
                 }
               }
             }
-          }
-          if (toBeDeleted.length > 0) {
-            await ActiveItems.deleteMany({ _id: { $in: toBeDeleted } });
+            if (toBeDeleted.length > 0) {
+              await ActiveItems.deleteMany({ _id: { $in: toBeDeleted } });
+            }
           }
         }
       } catch (error) {

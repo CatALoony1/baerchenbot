@@ -1,5 +1,5 @@
 const Discord = require('discord.js');
-require('dotenv').config();
+const { serverConfCache } = require('../utils/data/cache');
 const cron = require('node-cron');
 const Level = require('../models/Level');
 const Config = require('../models/Config');
@@ -149,40 +149,48 @@ function startJob(client) {
             });
           }
         }
-
-        if (playerTagsOnServer.length != 0) {
-          const targetChannel = await client.channels.fetch(process.env.LOG_ID);
-          if (!targetChannel) {
-            console.log('Fehler, Logchannel gibts nicht');
-            return;
+        if (
+          serverConfCache.get(guildId) &&
+          serverConfCache.get(guildId).get('LOG_ID')
+        ) {
+          if (playerTagsOnServer.length != 0) {
+            const targetChannel = await client.channels.fetch(
+              serverConfCache.get(guildId).get('LOG_ID'),
+            );
+            if (!targetChannel) {
+              console.log('Fehler, Logchannel gibts nicht');
+              return;
+            }
+            const messageUserInactive = new Discord.EmbedBuilder();
+            messageUserInactive.setColor(0xff0000);
+            messageUserInactive.setTimestamp(Date.now());
+            messageUserInactive.setTitle(
+              `Folgende User haben seit 30 Tagen nichts geschrieben:`,
+            );
+            messageUserInactive.setDescription(
+              `${playerTagsOnServer.toString().replaceAll(',', '\n')}`,
+            );
+            await targetChannel.send({ embeds: [messageUserInactive] });
           }
-          const messageUserInactive = new Discord.EmbedBuilder();
-          messageUserInactive.setColor(0xff0000);
-          messageUserInactive.setTimestamp(Date.now());
-          messageUserInactive.setTitle(
-            `Folgende User haben seit 30 Tagen nichts geschrieben:`,
-          );
-          messageUserInactive.setDescription(
-            `${playerTagsOnServer.toString().replaceAll(',', '\n')}`,
-          );
-          await targetChannel.send({ embeds: [messageUserInactive] });
-        }
-        if (playerTagsLurk.size != 0) {
-          const targetChannel = await client.channels.fetch(process.env.LOG_ID);
-          if (!targetChannel) {
-            console.log('Fehler, Logchannel gibts nicht');
-            return;
+          if (playerTagsLurk.size != 0) {
+            const targetChannel = await client.channels.fetch(
+              serverConfCache.get(guildId).get('LOG_ID'),
+            );
+            if (!targetChannel) {
+              console.log('Fehler, Logchannel gibts nicht');
+              return;
+            }
+            const messageUserInactiveLurk = new Discord.EmbedBuilder();
+            messageUserInactiveLurk.setColor(0xff0000);
+            messageUserInactiveLurk.setTimestamp(Date.now());
+            messageUserInactiveLurk.setTitle(
+              `Seit 15 Tagen auf dem Server, nur am lurken`,
+            );
+            messageUserInactiveLurk.setDescription(
+              `${playerLurkArray.toString().replaceAll(',', '\n')}`,
+            );
+            await targetChannel.send({ embeds: [messageUserInactiveLurk] });
           }
-          const messageUserInactiveLurk = new Discord.EmbedBuilder();
-          messageUserInactiveLurk.setColor(0xff0000);
-          messageUserInactiveLurk.setTimestamp(Date.now());
-          messageUserInactiveLurk.setTitle(
-            `Seit 15 Tagen auf dem Server, nur am lurken`,
-          );
-          messageUserInactiveLurk.setDescription(
-            `${playerLurkArray.toString().replaceAll(',', '\n')}`,
-          );
-          await targetChannel.send({ embeds: [messageUserInactiveLurk] });
         }
       } catch (err) {
         console.log(err);

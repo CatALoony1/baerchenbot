@@ -11,7 +11,7 @@ async function aiMention(message) {
   console.log(`KI Mentioned`);
   try {
     const prompt = message.content.replaceAll(
-      `<@&${process.env.KI_BOT}>`,
+      `<@&${TODOJG_KI_MENTION}>`,
       'Sir Blattzelot',
     );
     let sysInstruction = `

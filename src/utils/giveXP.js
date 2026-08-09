@@ -2,7 +2,7 @@ const Level = require('../models/Level');
 const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const giveMoney = require('../utils/giveMoney');
-require('dotenv').config();
+const { serverConfCache } = require('./data/cache');
 const Config = require('../models/Config');
 
 const roles = new Map([
@@ -85,24 +85,38 @@ async function giveXP(member, xpToGive, channel, message) {
               `Role ${role.name} was given to user ${member.user.tag}`,
             );
             if (level.level === 1) {
-              let memberRole = member.guild.roles.cache.get(
-                process.env.MITGLIED_ROLE_ID,
-              );
-              await member.guild.members.cache
-                .get(member.user.id)
-                .roles.add(memberRole);
-              console.log(`Role Mitglied was given to user ${member.user.tag}`);
-              let newMemberRole = member.guild.roles.cache.get(
-                process.env.NEWMEMBER_ROLE_ID,
-              );
-              await member.guild.members.cache
-                .get(member.user.id)
-                .roles.remove(newMemberRole);
-              console.log(
-                `Role NewMember was removed from user ${member.user.tag}`,
-              );
+              if (
+                serverConfCache.get(member.guild.id) &&
+                serverConfCache
+                  .get(member.guild.id)
+                  .get('MITGLIED_ROLE_ID') &&
+                serverConfCache.get(member.guild.id).get('NEWMEMBER_ROLE_ID')
+              ) {
+                let memberRole = member.guild.roles.cache.get(
+                  serverConfCache
+                    .get(member.guild.id)
+                    .get('MITGLIED_ROLE_ID'),
+                );
+                await member.guild.members.cache
+                  .get(member.user.id)
+                  .roles.add(memberRole);
+                console.log(
+                  `Role Mitglied was given to user ${member.user.tag}`,
+                );
+                let newMemberRole = member.guild.roles.cache.get(
+                  serverConfCache
+                    .get(member.guild.id)
+                    .get('NEWMEMBER_ROLE_ID'),
+                );
+                await member.guild.members.cache
+                  .get(member.user.id)
+                  .roles.remove(newMemberRole);
+                console.log(
+                  `Role NewMember was removed from user ${member.user.tag}`,
+                );
+              }
+              money += 10000;
             }
-            money += 10000;
           } else {
             money += 2000;
           }

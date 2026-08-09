@@ -34,9 +34,7 @@ function startJob(client) {
               .setColor(0x0033cc)
               .setTitle('Es ist Zeit zu bumpen!')
               .setImage(gifUrl);
-            const targetChannel = await client.channels.fetch(
-              process.env.BUMP_ID,
-            );
+            const targetChannel = await client.channels.fetch('TODOJG_BUMP');
             const message = await targetChannel.send({
               content: `${role}`,
               embeds: [bump],

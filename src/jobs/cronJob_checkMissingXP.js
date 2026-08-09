@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 const Level = require('../models/Level');
-require('dotenv').config();
+const { serverConfCache } = require('../utils/data/cache');
 
 let missingXpJob = null;
 
@@ -39,10 +39,17 @@ function startJob(client) {
           }
         });
         if (missingXPUsers.length > 0) {
-          const targetChannel = await client.channels.fetch(process.env.LOG_ID);
-          targetChannel.send(
-            `Missing XP for users: ${missingXPUsers.join(', ')}`,
-          );
+          if (
+            serverConfCache.get(guildId) &&
+            serverConfCache.get(guildId).get('LOG_ID')
+          ) {
+            const targetChannel = await client.channels.fetch(
+              serverConfCache.get(guildId).get('LOG_ID'),
+            );
+            await targetChannel.send(
+              `Missing XP for users: ${missingXPUsers.join(', ')}`,
+            );
+          }
         }
       } catch (error) {
         console.log(error);
