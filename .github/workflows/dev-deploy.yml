@@ -32,18 +32,18 @@ jobs:
             git reset --hard origin/develop
 
             # 3. .env Datei mit dem DEV_TOKEN generieren
-cat << 'EOF' > .env
-TOKEN=${{ secrets.DEV_TOKEN }}
-MONGODB_URI=${{ secrets.MONGODB_URI }}
-AI_API=${{ secrets.AI_API }}
-CAT_API=${{ secrets.CAT_API }}
-DOG_API=${{ secrets.DOG_API }}
-GIPHY_API=${{ secrets.GIPHY_API }}
-HERO_API=${{ secrets.HERO_API }}
-SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}
-CLIENT_ID=${{ secrets.DEV_CLIENT_ID }}
-ADMIN_ID=${{ secrets.ADMIN_ID }}
-EOF
+            cat << 'EOF' > .env
+            TOKEN=${{ secrets.DEV_TOKEN }}
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
+            AI_API=${{ secrets.AI_API }}
+            CAT_API=${{ secrets.CAT_API }}
+            DOG_API=${{ secrets.DOG_API }}
+            GIPHY_API=${{ secrets.GIPHY_API }}
+            HERO_API=${{ secrets.HERO_API }}
+            SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}
+            CLIENT_ID=${{ secrets.DEV_CLIENT_ID }}
+            ADMIN_ID=${{ secrets.ADMIN_ID }}
+            EOF
 
             # 4. Docker-Image mit einem eigenen Dev-Tag bauen
             docker build -t baerchenbot-dev-image .
