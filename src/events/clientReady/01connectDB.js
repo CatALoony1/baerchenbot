@@ -18,6 +18,7 @@ module.exports = {
       console.log('Connected to DB.');
     } catch (err) {
       console.log(`ERROR: ${err}`);
+      process.exit(1);
     }
   },
 };
