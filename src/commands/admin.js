@@ -23,7 +23,7 @@ module.exports = {
             .setMinValue(1),
         ),
     )
-    .subcommand((subcommand) =>
+    .addSubcommand((subcommand) =>
       subcommand
         .setName('printselectmenu')
         .setDescription('Erzeugt ein Rollenselect.')
