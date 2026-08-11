@@ -36,18 +36,18 @@ jobs:
             # 3. .env Datei sauber aus den GitHub Secrets schreiben
             # 'EOF' in Anführungszeichen verhindert jegliches SSH/Shell-Parsing von Sonderzeichen
             cat << 'EOF' > .env
-TOKEN=${{ secrets.DEV_TOKEN }}
-MONGODB_URI=${{ secrets.MONGODB_DEV }}
-WEBSECRET=${{ secrets.WEBSECRET }}
-AI_API=${{ secrets.AI_API }}
-CAT_API=${{ secrets.CAT_API }}
-DOG_API=${{ secrets.DOG_API }}
-GIPHY_API=${{ secrets.GIPHY_API }}
-HERO_API=${{ secrets.HERO_API }}
-SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}
-CLIENT_ID=${{ secrets.DEV_CLIENT_ID }}
-ADMIN_ID=${{ secrets.ADMIN_ID }}
-EOF
+            TOKEN=${{ secrets.DEV_TOKEN }}
+            MONGODB_URI=${{ secrets.MONGODB_DEV }}
+            WEBSECRET=${{ secrets.WEBSECRET }}
+            AI_API=${{ secrets.AI_API }}
+            CAT_API=${{ secrets.CAT_API }}
+            DOG_API=${{ secrets.DOG_API }}
+            GIPHY_API=${{ secrets.GIPHY_API }}
+            HERO_API=${{ secrets.HERO_API }}
+            SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}
+            CLIENT_ID=${{ secrets.DEV_CLIENT_ID }}
+            ADMIN_ID=${{ secrets.ADMIN_ID }}
+            EOF
 
             # 4. Docker-Image bauen
             docker build -t baerchenbot-dev-image .
