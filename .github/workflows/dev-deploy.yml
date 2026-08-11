@@ -37,7 +37,7 @@ jobs:
             # 3. .env Datei sauber aus den übergebenen SSH-Envs schreiben
             cat << EOF > .env
             TOKEN=$DEV_TOKEN
-            MONGODB_URI=$MONGODB_DEV
+            MONGODB_URI=$MONGODB_URI
             AI_API=$AI_API
             CAT_API=$CAT_API
             DOG_API=$DOG_API
@@ -64,7 +64,7 @@ jobs:
               baerchenbot-dev-image
         env:
           DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
-          MONGODB_URI: ${{ secrets.MONGODB_DEV }}
+          MONGODB_URI: ${{ secrets.MONGODB_URI }}
           AI_API: ${{ secrets.AI_API }}
           CAT_API: ${{ secrets.CAT_API }}
           DOG_API: ${{ secrets.DOG_API }}
