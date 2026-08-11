@@ -19,7 +19,6 @@ jobs:
           username: devdeploy
           key: ${{ secrets.DEV_SSH_PRIVATE_KEY }}
           port: 22
-          envs: DEV_TOKEN,MONGODB_URI,AI_API,CAT_API,DOG_API,GIPHY_API,HERO_API,SPOONACULAR_API,DEV_CLIENT_ID,ADMIN_ID
           script: |
             TARGET_DIR="$HOME/baerchenbot-dev"
 
@@ -34,19 +33,21 @@ jobs:
             git fetch origin develop
             git reset --hard origin/develop
 
-            # 3. .env Datei sauber aus den übergebenen SSH-Envs schreiben
-            cat << EOF > .env
-            TOKEN=$DEV_TOKEN
-            MONGODB_URI=$MONGODB_URI
-            AI_API=$AI_API
-            CAT_API=$CAT_API
-            DOG_API=$DOG_API
-            GIPHY_API=$GIPHY_API
-            HERO_API=$HERO_API
-            SPOONACULAR_API=$SPOONACULAR_API
-            CLIENT_ID=$DEV_CLIENT_ID
-            ADMIN_ID=$ADMIN_ID
-            EOF
+            # 3. .env Datei sauber aus den GitHub Secrets schreiben
+            # 'EOF' in Anführungszeichen verhindert jegliches SSH/Shell-Parsing von Sonderzeichen
+            cat << 'EOF' > .env
+TOKEN=${{ secrets.DEV_TOKEN }}
+MONGODB_URI=${{ secrets.MONGODB_DEV }}
+WEBSECRET=${{ secrets.WEBSECRET }}
+AI_API=${{ secrets.AI_API }}
+CAT_API=${{ secrets.CAT_API }}
+DOG_API=${{ secrets.DOG_API }}
+GIPHY_API=${{ secrets.GIPHY_API }}
+HERO_API=${{ secrets.HERO_API }}
+SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}
+CLIENT_ID=${{ secrets.DEV_CLIENT_ID }}
+ADMIN_ID=${{ secrets.ADMIN_ID }}
+EOF
 
             # 4. Docker-Image bauen
             docker build -t baerchenbot-dev-image .
@@ -62,14 +63,3 @@ jobs:
               --restart unless-stopped \
               --env-file .env \
               baerchenbot-dev-image
-        env:
-          DEV_TOKEN: ${{ secrets.DEV_TOKEN }}
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          AI_API: ${{ secrets.AI_API }}
-          CAT_API: ${{ secrets.CAT_API }}
-          DOG_API: ${{ secrets.DOG_API }}
-          GIPHY_API: ${{ secrets.GIPHY_API }}
-          HERO_API: ${{ secrets.HERO_API }}
-          SPOONACULAR_API: ${{ secrets.SPOONACULAR_API }}
-          DEV_CLIENT_ID: ${{ secrets.DEV_CLIENT_ID }}
-          ADMIN_ID: ${{ secrets.ADMIN_ID }}
