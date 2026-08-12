@@ -26,6 +26,9 @@ router.get('/', async (req, res) => {
 
 router.post('/delete', async (req, res) => {
   const { userId } = req.body;
+  console.log(
+    `Deleting user with ID: ${userId} - executed by session user: ${req.session.userName}`,
+  );
   await WebUser.findByIdAndDelete(userId);
   return res.redirect('/user-management');
 });
@@ -43,9 +46,15 @@ router.post('/create', async (req, res) => {
         initialPWD: true,
       });
       await newUser.save();
+      console.log(
+        `User created: ${name} - executed by session user: ${req.session.userName}`,
+      );
       return res.redirect('/user-management');
     } else {
       const allUsers = await WebUser.find({}).select('-password -__v').lean();
+      console.log(
+        `Failed to create user: ${name} - executed by session user: ${req.session.userName}`,
+      );
       return res.render('user-management', {
         allUsers: allUsers,
         error: 'Der Nutzername ist bereits vergeben!',

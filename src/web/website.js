@@ -56,6 +56,7 @@ function startWebsite(client) {
     const submittedName = req.body.user;
     const user = await WebUser.findOne({ user: submittedName });
     if (user && (await bcrypt.compare(submittedPassword, user.password))) {
+      console.log(`User ${submittedName} logged in.`);
       req.session.userId = user._id;
       req.session.userName = user.user;
       req.session.guildIds = user.guildIds;
@@ -65,6 +66,7 @@ function startWebsite(client) {
       }
       res.redirect('/');
     } else {
+      console.log(`User ${submittedName} failed to log in.`);
       res.render('login', { error: 'Falsches Passwort!' });
       const clientIp = req.ip || req.connection.remoteAddress;
       const logMessage = `${new Date().toISOString()} FAILED_LOGIN IP=${clientIp} user=${submittedName}\n`;
@@ -74,6 +76,7 @@ function startWebsite(client) {
     }
   });
   app.get('/logout', (req, res) => {
+    console.log(`User ${req.session.userName} logged out.`);
     req.session.destroy();
     res.redirect('/login');
   });

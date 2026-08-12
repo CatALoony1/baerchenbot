@@ -25,6 +25,7 @@ router.get('/', async (req, res) => {
     if (selectedServerId && selectedTable && !filter.includes(selectedTable)) {
       const DbModel = mongoose.models[selectedTable];
       if (!DbModel) {
+        console.log(`Table ${selectedTable} does not exist.`);
         return res.status(404).json({ fehler: 'Tabelle existirt nicht.' });
       }
       const query = {};
@@ -32,7 +33,11 @@ router.get('/', async (req, res) => {
         query.guildId = selectedServerId;
       }
       alleDaten = await DbModel.find(query).select('-_id -__v').lean();
+      console.log(
+        `Viewing data from table ${selectedTable} for guild ${selectedServerId}.`,
+      );
     } else if (filter.includes(selectedTable)) {
+      console.log(`Table ${selectedTable} is filtered out.`);
       error = 'Diese Tabelle darf nicht angezeigt werden!';
     }
     res.render('read-database', {

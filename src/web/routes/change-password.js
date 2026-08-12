@@ -26,12 +26,16 @@ router.post('/change', async (req, res) => {
             req.session.initialPWD = false;
           }
           user.save();
+          console.log(`User ${user.user} changed password.`);
           res.render('change-password', {
             error: null,
             message: 'Passwort erfolgreich geändert!',
             initial: req.session.initialPWD,
           });
         } else {
+          console.log(
+            `User ${user.user} failed to change password, incorrect old password.`,
+          );
           res.render('change-password', {
             error: 'Falsches altes Passwort!',
             message: null,

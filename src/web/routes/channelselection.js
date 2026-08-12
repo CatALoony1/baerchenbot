@@ -160,6 +160,9 @@ router.post('/change-channel-:chosenobj', async (req, res) => {
       });
       await newSrvCfg.save();
     }
+    console.log(
+      `ServerConfig updated for guild ${guildId}: ${searchString} set to ${channelId}`,
+    );
     await refreshServerConfCache(guildId);
     return res.redirect(targetUrl);
   } catch (error) {

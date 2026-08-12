@@ -103,6 +103,9 @@ router.post('/change-member-role', async (req, res) => {
       });
       await newSrvConf.save();
     }
+    console.log(
+      `ServerConfig updated for guild ${guildId}: ${variableName} set to ${roleId}`,
+    );
     await refreshServerConfCache(guildId);
     return res.redirect(targetUrl);
   } catch (error) {
@@ -122,6 +125,7 @@ router.post('/change-member-role', async (req, res) => {
 router.post('/message', async (req, res) => {
   try {
     const { giphyId, text, header, guildId, messageType } = req.body;
+    console.log(`Adding message for guild ${guildId}: ${messageType}`);
     await addToDb(giphyId, text, header, guildId, messageType);
     const targetUrl = guildId
       ? `/serverconfig?serverId=${guildId}`

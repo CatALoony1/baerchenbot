@@ -68,6 +68,7 @@ router.post('/away', async (req, res) => {
     });
     await newUser.save();
   }
+  console.log(`User ${username} marked as away for guild ${serverId}.`);
   const targetUrl = serverId
     ? `/user-activity?serverId=${serverId}`
     : '/user-activity';
@@ -92,6 +93,7 @@ router.post('/back', async (req, res) => {
     awayUsers.value = awayValue;
     await awayUsers.save();
   }
+  console.log(`User ${username} marked as back for guild ${serverId}.`);
   const targetUrl = serverId
     ? `/user-activity?serverId=${serverId}`
     : '/user-activity';

@@ -51,6 +51,7 @@ router.post('/stop', (req, res) => {
 router.post('/execute', async (req, res) => {
   const client = req.discordClient;
   const { jobname } = req.body;
+  console.log(`Executing job: ${jobname}`);
   await jobMap[jobname].jobFunction(client);
   res.redirect('/jobs');
 });
@@ -61,12 +62,14 @@ router.post('/all', async (req, res) => {
   if (action === 'start') {
     for (const [jobname, job] of Object.entries(jobMap)) {
       if (jobname !== 'checkNewAnimals') {
+        console.log(`Starting job: ${jobname}`);
         job.startJob(client);
       }
     }
   } else {
     for (const [jobname, job] of Object.entries(jobMap)) {
       if (jobname !== 'checkNewAnimals') {
+        console.log(`Stopping job: ${jobname}`);
         job.stopJob(client);
       }
     }

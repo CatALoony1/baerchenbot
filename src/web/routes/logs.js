@@ -30,6 +30,7 @@ router.get('/', (req, res) => {
       logData = 'Fehler beim Lesen der Log-Datei.';
     }
   }
+  console.log(`Viewing log file: ${selectedFile}`);
   res.render('logs', {
     logFiles: logFiles,
     selectedFile: selectedFile,
