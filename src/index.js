@@ -28,7 +28,7 @@ const client = new Discord.Client({
 client.commands = new Discord.Collection();
 
 (async () => {
-  //await logToFile.run(client);
+  await logToFile.run(client);
   process.on('uncaughtException', (err) => {
     console.log(`FATAL UNCAUGHT EXCEPTION:`, err.stack || err);
     setTimeout(() => process.exit(1), 500);
