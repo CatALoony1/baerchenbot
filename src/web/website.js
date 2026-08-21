@@ -7,6 +7,7 @@ const readDatabaseRouter = require('./routes/read-database');
 const userManagement = require('./routes/user-management');
 const changePassword = require('./routes/change-password');
 const userActivity = require('./routes/user-activity');
+const games = require('./routes/games');
 const logs = require('./routes/logs');
 const jobs = require('./routes/jobs');
 const channelselection = require('./routes/channelselection');
@@ -95,6 +96,7 @@ function startWebsite(client) {
   app.use('/logs', requireLogin, logs);
   app.use('/channelselection', requireLogin, channelselection);
   app.use('/serverconfig', requireLogin, serverconfig);
+  app.use('/games', requireLogin, games);
 
   app.get(/(.*)/, (req, res) => {
     res.redirect('/');

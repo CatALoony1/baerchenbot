@@ -117,6 +117,7 @@ router.post('/change-member-role', async (req, res) => {
       defaultRole: '',
       uses: idUses,
       error: error.message,
+      giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
     });
   }
@@ -140,6 +141,7 @@ router.post('/message', async (req, res) => {
       defaultRole: '',
       uses: idUses,
       error: error.message,
+      giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
     });
   }

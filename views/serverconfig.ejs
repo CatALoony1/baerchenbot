@@ -3,34 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <title>Datenbank - Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
     <script src="https://unpkg.com/@giphy/js-fetch-api/dist/giphy-js-fetch-api.bundle.js"></script>
   <script src="https://unpkg.com/@giphy/js-components/dist/giphy-js-components.bundle.js"></script>
-  
-  <style>
-.giphy-modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 450px;
-    max-width: 90vw;
-    height: 550px;
-    background: #fff; /* ODER #121212, damit man den Hintergrund sieht */
-    border: 1px solid #ccc;
-    z-index: 1000;
-    flex-direction: column;
-  }
-
-  .giphy-modal.active {
-    display: flex;
-  }
-
-  #giphyGrid {
-    flex: 1;
-    overflow-y: auto;
-  }
-  </style>
   </head>
   <body>
     <h1>Server & Datenbank</h1>
@@ -63,7 +38,7 @@
 
     <% if (selectedServerId && alleRollen.length > 0 ) { %>
     <h2>Gefundene Einträge:</h2>
-    <table border="1" cellpadding="5" style="border-collapse: collapse">
+    <table border="1" cellpadding="5">
       <thead>
         <tr>
          <th>Nutzung</th>
@@ -79,11 +54,19 @@
             <form action="/serverconfig/change-member-role" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
               <input type="hidden" name="variableName" value="MITGLIED_ROLE_ID">
+              
                 <select name="newMemberRole" onchange="this.form.submit()">
-                  <% alleRollen.forEach(function(role) { %>
-                <option value="<%= role.id %>" <%= role.id === defaultRole[0] ? 'selected' : '' %>>
-                    <%= role.name %>
-                </option>
+                  <% const hasSelectedValue = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[0]; %>
+    
+    <option value="" disabled <%= !hasSelectedValue ? 'selected' : '' %> hidden>
+      -- Bitte Rolle auswählen --
+    </option>
+
+    <% alleRollen.forEach(function(role) { %>
+      <option value="<%= role.id %>" <%= hasSelectedValue && role.id === defaultRole[0] ? 'selected' : '' %>>
+        <%= role.name %>
+      </option>
+
             <% }); %>
                 </select>
             </form>
@@ -96,12 +79,19 @@
             <form action="/serverconfig/change-member-role" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
               <input type="hidden" name="variableName" value="NEWMEMBER_ROLE_ID">
+              
                 <select name="newMemberRole" onchange="this.form.submit()">
-                  <% alleRollen.forEach(function(role) { %>
-                <option value="<%= role.id %>" <%= role.id === defaultRole[1] ? 'selected' : '' %>>
-                    <%= role.name %>
-                </option>
-            <% }); %>
+                  <% const hasSelectedValue = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[1]; %>
+    
+    <option value="" disabled <%= !hasSelectedValue ? 'selected' : '' %> hidden>
+      -- Bitte Rolle auswählen --
+    </option>
+
+    <% alleRollen.forEach(function(role) { %>
+      <option value="<%= role.id %>" <%= hasSelectedValue && role.id === defaultRole[1] ? 'selected' : '' %>>
+        <%= role.name %>
+      </option>
+    <% }); %>
                 </select>
             </form>
           </td>
@@ -114,11 +104,17 @@
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
               <input type="hidden" name="variableName" value="MIDMEMBER_ROLE_ID">
                 <select name="newMemberRole" onchange="this.form.submit()">
-                  <% alleRollen.forEach(function(role) { %>
-                <option value="<%= role.id %>" <%= role.id === defaultRole[2] ? 'selected' : '' %>>
-                    <%= role.name %>
-                </option>
-            <% }); %>
+                  <% const hasSelectedValue = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[2]; %>
+    
+    <option value="" disabled <%= !hasSelectedValue ? 'selected' : '' %> hidden>
+      -- Bitte Rolle auswählen --
+    </option>
+
+    <% alleRollen.forEach(function(role) { %>
+      <option value="<%= role.id %>" <%= hasSelectedValue && role.id === defaultRole[2] ? 'selected' : '' %>>
+        <%= role.name %>
+      </option>
+    <% }); %>
                 </select>
             </form>
           </td>
@@ -337,7 +333,7 @@
       if (!data || data.length === 0) {
         hasMore = false;
         if (currentOffset === 0) {
-          document.getElementById('giphyGrid').innerHTML = '<p style="color: white; padding: 10px;">Keine GIFs gefunden.</p>';
+          document.getElementById('giphyGrid').innerHTML = '<p class="no_gif_found">Keine GIFs gefunden.</p>';
         }
         return;
       }

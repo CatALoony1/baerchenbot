@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Nutzeraktivität</title>
+    <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
     <h1>Nutzeraktivität</h1>
@@ -32,7 +33,6 @@
     <table
       border="1"
       cellpadding="5"
-      style="border-collapse: collapse"
       id="sortableTable"
     >
       <thead>
@@ -55,7 +55,7 @@
           <td><%= user.lastMessage %></td>
           <% const awayList = away ? away.split(',').map(name => name.trim()) : []; %>
           <% if (awayList.includes(user.name)) { %>
-          <td><form action="/user-activity/back" method="POST" style="display: inline">
+          <td><form action="/user-activity/back" method="POST" class="user_activity_back_btn">
             <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
             <input type="hidden" name="username" value="<%= user.name %>" />
             <button type="submit">
@@ -63,7 +63,7 @@
             </button>
           </form></td>
           <% } else { %>
-          <td><form action="/user-activity/away" method="POST" style="display: inline">
+          <td><form action="/user-activity/away" method="POST" class="user_activity_away_btn">
             <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
             <input type="hidden" name="username" value="<%= user.name %>" />
             <button type="submit">

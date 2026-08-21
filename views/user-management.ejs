@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>User Management</title>
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <h1>User Management</h1>
@@ -14,7 +15,7 @@
     <% } %>
     <% if (allUsers && allUsers.length > 0) { %>
     <h2>Gefundene User:</h2>
-    <table border="1" cellpadding="5" style="border-collapse: collapse">
+    <table border="1" cellpadding="5">
       <thead>
         <tr>
           <th>ID</th>
@@ -33,11 +34,11 @@
             <form
               action="/user-management/delete"
               method="POST"
-              style="display: inline"
+              class="delete_user_form"
               onsubmit="return confirm('Wirklich löschen?');"
             >
               <input type="hidden" name="userId" value="<%= user._id %>" />
-              <button type="submit">Löschen</button>
+              <button type="submit" class="delete_user_btn">Löschen</button>
             </form>
             <% } %>
           </td>

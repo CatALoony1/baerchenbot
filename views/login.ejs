@@ -3,11 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <title>Login</title>
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <h1>Bitte anmelden</h1>
     <% if (typeof error !== 'undefined') { %>
-    <p style="color: red">
+    <p class="p_vis_err_mess">
       <strong><%= error %></strong>
     </p>
     <% } %>

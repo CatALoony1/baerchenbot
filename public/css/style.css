@@ -1,0 +1,169 @@
+/*
+Hier folgt Element content
+*/
+
+table {
+  border-collapse: collapse;
+}
+
+/*
+Hier folgt Class content
+*/
+
+/* Texte */
+.p_error_message {
+  color: red;
+  font-weight: bold;
+  display: none;
+}
+
+.p_vis_err_mess {
+  color: red;
+  font-weight: bold;
+}
+
+.no_gif_found {
+  color: white;
+  padding: 10px;
+}
+
+.job_inaktiv {
+  color: red;
+}
+
+.job_aktiv {
+  color: green;
+}
+
+.job_no_run {
+  color: blue;
+}
+
+/* Knöpfe */
+.idx_btn {
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.user_activity_btn {
+  background-color: aliceblue;
+}
+
+.channelselection_btn {
+  background-color: antiquewhite;
+}
+
+.serverconfig_btn {
+  background-color: aqua;
+}
+
+.games_btn {
+  background-color: aquamarine;
+}
+
+.logout_btn {
+  background-color: azure;
+}
+
+.change_pwd_btn {
+  background-color: beige;
+}
+
+.user_management_btn {
+  background-color: bisque;
+}
+
+.read_database_btn {
+  background-color: black;
+}
+
+.jobs_btn {
+  background-color: blanchedalmond;
+}
+
+.logs_btn {
+  background-color: blue;
+}
+
+.start_btn {
+  background-color: green;
+  color: white;
+}
+
+.stop_btn {
+  background-color: red;
+  color: white;
+}
+
+.run_btn {
+  background-color: blue;
+  color: white;
+}
+
+.user_activity_away_btn {
+  display: inline;
+}
+
+.user_activity_away_btn {
+  display: inline;
+}
+
+.delete_user_btn {
+  background-color: red;
+}
+
+/* Form inhalte */
+.job_btn_form {
+  display: inline;
+}
+
+.job_btn_tbl_form {
+  display: inline;
+}
+
+.delete_user_form {
+  display: inline;
+}
+
+/* Ki generierter Kram, was weiß denn ich
+Für die Anzeige der Logdateien und das Giphy PopUp
+*/
+.log-container {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  font-family: 'Consolas', 'Courier New', monospace;
+  padding: 15px;
+  border-radius: 6px;
+  height: 500px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.toolbar {
+  margin-bottom: 15px;
+}
+.giphy-modal {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  max-width: 90vw;
+  height: 550px;
+  background: #fff;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  flex-direction: column;
+}
+
+.giphy-modal.active {
+  display: flex;
+}
+
+#giphyGrid {
+  flex: 1;
+  overflow-y: auto;
+}

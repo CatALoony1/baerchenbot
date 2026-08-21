@@ -4,7 +4,7 @@ const path = require('path');
 let renameLogFileJob = null;
 function deleteOldLogs() {
   const logDir = './logs';
-  const tenDaysInMs = 10 * 24 * 60 * 60 * 1000;
+  const tenDaysInMs = 3 * 24 * 60 * 60 * 1000; // 3 Tage
   const now = Date.now();
   if (!fs.existsSync(logDir)) return;
   fs.readdir(logDir, (err, files) => {

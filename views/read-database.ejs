@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Datenbank - Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
     <h1>Server & Datenbank</h1>
@@ -40,7 +41,7 @@
 
     <% if (selectedServerId && selectedTable && alleDaten.length > 0) { %>
     <h2>Gefundene Einträge:</h2>
-    <table border="1" cellpadding="5" style="border-collapse: collapse">
+    <table border="1" cellpadding="5">
       <thead>
         <tr>
           <% let alleKeys = new Set(); alleDaten.forEach(item => {
