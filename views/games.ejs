@@ -34,7 +34,7 @@
     <hr />
     <br />
 
-    <% if (selectedServerId && moneyConfMap.length > 0 ) { %>
+    <% if (selectedServerId) { %>
     <details>
       <summary>Währung konfigurieren</summary>
 <form action="/serverconfig/money" method="POST">
@@ -132,8 +132,6 @@
   <button type="submit">Speichern</button>
 </form>
 </details>
-<% } else if (selectedServerId) { %>
-    <p>Irgendwas passt hier nicht.</p>
     <% } %>
 
 <br /><br />
