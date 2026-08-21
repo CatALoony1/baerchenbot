@@ -6,32 +6,6 @@
     <link rel="stylesheet" href="/css/style.css">
     <script src="https://unpkg.com/@giphy/js-fetch-api/dist/giphy-js-fetch-api.bundle.js"></script>
   <script src="https://unpkg.com/@giphy/js-components/dist/giphy-js-components.bundle.js"></script>
-  
-  <style>
-.giphy-modal {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 450px;
-    max-width: 90vw;
-    height: 550px;
-    background: #fff; /* ODER #121212, damit man den Hintergrund sieht */
-    border: 1px solid #ccc;
-    z-index: 1000;
-    flex-direction: column;
-  }
-
-  .giphy-modal.active {
-    display: flex;
-  }
-
-  #giphyGrid {
-    flex: 1;
-    overflow-y: auto;
-  }
-  </style>
   </head>
   <body>
     <h1>Server & Datenbank</h1>
@@ -64,7 +38,7 @@
 
     <% if (selectedServerId && alleRollen.length > 0 ) { %>
     <h2>Gefundene Einträge:</h2>
-    <table border="1" cellpadding="5" style="border-collapse: collapse">
+    <table border="1" cellpadding="5">
       <thead>
         <tr>
          <th>Nutzung</th>
@@ -359,7 +333,7 @@
       if (!data || data.length === 0) {
         hasMore = false;
         if (currentOffset === 0) {
-          document.getElementById('giphyGrid').innerHTML = '<p style="color: white; padding: 10px;">Keine GIFs gefunden.</p>';
+          document.getElementById('giphyGrid').innerHTML = '<p class="no_gif_found">Keine GIFs gefunden.</p>';
         }
         return;
       }

@@ -8,9 +8,7 @@
   <body>
     <h1>Willkommen im Control Panel!</h1>
     <% if (message) { %>
-    <p id="flash-message" style="color: red; font-weight: bold">
-      <%= message %>
-    </p>
+    <p id="flash-message" class="p_vis_err_mess"><%= message %></p>
 
     <script>
       setTimeout(function () {
@@ -22,119 +20,31 @@
     </script>
     <% } %>
     <br /><br />
-    <a
-      href="/user-activity"
-      style="
-        padding: 10px;
-        background-color: #007bff;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
+    <a href="/user-activity" class="idx_btn user_activity_btn"
       >Nutzeraktivität</a
     >
-    <a
-      href="/channelselection"
-      style="
-        padding: 10px;
-        background-color: #28a745;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
+    <a href="/channelselection" class="idx_btn channelselection_btn"
       >Kanäle auswählen</a
     >
-    <a
-      href="/serverconfig"
-      style="
-        padding: 10px;
-        background-color: #8bb194;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
+    <a href="/serverconfig" class="idx_btn serverconfig_btn"
       >Server konfigurieren</a
     >
-    <a
-      href="/games"
-      style="
-        padding: 10px;
-        background-color: #1433c0;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
-      >Spiele konfigurieren</a
-    >
-    <a
-      href="/logout"
-      style="
-        padding: 10px;
-        background-color: #d30909;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
-      >Logout</a
-    >
-    <a
-      href="/change-password"
-      style="
-        padding: 10px;
-        background-color: #09b5d3;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
+    <a href="/games" class="idx_btn games_btn">Spiele konfigurieren</a>
+    <a href="/logout" class="idx_btn logout_btn">Logout</a>
+    <a href="/change-password" class="idx_btn change_pwd_btn"
       >Passwort ändern</a
     >
     <% if (guildIds === 'all') { %>
     <br /><br />
     <p>Admin Bereich</p>
-    <a
-      href="/user-management"
-      style="
-        padding: 10px;
-        background-color: #bd6f16;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
+    <a href="/user-management" class="idx_btn user_management_btn"
       >User Management</a
     >
-    <a
-      href="/read-database"
-      style="
-        padding: 10px;
-        background-color: #a12597;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
+    <a href="/read-database" class="idx_btn read_database_btn"
       >Datenbank auslesen</a
     >
-    <a
-      href="/jobs"
-      style="
-        padding: 10px;
-        background-color: #c26abb;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
-      >Jobs steuern</a
-    >
-    <a
-      href="/logs"
-      style="
-        padding: 10px;
-        background-color: #99d8c8;
-        color: white;
-        text-decoration: none;
-        border-radius: 5px;
-      "
-      >Logs anschauen</a
-    >
+    <a href="/jobs" class="idx_btn jobs_btn">Jobs steuern</a>
+    <a href="/logs" class="idx_btn logs_btn">Logs anschauen</a>
     <% } %>
   </body>
 </html>

@@ -15,7 +15,7 @@
     <% } %>
     <% if (allUsers && allUsers.length > 0) { %>
     <h2>Gefundene User:</h2>
-    <table border="1" cellpadding="5" style="border-collapse: collapse">
+    <table border="1" cellpadding="5">
       <thead>
         <tr>
           <th>ID</th>
@@ -34,7 +34,7 @@
             <form
               action="/user-management/delete"
               method="POST"
-              style="display: inline"
+              class="delete_user_btn"
               onsubmit="return confirm('Wirklich löschen?');"
             >
               <input type="hidden" name="userId" value="<%= user._id %>" />
