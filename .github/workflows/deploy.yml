@@ -10,38 +10,44 @@ jobs:
 
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Deploy to Server via SSH
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SERVER_HOST }}
           username: deploybot
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            # 1. Repository klonen, falls es noch nicht existiert
-            if [ ! -d "~/baerchenbot" ]; then
-              git clone ${{ github.server_url }}/${{ github.repository }}.git ~/baerchenbot
+            TARGET_DIR="$HOME/baerchenbot-dev"
+
+            # 1. Repository klonen, falls noch nicht vorhanden
+            if [ ! -d "$TARGET_DIR" ]; then
+              git clone -b develop ${{ github.server_url }}/${{ github.repository }}.git "$TARGET_DIR"
             fi
 
-            cd ~/baerchenbot
+            cd "$TARGET_DIR"
 
             # 2. Neuesten Code erzwingen und lokale Änderungen verwerfen
             git fetch origin main
             git reset --hard origin/main
 
-            # 3. .env Datei frisch aus den GitHub Secrets generieren
-            echo "TOKEN=${{ secrets.TOKEN }}" > .env
-            echo "MONGODB_URI=${{ secrets.MONGODB_URI }}" >> .env
-            echo "AI_API=${{ secrets.AI_API }}" >> .env
-            echo "CAT_API=${{ secrets.CAT_API }}" >> .env
-            echo "DOG_API=${{ secrets.DOG_API }}" >> .env
-            echo "GIPHY_API=${{ secrets.GIPHY_API }}" >> .env
-            echo "HERO_API=${{ secrets.HERO_API }}" >> .env
-            echo "SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}" >> .env
-            echo "CLIENT_ID=${{ secrets.CLIENT_ID }}" >> .env
-            echo "ADMIN_ID=${{ secrets.ADMIN_ID }}" >> .env
+            # 3. .env Datei sauber aus den GitHub Secrets schreiben
+            # 'EOF' in Anführungszeichen verhindert jegliches SSH/Shell-Parsing von Sonderzeichen
+            cat << 'EOF' > .env
+            TOKEN=${{ secrets.TOKEN }}
+            MONGODB_URI=${{ secrets.MONGODB_URI }}
+            WEBSECRET=${{ secrets.WEBSECRET }}
+            AI_API=${{ secrets.AI_API }}
+            CAT_API=${{ secrets.CAT_API }}
+            DOG_API=${{ secrets.DOG_API }}
+            GIPHY_API=${{ secrets.GIPHY_API }}
+            HERO_API=${{ secrets.HERO_API }}
+            SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}
+            CLIENT_ID=${{ secrets.CLIENT_ID }}
+            ADMIN_ID=${{ secrets.ADMIN_ID }}
+            EOF
 
             # 4. Docker-Image neu bauen
             docker build -t baerchenbot-live .
