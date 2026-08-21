@@ -1,13 +1,8 @@
 const express = require('express');
 require('dotenv').config();
 const router = express.Router();
-const ServerConfig = require('../../models/ServerConfig');
-const idUses = require('../../utils/data/idUses');
 const Config = require('../../models/Config');
-const {
-  refreshServerConfCache,
-  refreshConfCache,
-} = require('../../utils/data/cache');
+const { refreshConfCache } = require('../../utils/data/cache');
 
 router.get('/', async (req, res) => {
   try {
