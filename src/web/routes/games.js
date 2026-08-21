@@ -194,19 +194,32 @@ router.post('/lotto', async (req, res) => {
 });
 
 async function addToDb(keyList, valList, guildId) {
+  const remainingKeys = [...keyList];
+  const remainingVals = [...valList];
+
   const cfg = await Config.find({
     guildId: guildId,
     key: { $regex: '^MONEY' },
   });
-  if (cfg) {
-    for (const conf of cfg) {
-      const index = keyList.indexOf(conf.key);
-      if (index !== -1) {
-        conf.value = valList[index];
-        await conf.save();
-        keyList.splice(index, 1);
-        valList.splice(index, 1);
-      }
+
+  for (const conf of cfg) {
+    const index = remainingKeys.indexOf(conf.key);
+    if (index !== -1) {
+      conf.value = remainingVals[index];
+      await conf.save();
+      remainingKeys.splice(index, 1);
+      remainingVals.splice(index, 1);
+    }
+  }
+
+  if (remainingKeys.length > 0) {
+    for (let i = 0; i < remainingKeys.length; i++) {
+      const newConf = new Config({
+        guildId: guildId,
+        key: remainingKeys[i],
+        value: remainingVals[i],
+      });
+      await newConf.save();
     }
   }
   await refreshConfCache(guildId);
