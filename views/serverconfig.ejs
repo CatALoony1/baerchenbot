@@ -81,14 +81,14 @@
               <input type="hidden" name="variableName" value="NEWMEMBER_ROLE_ID">
               
                 <select name="newMemberRole" onchange="this.form.submit()">
-                  <% const hasSelectedValue = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[1]; %>
+                  <% const hasSelectedValueNoTwo = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[1]; %>
     
-    <option value="" disabled <%= !hasSelectedValue ? 'selected' : '' %> hidden>
+    <option value="" disabled <%= !hasSelectedValueNoTwo ? 'selected' : '' %> hidden>
       -- Bitte Rolle auswählen --
     </option>
 
     <% alleRollen.forEach(function(role) { %>
-      <option value="<%= role.id %>" <%= hasSelectedValue && role.id === defaultRole[1] ? 'selected' : '' %>>
+      <option value="<%= role.id %>" <%= hasSelectedValueNoTwo && role.id === defaultRole[1] ? 'selected' : '' %>>
         <%= role.name %>
       </option>
     <% }); %>
@@ -100,18 +100,18 @@
           <td><%= uses.MIDMEMBER_ROLE_ID %></td>
           <td>MIDMEMBER_ROLE_ID</td>
           <td>
-            <form action="/serverconfig/change-mmember-role" method="POST">
+            <form action="/serverconfig/change-member-role" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
               <input type="hidden" name="variableName" value="MIDMEMBER_ROLE_ID">
                 <select name="newMemberRole" onchange="this.form.submit()">
-                  <% const hasSelectedValue = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[2]; %>
+                  <% const hasSelectedValueAnother = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[2]; %>
     
-    <option value="" disabled <%= !hasSelectedValue ? 'selected' : '' %> hidden>
+    <option value="" disabled <%= !hasSelectedValueAnother ? 'selected' : '' %> hidden>
       -- Bitte Rolle auswählen --
     </option>
 
     <% alleRollen.forEach(function(role) { %>
-      <option value="<%= role.id %>" <%= hasSelectedValue && role.id === defaultRole[2] ? 'selected' : '' %>>
+      <option value="<%= role.id %>" <%= hasSelectedValueAnother && role.id === defaultRole[2] ? 'selected' : '' %>>
         <%= role.name %>
       </option>
     <% }); %>
