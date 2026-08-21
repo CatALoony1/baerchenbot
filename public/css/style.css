@@ -111,7 +111,7 @@ Hier folgt Class content
 }
 
 .delete_user_btn {
-  display: inline;
+  background-color: red;
 }
 
 /* Form inhalte */
@@ -123,6 +123,13 @@ Hier folgt Class content
   display: inline;
 }
 
+.delete_user_form {
+  display: inline;
+}
+
+/* Ki generierter Kram, was weiß denn ich
+Für die Anzeige der Logdateien und das Giphy PopUp
+*/
 .log-container {
   background-color: #1e1e1e;
   color: #d4d4d4;

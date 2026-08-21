@@ -34,11 +34,11 @@
             <form
               action="/user-management/delete"
               method="POST"
-              class="delete_user_btn"
+              class="delete_user_form"
               onsubmit="return confirm('Wirklich löschen?');"
             >
               <input type="hidden" name="userId" value="<%= user._id %>" />
-              <button type="submit">Löschen</button>
+              <button type="submit" class="delete_user_btn">Löschen</button>
             </form>
             <% } %>
           </td>
