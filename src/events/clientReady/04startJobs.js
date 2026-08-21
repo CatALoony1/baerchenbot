@@ -14,7 +14,6 @@ const zinsenJob = require('../../jobs/cronJob_zinsen');
 const checkActiveItems = require('../../jobs/cronJob_checkActiveItems');
 const checkVoiceChannels = require('../../jobs/cronJob_checkVoicechannels');
 const Config = require('../../models/Config');
-s;
 
 async function checkVoice(client) {
   let isTwoMembers = false;
