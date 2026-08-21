@@ -37,7 +37,7 @@
     <% if (selectedServerId) { %>
     <details>
       <summary>Währung konfigurieren</summary>
-<form action="/serverconfig/money" method="POST">
+<form action="/games/money" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
   <h3>Währungsname:</h3>
   <input type="text" id="moneyName" name="moneyName" required value="<%= moneyConfMap.get('MONEY_NAME') || '' %>" />
@@ -57,7 +57,7 @@
 <hr>
 <details>
       <summary>Quiz konfigurieren</summary>
-<form action="/serverconfig/quiz" method="POST">
+<form action="/games/quiz" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
   <h3>Menge Währung pro eingereichter Quiz-Frage:</h3>
   <input type="number" id="quizAdd" name="quizAdd" min="0" required value="<%= Number(moneyConfMap.get('MONEY_QUIZ_ADD')) || 0 %>" />
@@ -74,7 +74,7 @@
 <hr>
 <details>
       <summary>Galgenmännchen konfigurieren</summary>
-<form action="/serverconfig/hangman" method="POST">
+<form action="/games/hangman" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
   <h3>Menge Währung pro gelöstem Galgenmännchen:</h3>
   <input type="number" id="hangmanSolve" name="hangmanSolve" min="0" required value="<%= Number(moneyConfMap.get('MONEY_HANGMAN_SOLVE')) || 0 %>" />
@@ -85,7 +85,7 @@
 <hr>
 <details>
       <summary>Glücksrad konfigurieren</summary>
-<form action="/serverconfig/rad" method="POST">
+<form action="/games/rad" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
   <h3>Höhe des Start-Pools:</h3>
   <input type="number" id="radPool" name="radPool" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_POOL')) || 0 %>" />
@@ -102,7 +102,7 @@
 <hr>
 <details>
       <summary>Lotto konfigurieren</summary>
-<form action="/serverconfig/lotto" method="POST">
+<form action="/games/lotto" method="POST">
   <input type="hidden" name="guildId" value="<%= selectedServerId %>">
   <h3>Höhe des Jackpots (Chance 1:140.000.000):</h3>
   <input type="number" id="lottoMax" name="lottoMax" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_MAX')) || 0 %>" />
