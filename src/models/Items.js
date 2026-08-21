@@ -20,6 +20,10 @@ const itemsSchema = new Schema({
     type: Boolean,
     default: true,
   },
+  guildIds: {
+    type: [String],
+    default: [],
+  },
 });
 
 module.exports = model('Items', itemsSchema);

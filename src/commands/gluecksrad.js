@@ -66,7 +66,7 @@ module.exports = {
           pool: 10000,
         });
       }
-      let gewinnchance = 30 + (gluecksrad.pool - 10000) / 5000;
+      let gewinnchance = 30 + (gluecksrad.pool - 10000) / 5000; //Todo pool - startpool / startpool/2
       if (gewinnchance > 75) {
         gewinnchance = 75;
       }
