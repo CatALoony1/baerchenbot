@@ -6,7 +6,7 @@ table {
   border-collapse: collapse;
 }
 body {
-  background-color:#1e1e1e
+  background-color:#FDFFDF
 }
 /*
 Hier folgt Class content
@@ -43,6 +43,7 @@ Hier folgt Class content
 
 /* Knöpfe */
 .idx_btn {
+  font-size: 20px;
   padding: 10px;
   color: #1e1e1e;
   text-decoration: none;
@@ -54,19 +55,19 @@ Hier folgt Class content
 }
 
 .channelselection_btn {
-  background-color: #EBB3A9;
+  background-color: #f7f1bb;
 }
 
 .serverconfig_btn {
-  background-color: #EEEBD0;
+  background-color: #f7f1bb;
 }
 
 .games_btn {
-  background-color: #fcddbc;
+  background-color: #ffdcb8;
 }
 
 .logout_btn {
-  background-color: #d9dbbc;
+  background-color: #d7d9b8;
 }
 
 .change_pwd_btn {
@@ -74,19 +75,19 @@ Hier folgt Class content
 }
 
 .user_management_btn {
-  background-color: bisque;
+  background-color: #EEF1BD;
 }
 
 .read_database_btn {
-  background-color: #fa8a8a;
+  background-color: #BBD686;
 }
 
 .jobs_btn {
-  background-color: blanchedalmond;
+  background-color: #C4A381;
 }
 
 .logs_btn {
-  background-color: blue;
+  background-color: #b17e65;
 }
 
 .start_btn {
