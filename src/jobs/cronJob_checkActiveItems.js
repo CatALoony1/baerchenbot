@@ -5,6 +5,7 @@ const removeMoney = require('../utils/removeMoney.js');
 const giveMoney = require('../utils/giveMoney.js');
 const getGifById = require('../utils/getGifById.js');
 const { serverConfCache } = require('../utils/data/cache');
+const { confCache } = require('../utils/data/cache');
 
 let checkActiveItemsJob = null;
 
@@ -55,7 +56,7 @@ function startJob(client) {
                       return;
                     }
                     await targetChannel.send({
-                      content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
+                      content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** ${confCache.get(guild.id).get('MONEY_NAME')} sind verpufft!`,
                       files: [gifUrl],
                     });
                   }
@@ -110,7 +111,7 @@ function startJob(client) {
                     await removeMoney(usedOnObj, 1000);
                     await giveMoney(userObj, 1000);
                     await targetChannel.send(
-                      `Von <@${activeItem.usedOn}> wurden 1000 Blattläuse Schulden an <@${activeItem.user}> übergeben.`,
+                      `Von <@${activeItem.usedOn}> wurden 1000 ${confCache.get(guild.id).get('MONEY_NAME')} Schulden an <@${activeItem.user}> übergeben.`,
                     );
                   }
                 }

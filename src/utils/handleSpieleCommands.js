@@ -15,6 +15,7 @@ require('../models/Tiere.js');
 const Lottozahlen = require('../models/Lottozahlen.js');
 const createAnimalsEmbeds = require('../utils/createAnimalsEmbeds.js');
 const createSpieleLeaderboardEmbeds = require('../utils/createSpieleLeaderboardEmbeds.js');
+const { confCache } = require('../utils/data/cache');
 
 async function handleShop(interaction) {
   const embed = await createShopEmbeds(0, interaction);
@@ -159,15 +160,15 @@ async function handleGamestats(interaction) {
   messageEdited.setTitle(`Deine Stats:`);
   messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
   messageEdited.addFields({
-    name: 'Aktuelle Blattläuse:',
+    name: `Aktuelle ${confCache.get(interaction.guild.id).get('MONEY_NAME')}:`,
     value: `${user.bankkonto.currentMoney}`,
   });
   messageEdited.addFields({
-    name: 'Erhaltene Blattläuse:',
+    name: `Erhaltene ${confCache.get(interaction.guild.id).get('MONEY_NAME')}:`,
     value: `${user.bankkonto.moneyGain}`,
   });
   messageEdited.addFields({
-    name: 'Verlorene/Ausgegebene Blattläuse:',
+    name: `Verlorene/Ausgegebene ${confCache.get(interaction.guild.id).get('MONEY_NAME')}:`,
     value: `${user.bankkonto.moneyLost}`,
   });
   messageEdited.addFields({

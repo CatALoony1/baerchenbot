@@ -1,6 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 const GameUser = require('../models/GameUser.js');
 require('../models/Bankkonten.js');
+const { confCache } = require('../utils/data/cache');
 
 async function createSpieleLeaderboardEmbeds(page, interaction) {
   const fetchedGameUsers = await GameUser.find({
@@ -8,7 +9,9 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
   }).populate('bankkonto');
 
   if (fetchedGameUsers.length === 0) {
-    console.log('ERROR: Niemand auf dem Server hat Blattläuse!');
+    console.log(
+      `ERROR: Niemand auf dem Server hat ${confCache.get(interaction.guild.id).get('MONEY_NAME')}!`,
+    );
     return;
   }
   let oldUsers = [];
@@ -46,9 +49,9 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
     );
     let value;
     if (i === max - 1 || i === fetchedGameUsers.length - 1) {
-      value = `Blattläuse: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}`;
+      value = `${confCache.get(interaction.guild.id).get('MONEY_NAME')}: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}`;
     } else {
-      value = `Blattläuse: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}\n--------------------------------------`;
+      value = `${confCache.get(interaction.guild.id).get('MONEY_NAME')}: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}\n--------------------------------------`;
     }
     embed.addFields({
       name: `#${i + 1}  ${userObj.user.username}`,

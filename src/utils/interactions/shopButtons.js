@@ -6,6 +6,7 @@ require('../../models/Inventar');
 const Items = require('../../models/Items');
 const removeMoney = require('../removeMoney');
 require('dotenv').config();
+const { confCache } = require('../data/cache');
 
 async function shopButtons(interaction) {
   let targetMessage = await interaction.channel.messages.fetch(
@@ -59,7 +60,9 @@ async function shopButtons(interaction) {
         description
           .substring(
             description.indexOf('Preis:') + 7,
-            description.indexOf('Blattläuse') - 1,
+            description.indexOf(
+              confCache.get(interaction.guild.id).get('MONEY_NAME'),
+            ) - 1,
           )
           .replaceAll('.', ''),
       );
@@ -79,7 +82,7 @@ async function shopButtons(interaction) {
       }
       if (user.bankkonto.currentMoney < price) {
         await interaction.reply({
-          content: 'Du hast nicht genug Blattläuse auf deinem Bankkonto!',
+          content: `Du hast nicht genug ${confCache.get(interaction.guild.id).get('MONEY_NAME')} auf deinem Bankkonto!`,
           flags: MessageFlags.Ephemeral,
         });
         return;
