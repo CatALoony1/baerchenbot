@@ -13,6 +13,10 @@ Hier folgt Class content
 */
 
 /* Texte */
+.idx_header{
+  font-family: 'Times New Roman', serif;
+  font-size: 40px;
+}
 .p_error_message {
   color: red;
   font-weight: bold;
@@ -51,19 +55,19 @@ Hier folgt Class content
 }
 
 .user_activity_btn {
-  background-color: #EF959D;
+  background-color: #ef959d;
 }
 
 .channelselection_btn {
-  background-color: #f7f1bb;
+  background-color: #faabb1c7;
 }
 
 .serverconfig_btn {
-  background-color: #f7f1bb;
+  background-color: #ffdcb8;
 }
 
 .games_btn {
-  background-color: #ffdcb8;
+  background-color: #f7f1bb;
 }
 
 .logout_btn {
@@ -75,7 +79,7 @@ Hier folgt Class content
 }
 
 .user_management_btn {
-  background-color: #EEF1BD;
+  background-color: #dbe26b99;
 }
 
 .read_database_btn {
