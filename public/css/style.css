@@ -5,7 +5,9 @@ Hier folgt Element content
 table {
   border-collapse: collapse;
 }
-
+body {
+  background-color:#1e1e1e
+}
 /*
 Hier folgt Class content
 */
@@ -42,33 +44,33 @@ Hier folgt Class content
 /* Knöpfe */
 .idx_btn {
   padding: 10px;
-  color: white;
+  color: #1e1e1e;
   text-decoration: none;
   border-radius: 5px;
 }
 
 .user_activity_btn {
-  background-color: pink;
+  background-color: #EF959D;
 }
 
 .channelselection_btn {
-  background-color: antiquewhite;
+  background-color: #EBB3A9;
 }
 
 .serverconfig_btn {
-  background-color: aqua;
+  background-color: #EEEBD0;
 }
 
 .games_btn {
-  background-color: aquamarine;
+  background-color: #fcddbc;
 }
 
 .logout_btn {
-  background-color: azure;
+  background-color: #d9dbbc;
 }
 
 .change_pwd_btn {
-  background-color: beige;
+  background-color: #b8d8ba;
 }
 
 .user_management_btn {
@@ -76,7 +78,7 @@ Hier folgt Class content
 }
 
 .read_database_btn {
-  background-color: black;
+  background-color: #fa8a8a;
 }
 
 .jobs_btn {
