@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap");
 /*
 Hier folgt Element content
 */
@@ -14,8 +15,14 @@ Hier folgt Class content
 
 /* Texte */
 .idx_header{
-  font-family: 'Times New Roman', serif;
+  font-family:  "Roboto Condensed", sans-serif;
   font-size: 40px;
+  word-spacing: px;
+  letter-spacing: px;
+}
+.admin_bereich{
+  font-family:  "Roboto Condensed", sans-serif;
+  font-size: 25px;
 }
 .p_error_message {
   color: red;
@@ -52,6 +59,7 @@ Hier folgt Class content
   color: #1e1e1e;
   text-decoration: none;
   border-radius: 5px;
+  font-family: "Roboto Condensed", sans-serif;
 }
 
 .user_activity_btn {
