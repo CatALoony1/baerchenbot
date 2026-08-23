@@ -50,9 +50,9 @@
           <td>
             <strong><%= user.name %></strong>
           </td>
-          <td><%= user.messages %></td>
-          <td><%= user.voiceTime %></td>
-          <td><%= user.lastMessage %></td>
+          <td class="user_messages_td"><%= user.messages %></td>
+          <td class="user_vctime_td"><%= user.voiceTime %></td>
+          <td class="user_lastmessage_td"><%= user.lastMessage %></td>
           <% const awayList = away ? away.split(',').map(name => name.trim()) : []; %>
           <% if (awayList.includes(user.name)) { %>
           <td><form action="/user-activity/back" method="POST" class="user_activity_back_btn">
