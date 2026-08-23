@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
-    <h1>Nutzeraktivität</h1>
+    <h1 class="nutzeraktivitaet">Nutzeraktivität</h1>
 
     <form action="/user-activity" method="GET">
       <label for="serverId">Wähle einen Server:</label>
@@ -58,7 +58,7 @@
           <td><form action="/user-activity/back" method="POST" class="user_activity_back_btn">
             <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
             <input type="hidden" name="username" value="<%= user.name %>" />
-            <button type="submit">
+            <button type="submit" class="activate_check_act_btn">
               Abwesenheitsprüfung aktivieren
             </button>
           </form></td>
@@ -66,7 +66,7 @@
           <td><form action="/user-activity/away" method="POST" class="user_activity_away_btn">
             <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
             <input type="hidden" name="username" value="<%= user.name %>" />
-            <button type="submit">
+            <button type="submit" class="deactivate_check_act_btn">
               Abwesenheitsprüfung deaktivieren
             </button>
           </form></td>
