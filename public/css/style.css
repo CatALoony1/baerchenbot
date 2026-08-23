@@ -7,7 +7,7 @@ table {
   border-collapse: collapse;
   border:#474747;
 }
-body {
+body {-
   background-color:#FDFFDF
 }
 /*
@@ -142,7 +142,16 @@ Hier folgt Class content
 .delete_user_form {
   display: inline;
 }
-
+/* Tabellen */
+.user_messages_td{
+  text-align: right;
+}
+.user_vctime_td{
+  text-align: center
+}
+.user_lastmessage_td{
+  text-align: right;
+}
 /* Ki generierter Kram, was weiß denn ich
 Für die Anzeige der Logdateien und das Giphy PopUp
 */
