@@ -14,6 +14,29 @@ body {
 Hier folgt Class content
 */
 
+/* Sidebar */
+.idx_sidebar{
+  position:fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 14px;
+  box-sizing:border-box;
+}
+
+/* Mainscreen */
+.idx_main{
+  top: 0;
+  left: 550;
+  bottom: 0;
+  right: 0;
+  margin-left: 200px;
+  text-align-last:center;
+}
+
 /* Texte */
 .idx_header{
   font-family:  "Roboto Condensed", sans-serif;
