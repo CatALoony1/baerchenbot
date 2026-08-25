@@ -6,20 +6,7 @@
     <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
-    <h1 class="idx_header">Willkommen im Control Panel!</h1>
-    <% if (message) { %>
-    <p id="flash-message" class="p_vis_err_mess"><%= message %></p>
-
-    <script>
-      setTimeout(function () {
-        const msgElement = document.getElementById('flash-message');
-        if (msgElement) {
-          msgElement.style.display = 'none';
-        }
-      }, 4000);
-    </script>
-    <% } %>
-    <br /><br />
+<nav class="idx_sidebar">
     <a href="/user-activity" class="idx_btn user_activity_btn"
       >Nutzeraktivität</a
     >
@@ -46,5 +33,22 @@
     <a href="/jobs" class="idx_btn jobs_btn">Jobs steuern</a>
     <a href="/logs" class="idx_btn logs_btn">Logs anschauen</a>
     <% } %>
+</nav>
+<div class="idx_main">
+    <h1 class="idx_header">Willkommen im Control Panel!</h1>
+    <% if (message) { %>
+    <p id="flash-message" class="p_vis_err_mess"><%= message %></p>
+
+    <script>
+      setTimeout(function () {
+        const msgElement = document.getElementById('flash-message');
+        if (msgElement) {
+          msgElement.style.display = 'none';
+        }
+      }, 4000);
+    </script>
+    <% } %>
+    <br /><br />
+</div>
   </body>
 </html>
