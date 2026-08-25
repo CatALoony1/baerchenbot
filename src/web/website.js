@@ -84,9 +84,24 @@ function startWebsite(client) {
 
   //geschützte routen
   app.get('/', requireLogin, (req, res) => {
+    const client = req.discordClient;
+    let servers = client.guilds.cache.map((guild) => ({
+      id: guild.id,
+      name: guild.name,
+    }));
+    const allowedGuilds = req.session.guildIds;
+    if (allowedGuilds !== 'all') {
+      const allowedIds = allowedGuilds.split(',').map((id) => id.trim());
+      servers = servers.filter((server) => allowedIds.includes(server.id));
+    }
+    const selectedServerId = req.query.serverId || servers[0]?.id;
     const message = req.session.message || null;
     req.session.message = null;
-    res.render('index', { message: message, guildIds: req.session.guildIds });
+    res.render('index', {
+      message: message,
+      guildIds: req.session.guildIds,
+      selectedServerId: selectedServerId,
+    });
   });
   app.use('/read-database', requireLogin, readDatabaseRouter);
   app.use('/user-management', requireLogin, userManagement);
