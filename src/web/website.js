@@ -98,6 +98,7 @@ function startWebsite(client) {
     const message = req.session.message || null;
     req.session.message = null;
     res.render('index', {
+      servers: servers,
       message: message,
       guildIds: req.session.guildIds,
       selectedServerId: selectedServerId,
