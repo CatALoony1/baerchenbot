@@ -5,7 +5,7 @@ Hier folgt Element content
 
 table {
   border-collapse: collapse;
-  border:#474747;
+  border:#393939;
 }
 body {
   background-color:#ffffff
@@ -16,6 +16,7 @@ Hier folgt Class content
 
 /* Sidebar */
 .idx_sidebar{
+  background: linear-gradient(0deg, #8de0e0, #8de0e0);
   position:fixed;
   top: 0;
   left: 0;
@@ -85,10 +86,10 @@ Hier folgt Class content
   text-decoration: none;
   border-radius: 5px;
   font-family: "Roboto Condensed", sans-serif;
-  background-color: #eea36f;
+  background-color: #8de0e0;
 }
 .idx_btn:hover{
-  background-color: #d49162;
+  background-color: #6fb0b0;
 }
 
 .start_btn {
