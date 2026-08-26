@@ -28,7 +28,7 @@ router.get('/', (req, res) => {
     jobname: jobname,
     status: modul.isRunning(),
   }));
-  res.render('jobs', {
+  return res.render('jobs', {
     guildIds: req.session.guildIds,
     alleJobs: alleJobs,
     error: null,
@@ -39,14 +39,14 @@ router.post('/start', (req, res) => {
   const client = req.discordClient;
   const { jobname } = req.body;
   jobMap[jobname].startJob(client);
-  res.redirect('/jobs');
+  return res.redirect('/jobs');
 });
 
 router.post('/stop', (req, res) => {
   const client = req.discordClient;
   const { jobname } = req.body;
   jobMap[jobname].stopJob(client);
-  res.redirect('/jobs');
+  return res.redirect('/jobs');
 });
 
 router.post('/execute', async (req, res) => {
@@ -54,7 +54,7 @@ router.post('/execute', async (req, res) => {
   const { jobname } = req.body;
   console.log(`Executing job: ${jobname}`);
   await jobMap[jobname].jobFunction(client);
-  res.redirect('/jobs');
+  return res.redirect('/jobs');
 });
 
 router.post('/all', async (req, res) => {
@@ -75,7 +75,7 @@ router.post('/all', async (req, res) => {
       }
     }
   }
-  res.redirect('/jobs');
+  return res.redirect('/jobs');
 });
 
 module.exports = router;

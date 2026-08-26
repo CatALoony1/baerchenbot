@@ -50,7 +50,7 @@ function startWebsite(client) {
     next();
   });
   app.get('/login', (req, res) => {
-    res.render('login');
+    return res.render('login');
   });
   app.post('/login', async (req, res) => {
     const submittedPassword = req.body.password;
@@ -65,21 +65,21 @@ function startWebsite(client) {
       if (user.initialPWD) {
         return res.redirect('/change-password');
       }
-      res.redirect('/');
+      return res.redirect('/');
     } else {
       console.log(`User ${submittedName} failed to log in.`);
-      res.render('login', { error: 'Falsches Passwort!' });
       const clientIp = req.ip || req.connection.remoteAddress;
       const logMessage = `${new Date().toISOString()} FAILED_LOGIN IP=${clientIp} user=${submittedName}\n`;
       fs.appendFile('/var/log/bot-login.log', logMessage, (err) => {
         if (err) console.error('Fehler beim Schreiben des Auth-Logs:', err);
       });
+      return res.render('login', { error: 'Falsches Passwort!' });
     }
   });
   app.get('/logout', (req, res) => {
     console.log(`User ${req.session.userName} logged out.`);
     req.session.destroy();
-    res.redirect('/login');
+    return res.redirect('/login');
   });
 
   //geschützte routen
@@ -97,7 +97,7 @@ function startWebsite(client) {
     const selectedServerId = req.query.serverId || servers[0]?.id;
     const message = req.session.message || null;
     req.session.message = null;
-    res.render('index', {
+    return res.render('index', {
       servers: servers,
       message: message,
       guildIds: req.session.guildIds,
@@ -115,7 +115,7 @@ function startWebsite(client) {
   app.use('/games', requireLogin, games);
 
   app.get(/(.*)/, (req, res) => {
-    res.redirect('/');
+    return res.redirect('/');
   });
   app.listen(port, () => {
     console.log(`[Dashboard] Webserver läuft auf Port:${port}`);

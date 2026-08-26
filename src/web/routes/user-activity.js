@@ -43,7 +43,7 @@ router.get('/', async (req, res) => {
       }));
     }
   }
-  res.render('user-activity', {
+  return res.render('user-activity', {
     guildIds: req.session.guildIds,
     servers: servers,
     selectedServerId: selectedServerId,
