@@ -79,81 +79,16 @@ Hier folgt Class content
 /* Knöpfe */
 .idx_btn {
   font-size: 20px;
-  padding: 10px;
+  margin: 2px;
+  padding: 7px;
   color: #1e1e1e;
   text-decoration: none;
   border-radius: 5px;
   font-family: "Roboto Condensed", sans-serif;
+  background-color: #eea36f;
 }
-
-.user_activity_btn:hover {
-  background-color: #c67a81;
-}
-.user_activity_btn {
-  background-color: #ef959d;
-}
-
-.channelselection_btn:hover {
-  background-color: #d08e93c7;
-}
-.channelselection_btn {
-  background-color: #faabb1c7;
-}
-
-.serverconfig_btn:hover {
-  background-color: #d3b697;
-}
-.serverconfig_btn {
-  background-color: #ffdcb8;
-}
-
-.games_btn:hover {
-  background-color: #c4bf93;
-}
-.games_btn {
-  background-color: #f7f1bb;
-}
-
-.logout_btn:hover {
-  background-color: #adaf93;
-}
-.logout_btn {
-  background-color: #d7d9b8;
-}
-
-.change_pwd_btn:hover {
-  background-color: #93ac94;
-}
-.change_pwd_btn {
-  background-color: #b8d8ba;
-}
-
-.user_management_btn:hover {
-  background-color: #b1b75799;
-}
-.user_management_btn {
-  background-color: #dbe26b99;
-}
-
-.read_database_btn:hover {
-  background-color: #9db470;
-}
-.read_database_btn {
-  background-color: #BBD686;
-}
-
-.jobs_btn:hover {
-  background-color: #a2866a;
-}
-.jobs_btn {
-  background-color: #C4A381;
-}
-
-.logs_btn:hover {
-  background-color: #956a55;
-}
-.logs_btn {
-  background-color: #b48067;
+.idx_btn:hover{
+  background-color: #d49162;
 }
 
 .start_btn {
