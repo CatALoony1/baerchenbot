@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
+        <%- include('partials/sidebar', {guildIds: guildIds}) %>
+    <div class="chnl_sel_main">
     <h1>Kanäle auswählen</h1>
     <% if (error) { %>
     <div class="error-box">
@@ -247,8 +249,6 @@
       </tbody>
     </table>
     <% } %>
-
-    <br /><br />
-    <a href="/">Zurück zur Startseite</a>
+    </div>
   </body>
 </html>

@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
+        <%- include('partials/sidebar', {guildIds: guildIds}) %>
+    <div class="logs_main">
     <h1>Bot Logs</h1>
     <div class="toolbar">
       <label for="logSelect">Log-Datei wählen: </label>
@@ -27,8 +29,6 @@
         window.location.href = `/logs?file=${encodeURIComponent(filename)}`;
       }
     </script>
-
-    <br /><br />
-    <a href="/">Zurück zur Startseite</a>
+    </div>
   </body>
 </html>

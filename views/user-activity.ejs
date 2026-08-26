@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
+        <%- include('partials/sidebar', {guildIds: guildIds}) %>
+    <div class="usr_actvt_main">
     <h1 class="nutzeraktivitaet">Nutzeraktivität</h1>
 
     <form action="/user-activity" method="GET">
@@ -78,9 +80,6 @@
     <% } else if (selectedServerId) { %>
     <p>Auf diesem Server gibt es keine User (oder der Bot sieht sie nicht).</p>
     <% } %>
-
-    <br /><br />
-    <a href="/">Zurück zur Startseite</a>
     <script>
       function sortTable(columnIndex) {
         const table = document.getElementById('sortableTable');
@@ -106,5 +105,6 @@
         table.dataset.sortOrder = isAscending ? 'desc' : 'asc';
       }
     </script>
+    </div>
   </body>
 </html>

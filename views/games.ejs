@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
+        <%- include('partials/sidebar', {guildIds: guildIds}) %>
+    <div class="games_main">
     <h1>Spiele konfigurieren</h1>
     <% if (error) { %>
     <div class="error-box">
@@ -133,8 +135,6 @@
 </form>
 </details>
     <% } %>
-
-<br /><br />
-    <a href="/">Zurück zur Startseite</a>
+    </div>
   </body>
 </html>

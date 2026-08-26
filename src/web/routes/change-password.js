@@ -6,6 +6,7 @@ const WebUser = require('../../models/WebUser');
 
 router.get('/', (req, res) => {
   res.render('change-password', {
+    guildIds: req.session.guildIds,
     error: null,
     message: null,
     initial: req.session.initialPWD,
@@ -37,6 +38,7 @@ router.post('/change', async (req, res) => {
             `User ${user.user} failed to change password, incorrect old password.`,
           );
           res.render('change-password', {
+            guildIds: req.session.guildIds,
             error: 'Falsches altes Passwort!',
             message: null,
             initial: req.session.initialPWD,
@@ -45,6 +47,7 @@ router.post('/change', async (req, res) => {
       } catch (error) {
         console.log(error);
         res.render('change-password', {
+          guildIds: req.session.guildIds,
           error: error.message,
           message: null,
           initial: req.session.initialPWD,
@@ -52,6 +55,7 @@ router.post('/change', async (req, res) => {
       }
     } else {
       res.render('change-password', {
+        guildIds: req.session.guildIds,
         error: 'Neues Passwort darf nicht das alte sein.',
         message: null,
         initial: req.session.initialPWD,
@@ -59,6 +63,7 @@ router.post('/change', async (req, res) => {
     }
   } else {
     res.render('change-password', {
+      guildIds: req.session.guildIds,
       error: 'Passwörter stimmen nicht überein.',
       message: null,
       initial: req.session.initialPWD,

@@ -44,6 +44,7 @@ router.get('/', async (req, res) => {
     }
   }
   res.render('user-activity', {
+    guildIds: req.session.guildIds,
     servers: servers,
     selectedServerId: selectedServerId,
     users: users,

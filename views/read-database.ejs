@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="/css/style.css">
   </head>
   <body>
+        <%- include('partials/sidebar', {guildIds: guildIds}) %>
+    <div class="db_main">
     <h1>Server & Datenbank</h1>
     <% if (error) { %>
     <div class="error-box">
@@ -70,8 +72,6 @@
     <% } else if (selectedServerId && selectedTable) { %>
     <p>Es gibt keine Datensätze</p>
     <% } %>
-
-    <br /><br />
-    <a href="/">Zurück zur Startseite</a>
+    </div>
   </body>
 </html>

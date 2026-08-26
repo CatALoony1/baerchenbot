@@ -32,6 +32,7 @@ router.get('/', (req, res) => {
   }
   console.log(`Viewing log file: ${selectedFile}`);
   res.render('logs', {
+    guildIds: req.session.guildIds,
     logFiles: logFiles,
     selectedFile: selectedFile,
     logData: logData,

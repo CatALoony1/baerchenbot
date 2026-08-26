@@ -56,6 +56,7 @@ router.get('/', async (req, res) => {
       }
     }
     return res.render('serverconfig', {
+      guildIds: req.session.guildIds,
       servers: servers,
       selectedServerId: selectedServerId,
       alleRollen: rollen,
@@ -68,6 +69,7 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('serverconfig', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       alleRollen: [],
@@ -111,6 +113,7 @@ router.post('/change-member-role', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('serverconfig', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       alleRollen: [],
@@ -135,6 +138,7 @@ router.post('/message', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('serverconfig', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       alleRollen: [],

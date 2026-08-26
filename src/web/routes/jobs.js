@@ -29,6 +29,7 @@ router.get('/', (req, res) => {
     status: modul.isRunning(),
   }));
   res.render('jobs', {
+    guildIds: req.session.guildIds,
     alleJobs: alleJobs,
     error: null,
   });
