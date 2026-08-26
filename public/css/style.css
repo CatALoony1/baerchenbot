@@ -27,9 +27,17 @@ Hier folgt Class content
   box-sizing:border-box;
 }
 
-/* Mainscreen */
+/* Mainscreens */
 .idx_main{
   top: 0;
+  left: 550;
+  bottom: 0;
+  right: 0;
+  margin-left: 200px;
+  text-align-last:center;
+}
+.usr_actvt_main{
+    top: 0;
   left: 550;
   bottom: 0;
   right: 0;
