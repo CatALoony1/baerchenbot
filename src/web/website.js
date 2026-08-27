@@ -95,7 +95,8 @@ function startWebsite(client) {
       servers = servers.filter((server) => allowedIds.includes(server.id));
     }
     const selectedServerId = req.query.serverId || servers[0]?.id;
-    const members = await servers[0].members.fetch({ withPresences: true });
+    let guild = client.guilds.cache.get(selectedServerId);
+    const members = await guild.members.fetch({ withPresences: true });
     const humanMemNum = members.filter((member) => !member.user.bot).size;
     const onlineMemNum = members.filter((member) => {
       if (member.user.bot) return false;
