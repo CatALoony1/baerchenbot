@@ -102,7 +102,7 @@ function startWebsite(client) {
       if (member.user.bot) return false;
       const status = member.presence?.status;
       return status === 'online' || status === 'idle' || status === 'dnd';
-    });
+    }).size;
     console.log(
       `Current online on Server ${selectedServerId}: ${onlineMemNum}`,
     );
