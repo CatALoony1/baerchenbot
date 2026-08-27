@@ -18,7 +18,7 @@
 <form action="/games" method="GET">
   <label for="serverId">Wähle einen Server:</label>
   <select name="serverId" id="serverId" onchange="this.form.submit()">
-    <option value="" disabled <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
+    <option value="" disabled hidden <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
     <% servers.forEach(function(server, index) { %>
       <% 
         const isSelected = selectedServerId 
