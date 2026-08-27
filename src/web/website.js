@@ -83,7 +83,7 @@ function startWebsite(client) {
   });
 
   //geschützte routen
-  app.get('/', requireLogin, (req, res) => {
+  app.get('/', requireLogin, async (req, res) => {
     const client = req.discordClient;
     let servers = client.guilds.cache.map((guild) => ({
       id: guild.id,
@@ -95,6 +95,19 @@ function startWebsite(client) {
       servers = servers.filter((server) => allowedIds.includes(server.id));
     }
     const selectedServerId = req.query.serverId || servers[0]?.id;
+    const members = await servers[0].members.fetch({ withPresences: true });
+    const humanMemNum = members.filter((member) => !member.user.bot).size;
+    const onlineMemNum = members.filter((member) => {
+      if (member.user.bot) return false;
+      const status = member.presence?.status;
+      return status === 'online' || status === 'idle' || status === 'dnd';
+    });
+    console.log(
+      `Current online on Server ${selectedServerId}: ${onlineMemNum}`,
+    );
+    console.log(
+      `Members without bot on Server ${selectedServerId}: ${humanMemNum}`,
+    );
     const message = req.session.message || null;
     req.session.message = null;
     return res.render('index', {
@@ -102,6 +115,8 @@ function startWebsite(client) {
       message: message,
       guildIds: req.session.guildIds,
       selectedServerId: selectedServerId,
+      onlineMemNum: onlineMemNum,
+      humanMemNum: humanMemNum,
     });
   });
   app.use('/read-database', requireLogin, readDatabaseRouter);

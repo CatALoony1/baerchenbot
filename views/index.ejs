@@ -11,6 +11,10 @@
     <h1 class="idx_header">Willkommen im Control Panel!</h1>
     <% if (message) { %>
     <p id="flash-message" class="p_vis_err_mess"><%= message %></p>
+    <br />
+    <p class="idx_crnt_mem">Anzahl Mitglieder: <%= humanMemNum%></p>
+    <br />
+    <p class="idx_crnt_onl">Aktuell online: <%= onlineMemNum%></p>
 
     <script>
       setTimeout(function () {
@@ -25,7 +29,7 @@
     <form action="/" method="GET">
   <label for="serverId">Wähle einen Server:</label>
   <select name="serverId" id="serverId" onchange="this.form.submit()">
-    <option value="" <%= !selectedServerId ? 'disabled' : '' %>>-- Bitte wählen --</option>
+    <option value="" disabled <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
     <% servers.forEach(function(server, index) { %>
       <% 
         const isSelected = selectedServerId 
