@@ -15,7 +15,7 @@ Hier folgt Class content
 */
 
 /* Sidebar */
-.idx-sidebar{
+.idx_sidebar{
   background: linear-gradient(0deg, #8de0e0, #8de0e0);
   position:fixed;
   top: 0;
@@ -39,13 +39,13 @@ Hier folgt Class content
 }
 
 /* Texte */
-.idx-header{
+.idx_header{
   font-family:  "Roboto Condensed", sans-serif;
   font-size: 40px;
   word-spacing: px;
   letter-spacing: px;
 }
-.admin-bereich{
+.admin_bereich{
   font-family:  "Roboto Condensed", sans-serif;
   font-size: 25px;
 }
@@ -78,7 +78,7 @@ Hier folgt Class content
 }
 
 /* Knöpfe */
-.idx-btn {
+.idx_btn {
   font-size: 20px;
   margin: 2px;
   padding: 7px;
@@ -88,7 +88,7 @@ Hier folgt Class content
   font-family: "Roboto Condensed", sans-serif;
   background-color: #8de0e0;
 }
-.idx-btn:hover{
+.idx_btn:hover{
   background-color: #6fb0b0;
 }
 
