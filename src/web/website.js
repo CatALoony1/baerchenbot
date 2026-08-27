@@ -16,6 +16,7 @@ const app = express();
 const port = 3003;
 const WebUser = require('../models/WebUser');
 const bcrypt = require('bcrypt');
+const fetchedGuilds = new Set();
 
 app.set('view engine', 'ejs');
 app.set('trust proxy', true);
@@ -96,7 +97,11 @@ function startWebsite(client) {
     }
     const selectedServerId = req.query.serverId || servers[0]?.id;
     let guild = client.guilds.cache.get(selectedServerId);
-    const members = await guild.members.fetch({ withPresences: true });
+    if (!fetchedGuilds.has(selectedServerId)) {
+      await guild.members.fetch({ withPresences: true });
+      fetchedGuilds.add(selectedServerId);
+    }
+    const members = await guild.members.cache;
     const humanMemNum = members.filter((member) => !member.user.bot).size;
     const onlineMemNum = members.filter((member) => {
       if (member.user.bot) return false;
