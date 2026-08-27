@@ -13,7 +13,7 @@ module.exports = {
         if (!targetUser) {
           targetUser = await guild.members.fetch(process.env.ADMIN_ID);
         }
-        if (targetChannel) {
+        if (!targetChannel) {
           targetChannel =
             guild.channels.cache.get('1527947035804696678') ||
             (await guild.channels.fetch('1527947035804696678'));
