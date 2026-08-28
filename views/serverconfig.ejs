@@ -9,8 +9,8 @@
   </head>
   <body>
         <%- include('partials/sidebar', {guildIds: guildIds}) %>
-    <div class="srv_cfg_main main">
-    <h1 class="header_serverkonfiguration page_header">Serverkonfiguration</h1>
+    <div class="srv-cfg-main main">
+    <h1 class="header-serverkonfiguration page-header">Serverkonfiguration</h1>
     <% if (error) { %>
     <div class="error-box">
       <strong>Fehler:</strong>
@@ -332,7 +332,7 @@
       if (!data || data.length === 0) {
         hasMore = false;
         if (currentOffset === 0) {
-          document.getElementById('giphyGrid').innerHTML = '<p class="no_gif_found">Keine GIFs gefunden.</p>';
+          document.getElementById('giphyGrid').innerHTML = '<p class="no-gif-found">Keine GIFs gefunden.</p>';
         }
         return;
       }

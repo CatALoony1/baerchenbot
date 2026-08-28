@@ -7,10 +7,10 @@
   </head>
   <body>
 <%- include('partials/sidebar', {guildIds: guildIds}) %>
-<div class="idx_main main">
-    <h1 class="idx_header">Willkommen im Control Panel!</h1>
+<div class="idx-main main">
+    <h1 class="idx-header">Willkommen im Control Panel!</h1>
     <% if (message) { %>
-    <p id="flash-message" class="p_vis_err_mess"><%= message %></p>
+    <p id="flash-message" class="p-vis-err-mess"><%= message %></p>
 
     <script>
       setTimeout(function () {
@@ -39,9 +39,9 @@
   </select>
 </form>
 <br />
-    <p class="idx_crnt_mem">Anzahl Mitglieder: <%= humanMemNum%></p>
+    <p class="idx-crnt-mem">Anzahl Mitglieder: <%= humanMemNum%></p>
     <br />
-    <p class="idx_crnt_onl">Aktuell online: <%= onlineMemNum%></p>
+    <p class="idx-crnt-onl">Aktuell online: <%= onlineMemNum%></p>
 </div>
   </body>
 </html>

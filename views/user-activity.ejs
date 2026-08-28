@@ -7,8 +7,8 @@
   </head>
   <body>
         <%- include('partials/sidebar', {guildIds: guildIds}) %>
-    <div class="usr_actvt_main main">
-    <h1 class="header_nutzeraktivitaet page_header">Nutzeraktivität</h1>
+    <div class="usr-actvt-main main">
+    <h1 class="header-nutzeraktivitaet page-header">Nutzeraktivität</h1>
 
     <form action="/user-activity" method="GET">
       <label for="serverId">Wähle einen Server:</label>
@@ -52,23 +52,23 @@
           <td>
             <strong><%= user.name %></strong>
           </td>
-          <td class="user_messages_td"><%= user.messages %></td>
-          <td class="user_vctime_td"><%= user.voiceTime %></td>
-          <td class="user_lastmessage_td"><%= user.lastMessage %></td>
+          <td class="user-messages-td"><%= user.messages %></td>
+          <td class="user-vctime-td"><%= user.voiceTime %></td>
+          <td class="user-lastmessage-td"><%= user.lastMessage %></td>
           <% const awayList = away ? away.split(',').map(name => name.trim()) : []; %>
           <% if (awayList.includes(user.name)) { %>
-          <td><form action="/user-activity/back" method="POST" class="user_activity_back_btn">
+          <td><form action="/user-activity/back" method="POST" class="user-activity-back-btn">
             <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
             <input type="hidden" name="username" value="<%= user.name %>" />
-            <button type="submit" class="activate_check_act_btn">
+            <button type="submit" class="activate-check-act-btn">
               Abwesenheitsprüfung aktivieren
             </button>
           </form></td>
           <% } else { %>
-          <td><form action="/user-activity/away" method="POST" class="user_activity_away_btn">
+          <td><form action="/user-activity/away" method="POST" class="user-activity-away-btn">
             <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
             <input type="hidden" name="username" value="<%= user.name %>" />
-            <button type="submit" class="deactivate_check_act_btn">
+            <button type="submit" class="deactivate-check-act-btn">
               Abwesenheitsprüfung deaktivieren
             </button>
           </form></td>

@@ -7,21 +7,21 @@
   </head>
   <body>
     <%- include('partials/sidebar', {guildIds: guildIds}) %>
-    <div class="jobs_main main">
-      <h1 class="header_jobs page_header">Jobs</h1>
+    <div class="jobs-main main">
+      <h1 class="header-jobs page-header">Jobs</h1>
       <% if (error) { %>
       <div class="error-box">
         <strong>Fehler:</strong>
         <%= error %>
       </div>
       <% } %>
-      <form action="/jobs/all" method="POST" class="job_btn_form">
+      <form action="/jobs/all" method="POST" class="job-btn-form">
         <input type="hidden" name="action" value="start" />
-        <button type="submit" class="start_btn">Alle starten</button>
+        <button type="submit" class="start-btn">Alle starten</button>
       </form>
-      <form action="/jobs/all" method="POST" class="job_btn_form">
+      <form action="/jobs/all" method="POST" class="job-btn-form">
         <input type="hidden" name="action" value="stop" />
-        <button type="submit" class="stop_btn">Alle stoppen</button>
+        <button type="submit" class="stop-btn">Alle stoppen</button>
       </form>
       <% if (alleJobs && alleJobs.length > 0) { %>
       <h2>Gefundene Jobs:</h2>
@@ -38,31 +38,31 @@
           <tr>
             <td><%= job.jobname %></td>
             <% if (job.jobname === 'checkNewAnimals') { %>
-            <td class="job_no_run">No Running Job</td>
+            <td class="job-no-run">No Running Job</td>
             <% } else if (job.status) { %>
-            <td class="job_aktiv">Aktiv</td>
+            <td class="job-aktiv">Aktiv</td>
             <% } else { %>
-            <td class="job_inaktiv">Inaktiv</td>
+            <td class="job-inaktiv">Inaktiv</td>
             <% } %>
             <td>
               <% if (job.jobname !== 'checkNewAnimals') { %>
               <% if (job.status) { %>
-              <form action="/jobs/stop" method="POST" class="job_btn_tbl_form">
+              <form action="/jobs/stop" method="POST" class="job-btn-tbl-form">
                 <input
                   type="hidden"
                   name="jobname"
                   value="<%= job.jobname %>"
                 />
-                <button type="submit" class="stop_btn">Stoppen</button>
+                <button type="submit" class="stop-btn">Stoppen</button>
               </form>
               <% } else { %>
-              <form action="/jobs/start" method="POST" class="job_btn_tbl_form">
+              <form action="/jobs/start" method="POST" class="job-btn-tbl-form">
                 <input
                   type="hidden"
                   name="jobname"
                   value="<%= job.jobname %>"
                 />
-                <button type="submit" class="start_btn">starten</button>
+                <button type="submit" class="start-btn">starten</button>
               </form>
               <% } %>
               <% } %>
@@ -70,14 +70,14 @@
               <form
                 action="/jobs/execute"
                 method="POST"
-                class="job_btn_tbl_form"
+                class="job-btn-tbl-form"
               >
                 <input
                   type="hidden"
                   name="jobname"
                   value="<%= job.jobname %>"
                 />
-                <button type="submit" class="run_btn">ausführen</button>
+                <button type="submit" class="run-btn">ausführen</button>
               </form>
               <% } %>
             </td>
