@@ -8,7 +8,7 @@ async function createLeaderboardEmbeds(page, interaction) {
   )
     ? true
     : false;
-  let allItems = await Items.find({ available: true });
+  let allItems = await Items.find({ guildId: interaction.guild.id });
   let price = allItems[page].preis;
   if (!booster && allItems[page].boostOnly) {
     price = price * 10;

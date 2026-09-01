@@ -1497,7 +1497,10 @@ async function useItemKeks(interaction) {
       return;
     }
     await user.inventar.save();
-    const item = await Items.findOne({ name: 'Keks' });
+    const item = await Items.findOne({
+      name: 'Keks',
+      guildId: interaction.guild.id,
+    });
     const itemIndex = otheruser.inventar.items.findIndex((inventarItem) =>
       inventarItem.item.equals(item._id),
     );

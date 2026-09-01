@@ -88,7 +88,10 @@ async function shopButtons(interaction) {
         return;
       }
       if (!itemName.includes('Keks')) {
-        const item = await Items.findOne({ name: itemName });
+        const item = await Items.findOne({
+          name: itemName,
+          guildId: interaction.guild.id,
+        });
         if (!item) {
           await interaction.reply({
             content: `Das Item ${itemName} existiert nicht!`,
@@ -115,16 +118,11 @@ async function shopButtons(interaction) {
           });
         }
       } else {
-        const booster = interaction.member.roles.cache.some(
-          (role) => role.name === 'Server Booster',
-        )
-          ? true
-          : false;
         let amount = price;
-        if (booster) {
-          amount = Math.floor((amount * 100) / 90);
-        }
-        const item = await Items.findOne({ name: 'Keks' });
+        const item = await Items.findOne({
+          name: 'Keks',
+          guildId: interaction.guild.id,
+        });
         if (!item) {
           await interaction.reply({
             content: `Das Item Keks existiert nicht!`,
