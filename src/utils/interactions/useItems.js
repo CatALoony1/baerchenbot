@@ -1191,7 +1191,10 @@ async function useItemBombe(interaction) {
       await activeItem.save();
       return;
     } else {
-      const amount = getRandom(20000, 40000);
+      const amount = getRandom(
+        Number(confCache.get(interaction.guild.id).get('BOMB_EX_MIN')),
+        Number(confCache.get(interaction.guild.id).get('BOMB_EX_MAX')),
+      );
       await removeMoney(interaction.member, amount);
       const gifUrl = await getGifById('mZryFzM65MtpJ5fOMj');
       if (!gifUrl.includes('http')) {
@@ -1217,7 +1220,10 @@ async function useItemBombe(interaction) {
       });
       return;
     }
-    const amount = getRandom(10000, 20000);
+    const amount = getRandom(
+      Number(confCache.get(interaction.guild.id).get('BOMB_DEF_MIN')),
+      Number(confCache.get(interaction.guild.id).get('BOMB_DEF_MAX')),
+    );
     await giveMoney(interaction.member, amount);
     await interaction.update({
       content: `Du hast die Bombe durchsucht und **${amount}** ${confCache.get(interaction.guild.id).get('MONEY_NAME')} gefunden!`,
@@ -1280,7 +1286,10 @@ async function useItemBlattläuseKlauBanane(interaction) {
   }
   await user.inventar.save();
   const channel = interaction.channel;
-  const amout = getRandom(10000, 30000);
+  const amout = getRandom(
+    Number(confCache.get(interaction.guild.id).get('KLAU_BANANE_MIN')),
+    Number(confCache.get(interaction.guild.id).get('KLAU_BANANE_MAX')),
+  );
   await removeMoney(targetMemberObject, amout);
   await giveMoney(interaction.member, amout);
   await interaction.update({
