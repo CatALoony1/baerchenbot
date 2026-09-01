@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Login</title>
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
-  <body>
-    <h1>Bitte anmelden</h1>
-    <% if (typeof error !== 'undefined') { %>
-    <p class="p-vis-err-mess">
-      <strong><%= error %></strong>
-    </p>
-    <% } %>
-    <form action="/login" method="POST">
-      <label for="user">Nutzername:</label>
-      <input type="text" id="user" name="user" required />
-      <label for="password">Passwort:</label>
-      <input type="password" id="password" name="password" required />
-      <button type="submit">Einloggen</button>
-    </form>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Login</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+  <h1>Bitte anmelden</h1>
+  <% if (typeof error !== 'undefined') { %>
+  <p class="p-vis-err-mess">
+    <strong><%= error %></strong>
+  </p>
+  <% } %>
+  <form action="/login" method="POST">
+    <label for="user">Nutzername:</label>
+    <input type="text" id="user" name="user" required />
+    <label for="password">Passwort:</label>
+    <input type="password" id="password" name="password" required />
+    <button type="submit">Einloggen</button>
+  </form>
+</body>
+
 </html>

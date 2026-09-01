@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Datenbank - Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css">
-  </head>
-  <body>
-        <%- include('partials/sidebar', {guildIds: guildIds}) %>
-    <div class="chnl-sel-main main">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Datenbank - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="chnl-sel-main main">
     <h1 class="header-kanaluebersicht page-header">Kanalübersicht</h1>
     <% if (error) { %>
     <div class="error-box">
@@ -18,18 +20,18 @@
     <form action="/channelselection" method="GET">
       <label for="serverId">Wähle einen Server:</label>
       <select name="serverId" id="serverId" onchange="this.form.submit()">
-    <option value="" disabled hidden <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
-    <% servers.forEach(function(server, index) { %>
-      <% 
+        <option value="" disabled hidden <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
+        <% servers.forEach(function(server, index) { %>
+        <% 
         const isSelected = selectedServerId 
           ? server.id === selectedServerId 
           : index === 0; 
       %>
-      <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
-                    <%= server.name %>
-                </option>
-            <% }); %>
-        </select>
+        <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
+          <%= server.name %>
+        </option>
+        <% }); %>
+      </select>
     </form>
 
     <br />
@@ -41,7 +43,7 @@
     <table border="1" cellpadding="5">
       <thead>
         <tr>
-         <th>Funktion</th>
+          <th>Funktion</th>
           <th>Variable</th>
           <th>Kanal</th>
         </tr>
@@ -53,19 +55,19 @@
           <td>
             <form action="/channelselection/change-channel-allgemein" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="allgemein" onchange="this.form.submit()">
-<% const hasSelectedValue1 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.ALLGEMEIN_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue1 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
+              <select name="allgemein" onchange="this.form.submit()">
+                <% const hasSelectedValue1 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.ALLGEMEIN_ID; %>
 
-    <% alleTextChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue1 && channel.id === defaultValues.ALLGEMEIN_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue1 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue1 && channel.id === defaultValues.ALLGEMEIN_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -75,19 +77,19 @@
           <td>
             <form action="/channelselection/change-channel-bye" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="bye" onchange="this.form.submit()">
-                  <% const hasSelectedValue2 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.BYE_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue2 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
+              <select name="bye" onchange="this.form.submit()">
+                <% const hasSelectedValue2 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.BYE_ID; %>
 
-    <% alleTextChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue2 && channel.id === defaultValues.BYE_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue2 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue2 && channel.id === defaultValues.BYE_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -97,20 +99,20 @@
           <td>
             <form action="/channelselection/change-channel-log" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-              
-                <select name="log" onchange="this.form.submit()">
-                  <% const hasSelectedValue3 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.LOG_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue3 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
 
-    <% alleTextChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue3 && channel.id === defaultValues.LOG_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+              <select name="log" onchange="this.form.submit()">
+                <% const hasSelectedValue3 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.LOG_ID; %>
+
+                <option value="" disabled <%= !hasSelectedValue3 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue3 && channel.id === defaultValues.LOG_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -120,19 +122,19 @@
           <td>
             <form action="/channelselection/change-channel-bump" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="bump" onchange="this.form.submit()">
-                  <% const hasSelectedValue4 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.BUMP_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue4 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
+              <select name="bump" onchange="this.form.submit()">
+                <% const hasSelectedValue4 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.BUMP_ID; %>
 
-    <% alleTextChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue4 && channel.id === defaultValues.BUMP_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue4 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue4 && channel.id === defaultValues.BUMP_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -142,19 +144,19 @@
           <td>
             <form action="/channelselection/change-channel-quiz" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="quiz" onchange="this.form.submit()">
-                  <% const hasSelectedValue5 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.QUIZ_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue5 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
+              <select name="quiz" onchange="this.form.submit()">
+                <% const hasSelectedValue5 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.QUIZ_ID; %>
 
-    <% alleTextChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue5 && channel.id === defaultValues.QUIZ_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue5 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue5 && channel.id === defaultValues.QUIZ_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -164,19 +166,19 @@
           <td>
             <form action="/channelselection/change-channel-admin" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="admin" onchange="this.form.submit()">
-                  <% const hasSelectedValue6 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.ADMIN_C_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue6 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
+              <select name="admin" onchange="this.form.submit()">
+                <% const hasSelectedValue6 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.ADMIN_C_ID; %>
 
-    <% alleTextChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue6 && channel.id === defaultValues.ADMIN_C_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue6 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue6 && channel.id === defaultValues.ADMIN_C_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -186,19 +188,19 @@
           <td>
             <form action="/channelselection/change-channel-spiele" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="spiele" onchange="this.form.submit()">
-                  <% const hasSelectedValue7 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.SPIELE_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue7 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
+              <select name="spiele" onchange="this.form.submit()">
+                <% const hasSelectedValue7 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.SPIELE_ID; %>
 
-    <% alleTextChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue7 && channel.id === defaultValues.SPIELE_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue7 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleTextChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue7 && channel.id === defaultValues.SPIELE_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -208,19 +210,19 @@
           <td>
             <form action="/channelselection/change-channel-vccreation" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="vccreation" onchange="this.form.submit()">
-                  <% const hasSelectedValue8 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.VCCREATION_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue8 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
+              <select name="vccreation" onchange="this.form.submit()">
+                <% const hasSelectedValue8 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.VCCREATION_ID; %>
 
-    <% alleVoiceChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue8 && channel.id === defaultValues.VCCREATION_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue8 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleVoiceChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue8 && channel.id === defaultValues.VCCREATION_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -230,25 +232,26 @@
           <td>
             <form action="/channelselection/change-channel-afk" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-                <select name="afk" onchange="this.form.submit()">
-                  <% const hasSelectedValue9 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.AFK_ID; %>
-    
-    <option value="" disabled <%= !hasSelectedValue9 ? 'selected' : '' %> hidden>
-      -- Bitte Channel auswählen --
-    </option>
+              <select name="afk" onchange="this.form.submit()">
+                <% const hasSelectedValue9 = typeof defaultValues !== 'undefined' && defaultValues && defaultValues.AFK_ID; %>
 
-    <% alleVoiceChannels.forEach(function(channel) { %>
-      <option value="<%= channel.id %>" <%= hasSelectedValue9 && channel.id === defaultValues.AFK_ID ? 'selected' : '' %>>
-        <%= channel.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue9 ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+
+                <% alleVoiceChannels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= hasSelectedValue9 && channel.id === defaultValues.AFK_ID ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
       </tbody>
     </table>
     <% } %>
-    </div>
-  </body>
+  </div>
+</body>
+
 </html>

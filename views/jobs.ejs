@@ -1,93 +1,80 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Jobs</title>
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
-  <body>
-    <%- include('partials/sidebar', {guildIds: guildIds}) %>
-    <div class="jobs-main main">
-      <h1 class="header-jobs page-header">Jobs</h1>
-      <% if (error) { %>
-      <div class="error-box">
-        <strong>Fehler:</strong>
-        <%= error %>
-      </div>
-      <% } %>
-      <form action="/jobs/all" method="POST" class="job-btn-form">
-        <input type="hidden" name="action" value="start" />
-        <button type="submit" class="start-btn">Alle starten</button>
-      </form>
-      <form action="/jobs/all" method="POST" class="job-btn-form">
-        <input type="hidden" name="action" value="stop" />
-        <button type="submit" class="stop-btn">Alle stoppen</button>
-      </form>
-      <% if (alleJobs && alleJobs.length > 0) { %>
-      <h2>Gefundene Jobs:</h2>
-      <table border="1" cellpadding="5">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Status</th>
-            <th>Aktion</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% alleJobs.forEach(function(job) { %>
-          <tr>
-            <td><%= job.jobname %></td>
-            <% if (job.jobname === 'checkNewAnimals') { %>
-            <td class="job-no-run">No Running Job</td>
-            <% } else if (job.status) { %>
-            <td class="job-aktiv">Aktiv</td>
-            <% } else { %>
-            <td class="job-inaktiv">Inaktiv</td>
-            <% } %>
-            <td>
-              <% if (job.jobname !== 'checkNewAnimals') { %>
-              <% if (job.status) { %>
-              <form action="/jobs/stop" method="POST" class="job-btn-tbl-form">
-                <input
-                  type="hidden"
-                  name="jobname"
-                  value="<%= job.jobname %>"
-                />
-                <button type="submit" class="stop-btn">Stoppen</button>
-              </form>
-              <% } else { %>
-              <form action="/jobs/start" method="POST" class="job-btn-tbl-form">
-                <input
-                  type="hidden"
-                  name="jobname"
-                  value="<%= job.jobname %>"
-                />
-                <button type="submit" class="start-btn">starten</button>
-              </form>
-              <% } %>
-              <% } %>
-              <% if (job.jobname === 'checkNewAnimals' || job.jobname === 'cronJob_geburtstag' || job.jobname === 'cronJob_quizQuestion' || job.jobname === 'cronJob_quizStats') { %>
-              <form
-                action="/jobs/execute"
-                method="POST"
-                class="job-btn-tbl-form"
-              >
-                <input
-                  type="hidden"
-                  name="jobname"
-                  value="<%= job.jobname %>"
-                />
-                <button type="submit" class="run-btn">ausführen</button>
-              </form>
-              <% } %>
-            </td>
-          </tr>
-          <% }); %>
-        </tbody>
-      </table>
-      <% } else { %>
-      <p>Es gibt keine Jobs.</p>
-      <% } %>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Jobs</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="jobs-main main">
+    <h1 class="header-jobs page-header">Jobs</h1>
+    <% if (error) { %>
+    <div class="error-box">
+      <strong>Fehler:</strong>
+      <%= error %>
     </div>
-  </body>
+    <% } %>
+    <form action="/jobs/all" method="POST" class="job-btn-form">
+      <input type="hidden" name="action" value="start" />
+      <button type="submit" class="start-btn">Alle starten</button>
+    </form>
+    <form action="/jobs/all" method="POST" class="job-btn-form">
+      <input type="hidden" name="action" value="stop" />
+      <button type="submit" class="stop-btn">Alle stoppen</button>
+    </form>
+    <% if (alleJobs && alleJobs.length > 0) { %>
+    <h2>Gefundene Jobs:</h2>
+    <table border="1" cellpadding="5">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Aktion</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% alleJobs.forEach(function(job) { %>
+        <tr>
+          <td><%= job.jobname %></td>
+          <% if (job.jobname === 'checkNewAnimals') { %>
+          <td class="job-no-run">No Running Job</td>
+          <% } else if (job.status) { %>
+          <td class="job-aktiv">Aktiv</td>
+          <% } else { %>
+          <td class="job-inaktiv">Inaktiv</td>
+          <% } %>
+          <td>
+            <% if (job.jobname !== 'checkNewAnimals') { %>
+            <% if (job.status) { %>
+            <form action="/jobs/stop" method="POST" class="job-btn-tbl-form">
+              <input type="hidden" name="jobname" value="<%= job.jobname %>" />
+              <button type="submit" class="stop-btn">Stoppen</button>
+            </form>
+            <% } else { %>
+            <form action="/jobs/start" method="POST" class="job-btn-tbl-form">
+              <input type="hidden" name="jobname" value="<%= job.jobname %>" />
+              <button type="submit" class="start-btn">starten</button>
+            </form>
+            <% } %>
+            <% } %>
+            <% if (job.jobname === 'checkNewAnimals' || job.jobname === 'cronJob_geburtstag' || job.jobname === 'cronJob_quizQuestion' || job.jobname === 'cronJob_quizStats') { %>
+            <form action="/jobs/execute" method="POST" class="job-btn-tbl-form">
+              <input type="hidden" name="jobname" value="<%= job.jobname %>" />
+              <button type="submit" class="run-btn">ausführen</button>
+            </form>
+            <% } %>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } else { %>
+    <p>Es gibt keine Jobs.</p>
+    <% } %>
+  </div>
+</body>
+
 </html>

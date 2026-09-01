@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Bot Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
-  <body>
-<%- include('partials/sidebar', {guildIds: guildIds}) %>
-<div class="idx-main main">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Bot Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="idx-main main">
     <h1 class="idx-header">Willkommen im Control Panel!</h1>
     <% if (message) { %>
     <p id="flash-message" class="p-vis-err-mess"><%= message %></p>
 
     <script>
-      setTimeout(function () {
+      setTimeout(function() {
         const msgElement = document.getElementById('flash-message');
         if (msgElement) {
           msgElement.style.display = 'none';
@@ -23,25 +25,26 @@
     <% } %>
     <br /><br />
     <form action="/" method="GET">
-  <label for="serverId">Wähle einen Server:</label>
-  <select name="serverId" id="serverId" onchange="this.form.submit()">
-    <option value="" disabled hidden <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
-    <% servers.forEach(function(server, index) { %>
-      <% 
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId" onchange="this.form.submit()">
+        <option value="" disabled hidden <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
+        <% servers.forEach(function(server, index) { %>
+        <% 
         const isSelected = selectedServerId 
           ? server.id === selectedServerId 
           : index === 0; 
       %>
-      <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
-        <%= server.name %>
-      </option>
-    <% }); %>
-  </select>
-</form>
-<br />
+        <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
+          <%= server.name %>
+        </option>
+        <% }); %>
+      </select>
+    </form>
+    <br />
     <p class="idx-crnt-mem">Anzahl Mitglieder: <%= humanMemNum%></p>
     <br />
     <p class="idx-crnt-onl">Aktuell online: <%= onlineMemNum%></p>
-</div>
-  </body>
+  </div>
+</body>
+
 </html>
