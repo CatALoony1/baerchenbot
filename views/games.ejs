@@ -1,143 +1,140 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Datenbank - Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css">
-  </head>
-  <body>
-    <h1>Server & Datenbank</h1>
-    <% if (error) { %>
-    <div class="error-box">
-      <strong>Fehler:</strong>
-      <%= error %>
-    </div>
-    <% } %>
-<form action="/games" method="GET">
-  <label for="serverId">Wähle einen Server:</label>
-  <select name="serverId" id="serverId" onchange="this.form.submit()">
-    <option value="" <%= !selectedServerId ? 'disabled' : '' %>>-- Bitte wählen --</option>
-    <% servers.forEach(function(server, index) { %>
-      <% 
-        const isSelected = selectedServerId 
-          ? server.id === selectedServerId 
-          : index === 0; 
-      %>
-      <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Datenbank - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <h1>Server & Datenbank</h1>
+  <% if (error) { %>
+  <div class="error-box">
+    <strong>Fehler:</strong>
+    <%= error %>
+  </div>
+  <% } %>
+  <form action="/games" method="GET">
+    <label for="serverId">Wähle einen Server:</label>
+    <select name="serverId" id="serverId" onchange="this.form.submit()">
+      <option value="" <%=!selectedServerId ? 'disabled' : '' %>>-- Bitte wählen --</option>
+      <% servers.forEach(function(server, index) { %>
+      <% const isSelected=selectedServerId ? server.id===selectedServerId : index===0; %>
+      <option value="<%= server.id %>" <%=isSelected ? 'selected' : '' %>>
         <%= server.name %>
       </option>
-    <% }); %>
-  </select>
-</form>
+      <% }); %>
+    </select>
+  </form>
 
-    <br />
-    <hr />
-    <br />
+  <br />
+  <hr />
+  <br />
 
-    <% if (selectedServerId) { %>
-    <details>
-      <summary>Währung konfigurieren</summary>
-<form action="/games/money" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <h3>Währungsname:</h3>
-  <input type="text" id="moneyName" name="moneyName" required value="<%= moneyConfMap.get('MONEY_NAME') || '' %>" />
-  <br />
-  <h3>Menge Währung pro geschriebener Nachricht:</h3>
-  <input type="number" id="moneyMessage" name="moneyMessage" min="0" required value="<%= Number(moneyConfMap.get('MONEY_MESSAGE')) || 0 %>" />
-  <br />
-  <h3>Menge Währung pro Level UP (XP):</h3>
-  <input type="number" id="moneyLevelup" name="moneyLevelup" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LEVELUP')) || 0 %>" />
-  <br />
-  <h3>Menge Währung am Geburtstag:</h3>
-  <input type="number" id="moneyBirthday" name="moneyBirthday" min="0" required value="<%= Number(moneyConfMap.get('MONEY_BIRTHDAY')) || 0 %>" />
-  <br />
-  <button type="submit">Speichern</button>
-</form>
-</details>
-<hr>
-<details>
-      <summary>Quiz konfigurieren</summary>
-<form action="/games/quiz" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <h3>Menge Währung pro eingereichter Quiz-Frage:</h3>
-  <input type="number" id="quizAdd" name="quizAdd" min="0" required value="<%= Number(moneyConfMap.get('MONEY_QUIZ_ADD')) || 0 %>" />
-  <br />
-  <h3>Menge Währung pro richtiger Quiz-Antwort:</h3>
-  <input type="number" id="quizRight" name="quizRight" min="0" required value="<%= Number(moneyConfMap.get('MONEY_QUIZ_RIGHT')) || 0 %>" />
-  <br />
-  <h3>Prozentualer Bonus für jede richtige Antwort in Folge:</h3>
-  <input type="number" id="quizStreakPerc" name="quizStreakPerc" min="0" required value="<%= Number(moneyConfMap.get('MONEY_QUIZ_STREAK_PERC')) || 0 %>" />
-  <br />
-  <button type="submit">Speichern</button>
-</form>
-</details>
-<hr>
-<details>
-      <summary>Galgenmännchen konfigurieren</summary>
-<form action="/games/hangman" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <h3>Menge Währung pro gelöstem Galgenmännchen:</h3>
-  <input type="number" id="hangmanSolve" name="hangmanSolve" min="0" required value="<%= Number(moneyConfMap.get('MONEY_HANGMAN_SOLVE')) || 0 %>" />
-  <br />
-  <button type="submit">Speichern</button>
-</form>
-</details>
-<hr>
-<details>
-      <summary>Glücksrad konfigurieren</summary>
-<form action="/games/rad" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <h3>Höhe des Start-Pools:</h3>
-  <input type="number" id="radPool" name="radPool" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_POOL')) || 0 %>" />
-  <br />
-  <h3>Gewinnchance in Prozent zum Start des Glücksrades:</h3>
-  <input type="number" id="radPerc" name="radPerc" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_PERC')) || 0 %>" />
-  <br />
-  <h3>Maximale Gewinnchance in Prozent:</h3>
-  <input type="number" id="radMaxPerc" name="radMaxPerc" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_MAX_PERC')) || 0 %>" />
-  <br />
-  <button type="submit">Speichern</button>
-</form>
-</details>
-<hr>
-<details>
-      <summary>Lotto konfigurieren</summary>
-<form action="/games/lotto" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <h3>Höhe des Jackpots (Chance 1:140.000.000):</h3>
-  <input type="number" id="lottoMax" name="lottoMax" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_MAX')) || 0 %>" />
-  <br />
-  <h3>Höhe des Gewinns bei 1 endenden 0 (bsp.: 123.456.780) 12.600.000 Gewinner:</h3>
-  <input type="number" id="lotto1" name="lotto1" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_1')) || 0 %>" />
-<br />
-  <h3>Höhe des Gewinns bei 2 endenden 0 (bsp.: 123.456.700) 1.260.000 Gewinner:</h3>
-  <input type="number" id="lotto2" name="lotto2" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_2')) || 0 %>" />
-  <br />
-  <h3>Höhe des Gewinns bei 3 endenden 0 (bsp.: 123.456.000) 126.000 Gewinner:</h3>
-  <input type="number" id="lotto3" name="lotto3" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_3')) || 0 %>" />
-  <br />
-  <h3>Höhe des Gewinns bei 4 endenden 0 (bsp.: 123.450.000) 12.600 Gewinner:</h3>
-  <input type="number" id="lotto4" name="lotto4" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_4')) || 0 %>" />
-  <br />
-  <h3>Höhe des Gewinns bei 5 endenden 0 (bsp.: 123.400.000) 1.260 Gewinner:</h3>
-  <input type="number" id="lotto5" name="lotto5" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_5')) || 0 %>" />
-  <br />
-  <h3>Höhe des Gewinns bei 6 endenden 0 (bsp.: 123.000.000) 126 Gewinner:</h3>
-  <input type="number" id="lotto6" name="lotto6" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_6')) || 0 %>" />
-  <br />
-  <h3>Höhe des Gewinns bei 7 endenden 0 (bsp.: 120.000.000) 12 Gewinner:</h3>
-  <input type="number" id="lotto7" name="lotto7" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_7')) || 0 %>" />
-  <br />
-  <br />
-  <button type="submit">Speichern</button>
-</form>
-</details>
-    <% } %>
-<details>
-  <summary>Items konfigurieren</summary>
-  
-</details>
-<br /><br />
-    <a href="/">Zurück zur Startseite</a>
-  </body>
+  <% if (selectedServerId) { %>
+  <details>
+    <summary>Währung konfigurieren</summary>
+    <form action="/games/money" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <h3>Währungsname:</h3>
+      <input type="text" id="moneyName" name="moneyName" required value="<%= moneyConfMap.get('MONEY_NAME') || '' %>" />
+      <br />
+      <h3>Menge Währung pro geschriebener Nachricht:</h3>
+      <input type="number" id="moneyMessage" name="moneyMessage" min="0" required value="<%= Number(moneyConfMap.get('MONEY_MESSAGE')) || 0 %>" />
+      <br />
+      <h3>Menge Währung pro Level UP (XP):</h3>
+      <input type="number" id="moneyLevelup" name="moneyLevelup" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LEVELUP')) || 0 %>" />
+      <br />
+      <h3>Menge Währung am Geburtstag:</h3>
+      <input type="number" id="moneyBirthday" name="moneyBirthday" min="0" required value="<%= Number(moneyConfMap.get('MONEY_BIRTHDAY')) || 0 %>" />
+      <br />
+      <button type="submit">Speichern</button>
+    </form>
+  </details>
+  <hr>
+  <details>
+    <summary>Quiz konfigurieren</summary>
+    <form action="/games/quiz" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <h3>Menge Währung pro eingereichter Quiz-Frage:</h3>
+      <input type="number" id="quizAdd" name="quizAdd" min="0" required value="<%= Number(moneyConfMap.get('MONEY_QUIZ_ADD')) || 0 %>" />
+      <br />
+      <h3>Menge Währung pro richtiger Quiz-Antwort:</h3>
+      <input type="number" id="quizRight" name="quizRight" min="0" required value="<%= Number(moneyConfMap.get('MONEY_QUIZ_RIGHT')) || 0 %>" />
+      <br />
+      <h3>Prozentualer Bonus für jede richtige Antwort in Folge:</h3>
+      <input type="number" id="quizStreakPerc" name="quizStreakPerc" min="0" required value="<%= Number(moneyConfMap.get('MONEY_QUIZ_STREAK_PERC')) || 0 %>" />
+      <br />
+      <button type="submit">Speichern</button>
+    </form>
+  </details>
+  <hr>
+  <details>
+    <summary>Galgenmännchen konfigurieren</summary>
+    <form action="/games/hangman" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <h3>Menge Währung pro gelöstem Galgenmännchen:</h3>
+      <input type="number" id="hangmanSolve" name="hangmanSolve" min="0" required value="<%= Number(moneyConfMap.get('MONEY_HANGMAN_SOLVE')) || 0 %>" />
+      <br />
+      <button type="submit">Speichern</button>
+    </form>
+  </details>
+  <hr>
+  <details>
+    <summary>Glücksrad konfigurieren</summary>
+    <form action="/games/rad" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <h3>Höhe des Start-Pools:</h3>
+      <input type="number" id="radPool" name="radPool" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_POOL')) || 0 %>" />
+      <br />
+      <h3>Gewinnchance in Prozent zum Start des Glücksrades:</h3>
+      <input type="number" id="radPerc" name="radPerc" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_PERC')) || 0 %>" />
+      <br />
+      <h3>Maximale Gewinnchance in Prozent:</h3>
+      <input type="number" id="radMaxPerc" name="radMaxPerc" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_MAX_PERC')) || 0 %>" />
+      <br />
+      <button type="submit">Speichern</button>
+    </form>
+  </details>
+  <hr>
+  <details>
+    <summary>Lotto konfigurieren</summary>
+    <form action="/games/lotto" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <h3>Höhe des Jackpots (Chance 1:140.000.000):</h3>
+      <input type="number" id="lottoMax" name="lottoMax" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_MAX')) || 0 %>" />
+      <br />
+      <h3>Höhe des Gewinns bei 1 endenden 0 (bsp.: 123.456.780) 12.600.000 Gewinner:</h3>
+      <input type="number" id="lotto1" name="lotto1" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_1')) || 0 %>" />
+      <br />
+      <h3>Höhe des Gewinns bei 2 endenden 0 (bsp.: 123.456.700) 1.260.000 Gewinner:</h3>
+      <input type="number" id="lotto2" name="lotto2" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_2')) || 0 %>" />
+      <br />
+      <h3>Höhe des Gewinns bei 3 endenden 0 (bsp.: 123.456.000) 126.000 Gewinner:</h3>
+      <input type="number" id="lotto3" name="lotto3" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_3')) || 0 %>" />
+      <br />
+      <h3>Höhe des Gewinns bei 4 endenden 0 (bsp.: 123.450.000) 12.600 Gewinner:</h3>
+      <input type="number" id="lotto4" name="lotto4" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_4')) || 0 %>" />
+      <br />
+      <h3>Höhe des Gewinns bei 5 endenden 0 (bsp.: 123.400.000) 1.260 Gewinner:</h3>
+      <input type="number" id="lotto5" name="lotto5" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_5')) || 0 %>" />
+      <br />
+      <h3>Höhe des Gewinns bei 6 endenden 0 (bsp.: 123.000.000) 126 Gewinner:</h3>
+      <input type="number" id="lotto6" name="lotto6" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_6')) || 0 %>" />
+      <br />
+      <h3>Höhe des Gewinns bei 7 endenden 0 (bsp.: 120.000.000) 12 Gewinner:</h3>
+      <input type="number" id="lotto7" name="lotto7" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LOTTO_7')) || 0 %>" />
+      <br />
+      <br />
+      <button type="submit">Speichern</button>
+    </form>
+  </details>
+  <% } %>
+  <details>
+    <summary>Items konfigurieren</summary>
+
+  </details>
+</body>
+
 </html>

@@ -2,7 +2,9 @@ const express = require('express');
 require('dotenv').config();
 const router = express.Router();
 const Config = require('../../models/Config');
+const Items = require('../../models/Items');
 const { refreshConfCache } = require('../../utils/data/cache');
+const { itemMap } = require('../../utils/data/Items');
 
 router.get('/', async (req, res) => {
   try {
@@ -18,6 +20,8 @@ router.get('/', async (req, res) => {
     }
     const selectedServerId = req.query.serverId || servers[0]?.id;
     let moneyConfMap = new Map();
+    let itemConfMap = new Map();
+    let itemsMap = new Map();
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
       if (selectedGuild) {
@@ -26,12 +30,37 @@ router.get('/', async (req, res) => {
           key: { $regex: '^MONEY' },
         });
         moneyConfMap = new Map(moneyConf.map((item) => [item.key, item.value]));
+        const gameConf = await Config.find({
+          guildId: selectedServerId,
+          key: {
+            $in: [
+              'BOMB_EX_MIN',
+              'BOMB_EX_MAX',
+              'BOMB_DEF_MIN',
+              'BOMB_DEF_MAX',
+              'KLAU_BANANE_MIN',
+              'KLAU_BANANE_MAX',
+            ],
+          },
+        });
+        itemConfMap = new Map(gameConf.map((item) => [item.key, item.value]));
+        const availableItems = await Items.find({ guildId: selectedServerId });
+        itemsMap = new Map(
+          Array.from(itemMap.entries()).map(([key, value]) => {
+            const itemInAvailable = availableItems.some(
+              (item) => item.name === key,
+            );
+            return [key, { description: value, available: itemInAvailable }];
+          }),
+        );
       }
     }
     return res.render('games', {
       servers: servers,
       selectedServerId: selectedServerId,
       moneyConfMap: moneyConfMap,
+      itemConfMap: itemConfMap,
+      itemsMap: itemsMap,
       error: null,
     });
   } catch (error) {
@@ -40,6 +69,8 @@ router.get('/', async (req, res) => {
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
+      itemConfMap: new Map(),
+      itemsMap: new Map(),
       error: error.message,
     });
   }
@@ -68,6 +99,8 @@ router.post('/money', async (req, res) => {
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
+      itemConfMap: new Map(),
+      itemsMap: new Map(),
       error: error.message,
     });
   }
@@ -94,6 +127,8 @@ router.post('/quiz', async (req, res) => {
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
+      itemConfMap: new Map(),
+      itemsMap: new Map(),
       error: error.message,
     });
   }
@@ -116,6 +151,8 @@ router.post('/hangman', async (req, res) => {
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
+      itemConfMap: new Map(),
+      itemsMap: new Map(),
       error: error.message,
     });
   }
@@ -138,6 +175,8 @@ router.post('/rad', async (req, res) => {
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
+      itemConfMap: new Map(),
+      itemsMap: new Map(),
       error: error.message,
     });
   }
@@ -188,6 +227,8 @@ router.post('/lotto', async (req, res) => {
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
+      itemConfMap: new Map(),
+      itemsMap: new Map(),
       error: error.message,
     });
   }
