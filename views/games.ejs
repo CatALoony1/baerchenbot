@@ -130,11 +130,49 @@
       <button type="submit">Speichern</button>
     </form>
   </details>
-  <% } %>
   <details>
     <summary>Items konfigurieren</summary>
-
+    <form action="/games/items" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <button type="submit" class="games-item-sv-all">Alles Speichern</button>
+      <table>
+        <thead>
+          <tr>
+            <th>Item Name</th>
+            <th>Beschreibung</th>
+            <th>Aktiv</th>
+            <th>Einstellungen</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% itemsMap.forEach(function(item, itemName) { %>
+          <tr>
+            <td><%= itemName %></td>
+            <td><%= item.description %></td>
+            <td>
+              <input type="checkbox" class="games-item-avai-ckbx" name="available_<%= itemName %>" <%= item.available ? 'checked' : '' %>>
+            </td>
+            <td>
+              <% if (itemName === 'Bombe') {%>
+              <input type="number" class="games-item-input" name="BOMB_EX_MIN" value="<%= itemConfMap.get('BOMB_EX_MIN') || 0 %>" required>
+              <input type="number" class="games-item-input" name="BOMB_EX_MAX" value="<%= itemConfMap.get('BOMB_EX_MAX') || 0 %>" required>
+              <input type="number" class="games-item-input" name="BOMB_DEF_MIN" value="<%= itemConfMap.get('BOMB_DEF_MIN') || 0 %>" required>
+              <input type="number" class="games-item-input" name="BOMB_DEF_MAX" value="<%= itemConfMap.get('BOMB_DEF_MAX') || 0 %>" required>
+              <% } else if (itemName === 'Klau-Banane') { %>
+              <input type="number" class="games-item-input" name="KLAU_BANANE_MIN" value="<%= itemConfMap.get('KLAU_BANANE_MIN') || 0 %>" required>
+              <input type="number" class="games-item-input" name="KLAU_BANANE_MAX" value="<%= itemConfMap.get('KLAU_BANANE_MAX') || 0 %>" required>
+              <% } %>
+              <input type="number" class="games-item-input" name="price_<%= itemName %>" value="<%= item.price || 0 %>">
+              <input type="checkbox" class="games-item-ckbx" name="boost_<%= itemName %>" <%= item.boostonly ? 'checked' : '' %>>
+              <button type="submit" class="games-item-sv-one" name="singleSave" value="<%= itemName %>">Speichern</button>
+            </td>
+          </tr>
+          <% }); %>
+        </tbody>
+      </table>
+    </form>
   </details>
+  <% } %>
 </body>
 
 </html>

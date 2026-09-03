@@ -50,7 +50,23 @@ router.get('/', async (req, res) => {
             const itemInAvailable = availableItems.some(
               (item) => item.name === key,
             );
-            return [key, { description: value, available: itemInAvailable }];
+            let price = 0;
+            let boostonly = false;
+            if (itemInAvailable) {
+              price = availableItems.find((item) => item.name === key).preis;
+              boostonly = availableItems.find(
+                (item) => item.name === key,
+              ).boostOnly;
+            }
+            return [
+              key,
+              {
+                description: value,
+                available: itemInAvailable,
+                price: price,
+                boostonly: boostonly,
+              },
+            ];
           }),
         );
       }
@@ -90,7 +106,7 @@ router.post('/money', async (req, res) => {
       'MONEY_BIRTHDAY',
     ];
     const valList = [moneyName, moneyLevelup, moneyMessage, moneyBirthday];
-    await addToDb(keyList, valList, guildId);
+    await addToDbMoney(keyList, valList, guildId);
     const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
     return res.redirect(targetUrl);
   } catch (error) {
@@ -118,7 +134,7 @@ router.post('/quiz', async (req, res) => {
       'MONEY_QUIZ_STREAK_PERC',
     ];
     const valList = [quizAdd, quizRight, quizStreakPerc];
-    await addToDb(keyList, valList, guildId);
+    await addToDbMoney(keyList, valList, guildId);
     const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
     return res.redirect(targetUrl);
   } catch (error) {
@@ -142,7 +158,7 @@ router.post('/hangman', async (req, res) => {
     );
     const keyList = ['MONEY_HANGMAN_SOLVE'];
     const valList = [hangmanSolve];
-    await addToDb(keyList, valList, guildId);
+    await addToDbMoney(keyList, valList, guildId);
     const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
     return res.redirect(targetUrl);
   } catch (error) {
@@ -166,7 +182,7 @@ router.post('/rad', async (req, res) => {
     );
     const keyList = ['MONEY_RAD_POOL', 'MONEY_RAD_PERC', 'MONEY_RAD_MAX_PERC'];
     const valList = [radPool, radPerc, radMaxPerc];
-    await addToDb(keyList, valList, guildId);
+    await addToDbMoney(keyList, valList, guildId);
     const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
     return res.redirect(targetUrl);
   } catch (error) {
@@ -218,7 +234,7 @@ router.post('/lotto', async (req, res) => {
       lotto7,
       lottoMax,
     ];
-    await addToDb(keyList, valList, guildId);
+    await addToDbMoney(keyList, valList, guildId);
     const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
     return res.redirect(targetUrl);
   } catch (error) {
@@ -234,7 +250,127 @@ router.post('/lotto', async (req, res) => {
   }
 });
 
-async function addToDb(keyList, valList, guildId) {
+router.post('/items', async (req, res) => {
+  try {
+    const { guildId, singleSave } = req.body;
+    const itemList = new Set();
+    const additionalSaves = new Set();
+    if (singleSave) {
+      const itemName = singleSave;
+      addItemToList(req, itemName, itemList, additionalSaves, guildId);
+    } else {
+      for (const itemName of itemMap.keys()) {
+        addItemToList(req, itemName, itemList, additionalSaves, guildId);
+      }
+    }
+    await addToDbItems(itemList, additionalSaves, guildId);
+    const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
+    return res.redirect(targetUrl);
+  } catch (error) {
+    console.log(error);
+    return res.render('games', {
+      servers: null,
+      selectedServerId: null,
+      moneyConfMap: new Map(),
+      itemConfMap: new Map(),
+      itemsMap: new Map(),
+      error: error.message,
+    });
+  }
+});
+
+function addItemToList(req, itemName, itemList, additionalSaves, guildId) {
+  const available = req.body[`available_${itemName}`];
+  const price = req.body[`price_${itemName}`];
+  const boostOnly = req.body[`boost_${itemName}`];
+  const item = new Items({
+    name: itemName,
+    beschreibung: itemMap.get(itemName),
+    preis: price,
+    boostOnly: boostOnly,
+    guildId: guildId,
+  });
+  itemList.add(item);
+  if (itemName === 'Bombe' && available) {
+    additionalSaves.set(
+      new Config({
+        key: 'BOMB_EX_MIN',
+        value: req.body['BOMB_EX_MIN'],
+        guildId: guildId,
+      }),
+    );
+    additionalSaves.set(
+      new Config({
+        key: 'BOMB_EX_MAX',
+        value: req.body['BOMB_EX_MAX'],
+        guildId: guildId,
+      }),
+    );
+    additionalSaves.set(
+      new Config({
+        key: 'BOMB_DEF_MIN',
+        value: req.body['BOMB_DEF_MIN'],
+        guildId: guildId,
+      }),
+    );
+    additionalSaves.set(
+      new Config({
+        key: 'BOMB_DEF_MAX',
+        value: req.body['BOMB_DEF_MAX'],
+        guildId: guildId,
+      }),
+    );
+  } else if (itemName === 'Klau-Banane' && available) {
+    additionalSaves.set(
+      new Config({
+        key: 'KLAU_BANANE_MIN',
+        value: req.body['KLAU_BANANE_MIN'],
+        guildId: guildId,
+      }),
+    );
+    additionalSaves.set(
+      new Config({
+        key: 'KLAU_BANANE_MAX',
+        value: req.body['KLAU_BANANE_MAX'],
+        guildId: guildId,
+      }),
+    );
+  }
+}
+
+async function addToDbItems(itemList, additionalSaves, guildId) {
+  const itemsArray = Array.from(itemList);
+  if (itemsArray.length > 0) {
+    const bulkOps = itemsArray.map((item) => ({
+      updateOne: {
+        filter: {
+          name: item.name,
+          preis: item.guildId,
+        },
+        update: { $set: item },
+        upsert: true,
+      },
+    }));
+    await Items.bulkWrite(bulkOps, { ordered: false });
+  }
+  const additionalArray = Array.from(additionalSaves);
+  if (additionalArray.length > 0) {
+    const bulkOps = additionalArray.map((config) => ({
+      updateOne: {
+        filter: {
+          name: config.name,
+          preis: config.guildId,
+        },
+        update: { $set: config },
+        upsert: true,
+      },
+    }));
+    await Config.bulkWrite(bulkOps, { ordered: false });
+    await refreshConfCache(guildId);
+  }
+}
+
+async function addToDbMoney(keyList, valList, guildId) {
   const remainingKeys = [...keyList];
   const remainingVals = [...valList];
 
