@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Datenbank - Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="https://unpkg.com/@giphy/js-fetch-api/dist/giphy-js-fetch-api.bundle.js"></script>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Datenbank - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://unpkg.com/@giphy/js-fetch-api/dist/giphy-js-fetch-api.bundle.js"></script>
   <script src="https://unpkg.com/@giphy/js-components/dist/giphy-js-components.bundle.js"></script>
-  </head>
-  <body>
-    <h1>Server & Datenbank</h1>
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="srv-cfg-main main">
+    <h1 class="header-serverkonfiguration page-header">Serverkonfiguration</h1>
     <% if (error) { %>
     <div class="error-box">
       <strong>Fehler:</strong>
       <%= error %>
     </div>
     <% } %>
-<form action="/serverconfig" method="GET">
-  <label for="serverId">Wähle einen Server:</label>
-  <select name="serverId" id="serverId" onchange="this.form.submit()">
-    <option value="" <%= !selectedServerId ? 'disabled' : '' %>>-- Bitte wählen --</option>
-    <% servers.forEach(function(server, index) { %>
-      <% 
+    <form action="/serverconfig" method="GET">
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId" onchange="this.form.submit()">
+        <option value="" disabled <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
+        <% servers.forEach(function(server, index) { %>
+        <% 
         const isSelected = selectedServerId 
           ? server.id === selectedServerId 
           : index === 0; 
       %>
-      <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
-        <%= server.name %>
-      </option>
-    <% }); %>
-  </select>
-</form>
+        <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
+          <%= server.name %>
+        </option>
+        <% }); %>
+      </select>
+    </form>
 
     <br />
     <hr />
@@ -41,7 +45,7 @@
     <table border="1" cellpadding="5">
       <thead>
         <tr>
-         <th>Nutzung</th>
+          <th>Funktion</th>
           <th>Variable</th>
           <th>Kanal</th>
         </tr>
@@ -54,21 +58,21 @@
             <form action="/serverconfig/change-member-role" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
               <input type="hidden" name="variableName" value="MITGLIED_ROLE_ID">
-              
-                <select name="newMemberRole" onchange="this.form.submit()">
-                  <% const hasSelectedValue = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[0]; %>
-    
-    <option value="" disabled <%= !hasSelectedValue ? 'selected' : '' %> hidden>
-      -- Bitte Rolle auswählen --
-    </option>
 
-    <% alleRollen.forEach(function(role) { %>
-      <option value="<%= role.id %>" <%= hasSelectedValue && role.id === defaultRole[0] ? 'selected' : '' %>>
-        <%= role.name %>
-      </option>
+              <select name="newMemberRole" onchange="this.form.submit()">
+                <% const hasSelectedValue = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[0]; %>
 
-            <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValue ? 'selected' : '' %> hidden>
+                  -- Bitte Rolle auswählen --
+                </option>
+
+                <% alleRollen.forEach(function(role) { %>
+                <option value="<%= role.id %>" <%= hasSelectedValue && role.id === defaultRole[0] ? 'selected' : '' %>>
+                  <%= role.name %>
+                </option>
+
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -79,43 +83,43 @@
             <form action="/serverconfig/change-member-role" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
               <input type="hidden" name="variableName" value="NEWMEMBER_ROLE_ID">
-              
-                <select name="newMemberRole" onchange="this.form.submit()">
-                  <% const hasSelectedValueNoTwo = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[1]; %>
-    
-    <option value="" disabled <%= !hasSelectedValueNoTwo ? 'selected' : '' %> hidden>
-      -- Bitte Rolle auswählen --
-    </option>
 
-    <% alleRollen.forEach(function(role) { %>
-      <option value="<%= role.id %>" <%= hasSelectedValueNoTwo && role.id === defaultRole[1] ? 'selected' : '' %>>
-        <%= role.name %>
-      </option>
-    <% }); %>
-                </select>
+              <select name="newMemberRole" onchange="this.form.submit()">
+                <% const hasSelectedValueNoTwo = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[1]; %>
+
+                <option value="" disabled <%= !hasSelectedValueNoTwo ? 'selected' : '' %> hidden>
+                  -- Bitte Rolle auswählen --
+                </option>
+
+                <% alleRollen.forEach(function(role) { %>
+                <option value="<%= role.id %>" <%= hasSelectedValueNoTwo && role.id === defaultRole[1] ? 'selected' : '' %>>
+                  <%= role.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
-          </tr>
-          <tr>
+        </tr>
+        <tr>
           <td><%= uses.MIDMEMBER_ROLE_ID %></td>
           <td>MIDMEMBER_ROLE_ID</td>
           <td>
             <form action="/serverconfig/change-member-role" method="POST">
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
               <input type="hidden" name="variableName" value="MIDMEMBER_ROLE_ID">
-                <select name="newMemberRole" onchange="this.form.submit()">
-                  <% const hasSelectedValueAnother = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[2]; %>
-    
-    <option value="" disabled <%= !hasSelectedValueAnother ? 'selected' : '' %> hidden>
-      -- Bitte Rolle auswählen --
-    </option>
+              <select name="newMemberRole" onchange="this.form.submit()">
+                <% const hasSelectedValueAnother = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[2]; %>
 
-    <% alleRollen.forEach(function(role) { %>
-      <option value="<%= role.id %>" <%= hasSelectedValueAnother && role.id === defaultRole[2] ? 'selected' : '' %>>
-        <%= role.name %>
-      </option>
-    <% }); %>
-                </select>
+                <option value="" disabled <%= !hasSelectedValueAnother ? 'selected' : '' %> hidden>
+                  -- Bitte Rolle auswählen --
+                </option>
+
+                <% alleRollen.forEach(function(role) { %>
+                <option value="<%= role.id %>" <%= hasSelectedValueAnother && role.id === defaultRole[2] ? 'selected' : '' %>>
+                  <%= role.name %>
+                </option>
+                <% }); %>
+              </select>
             </form>
           </td>
         </tr>
@@ -133,253 +137,255 @@
     <br />
     <details>
       <summary>Willkommensnachricht konfigurieren</summary>
-<form action="/serverconfig/message" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <input type="hidden" name="messageType" value="WELCOME">
-  <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= (gifTextList.get('WELCOME') && gifTextList.get('WELCOME').gif) ? gifTextList.get('WELCOME').gif : '' %>">
-  
-  <h3>Willkommensnachricht-Titel:</h3>
-  <input type="text" id="welcomeHeader" name="header" required value="<%= gifTextList.get('WELCOME')?.header || '' %>" />
-  <br />
-  <h3>Willkommensnachricht-Beschreibung:</h3>
-  <textarea id="welcomeText" name="text" rows="5" cols="90"><% if (gifTextList.get("WELCOME")) { %><%= gifTextList.get("WELCOME").text %><% } %></textarea>
-  <br /><br /><br />
-  
-  <div id="welcomeGifPreview">
-    <% if (gifTextList.get("WELCOME") && gifTextList.get("WELCOME").gif !== '') { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('WELCOME').gif %>/giphy.gif">
-    <% } %>
-  </div>
-  
-  <button type="button" onclick="openGiphyModal('welcomeGifId', 'welcomeGifPreview')">
-    GIF auswählen / ändern
-  </button>
-  <button type="button" onclick="clearGif('welcomeGifId', 'welcomeGifPreview')">Gif entfernen</button>
-  <button type="submit">Speichern</button>
-</form>
-</details>
-<hr>
-<details>
+      <form action="/serverconfig/message" method="POST">
+        <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+        <input type="hidden" name="messageType" value="WELCOME">
+        <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= (gifTextList.get('WELCOME') && gifTextList.get('WELCOME').gif) ? gifTextList.get('WELCOME').gif : '' %>">
+
+        <h3>Willkommensnachricht-Titel:</h3>
+        <input type="text" id="welcomeHeader" name="header" required value="<%= gifTextList.get('WELCOME')?.header || '' %>" />
+        <br />
+        <h3>Willkommensnachricht-Beschreibung:</h3>
+        <textarea id="welcomeText" name="text" rows="5" cols="90"><% if (gifTextList.get("WELCOME")) { %><%= gifTextList.get("WELCOME").text %><% } %></textarea>
+        <br /><br /><br />
+
+        <div id="welcomeGifPreview">
+          <% if (gifTextList.get("WELCOME") && gifTextList.get("WELCOME").gif !== '') { %>
+          <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('WELCOME').gif %>/giphy.gif">
+          <% } %>
+        </div>
+
+        <button type="button" onclick="openGiphyModal('welcomeGifId', 'welcomeGifPreview')">
+          GIF auswählen / ändern
+        </button>
+        <button type="button" onclick="clearGif('welcomeGifId', 'welcomeGifPreview')">Gif entfernen</button>
+        <button type="submit">Speichern</button>
+      </form>
+    </details>
+    <hr>
+    <details>
       <summary>Verabschiedungsnachricht konfigurieren</summary>
-<form action="/serverconfig/message" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <input type="hidden" name="messageType" value="BYE">
-  <input type="hidden" name="giphyId" id="byeGifId" value="<%= (gifTextList.get('BYE') && gifTextList.get('BYE').gif) ? gifTextList.get('BYE').gif : '' %>">
-  
-    <h3>Verabschiedungsnachricht-Titel:</h3>
-  <input type="text" id="byeHeader" name="header" required value="<%= gifTextList.get('BYE')?.header || '' %>" />
-  <br />
-  <h3>Verabschiedungsnachricht-Beschreibung:</h3>
-  <textarea id="byeText" name="text" rows="5" cols="90"><% if (gifTextList.get("BYE")) { %><%= gifTextList.get("BYE").text %><% } %></textarea>
-  <br /><br /><br />
-  
-  <div id="byeGifPreview">
-    <% if (gifTextList.get("BYE") && gifTextList.get("BYE").gif !== '') { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BYE').gif %>/giphy.gif">
-    <% } %>
-  </div>
-  
-  <button type="button" onclick="openGiphyModal('byeGifId', 'byeGifPreview')">
-    GIF auswählen / ändern
-  </button>
-  <button type="button" onclick="clearGif('byeGifId', 'byeGifPreview')">Gif entfernen</button>
-  <button type="submit">Speichern</button>
-</form>
-</details>
-<hr>
-<details>
+      <form action="/serverconfig/message" method="POST">
+        <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+        <input type="hidden" name="messageType" value="BYE">
+        <input type="hidden" name="giphyId" id="byeGifId" value="<%= (gifTextList.get('BYE') && gifTextList.get('BYE').gif) ? gifTextList.get('BYE').gif : '' %>">
+
+        <h3>Verabschiedungsnachricht-Titel:</h3>
+        <input type="text" id="byeHeader" name="header" required value="<%= gifTextList.get('BYE')?.header || '' %>" />
+        <br />
+        <h3>Verabschiedungsnachricht-Beschreibung:</h3>
+        <textarea id="byeText" name="text" rows="5" cols="90"><% if (gifTextList.get("BYE")) { %><%= gifTextList.get("BYE").text %><% } %></textarea>
+        <br /><br /><br />
+
+        <div id="byeGifPreview">
+          <% if (gifTextList.get("BYE") && gifTextList.get("BYE").gif !== '') { %>
+          <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BYE').gif %>/giphy.gif">
+          <% } %>
+        </div>
+
+        <button type="button" onclick="openGiphyModal('byeGifId', 'byeGifPreview')">
+          GIF auswählen / ändern
+        </button>
+        <button type="button" onclick="clearGif('byeGifId', 'byeGifPreview')">Gif entfernen</button>
+        <button type="submit">Speichern</button>
+      </form>
+    </details>
+    <hr>
+    <details>
       <summary>Boostnachricht konfigurieren</summary>
-<form action="/serverconfig/message" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <input type="hidden" name="messageType" value="BOOST">
-  <input type="hidden" name="giphyId" id="boostGifId" value="<%= (gifTextList.get('BOOST') && gifTextList.get('BOOST').gif) ? gifTextList.get('BOOST').gif : '' %>">
-      <h3>Boostnachricht-Titel:</h3>
-  <input type="text" id="boostHeader" name="header" required value="<%= gifTextList.get('BOOST')?.header || '' %>" />
-  <br />
-  <h3>Boostnachricht-Beschreibung:</h3>
-  <textarea id="boostText" name="text" rows="5" cols="90"><% if (gifTextList.get("BOOST")) { %><%= gifTextList.get("BOOST").text %><% } %></textarea>
-  <br /><br /><br />
-  
-  <div id="boostGifPreview">
-    <% if (gifTextList.get("BOOST") && gifTextList.get("BOOST").gif !== '') { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BOOST').gif %>/giphy.gif">
-    <% } %>
-  </div>
-  
-  <button type="button" onclick="openGiphyModal('boostGifId', 'boostGifPreview')">
-    GIF auswählen / ändern
-  </button>
-  <button type="button" onclick="clearGif('boostGifId', 'boostGifPreview')">Gif entfernen</button>
-  <button type="submit">Speichern</button>
-</form>
-</details>
-<hr>
-<details>
+      <form action="/serverconfig/message" method="POST">
+        <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+        <input type="hidden" name="messageType" value="BOOST">
+        <input type="hidden" name="giphyId" id="boostGifId" value="<%= (gifTextList.get('BOOST') && gifTextList.get('BOOST').gif) ? gifTextList.get('BOOST').gif : '' %>">
+        <h3>Boostnachricht-Titel:</h3>
+        <input type="text" id="boostHeader" name="header" required value="<%= gifTextList.get('BOOST')?.header || '' %>" />
+        <br />
+        <h3>Boostnachricht-Beschreibung:</h3>
+        <textarea id="boostText" name="text" rows="5" cols="90"><% if (gifTextList.get("BOOST")) { %><%= gifTextList.get("BOOST").text %><% } %></textarea>
+        <br /><br /><br />
+
+        <div id="boostGifPreview">
+          <% if (gifTextList.get("BOOST") && gifTextList.get("BOOST").gif !== '') { %>
+          <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BOOST').gif %>/giphy.gif">
+          <% } %>
+        </div>
+
+        <button type="button" onclick="openGiphyModal('boostGifId', 'boostGifPreview')">
+          GIF auswählen / ändern
+        </button>
+        <button type="button" onclick="clearGif('boostGifId', 'boostGifPreview')">Gif entfernen</button>
+        <button type="submit">Speichern</button>
+      </form>
+    </details>
+    <hr>
+    <details>
       <summary>Bumpreminder:</summary>
-<form action="/serverconfig/message" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <input type="hidden" name="messageType" value="BUMPREM">
-  <input type="hidden" name="giphyId" id="bumpRemGifId" value="<%= (gifTextList.get('BUMPREM') && gifTextList.get('BUMPREM').gif) ? gifTextList.get('BUMPREM').gif : '' %>">
-      <h3>Bump-Erinnerungs-Titel:</h3>
-  <input type="text" id="bumpRemHeader" name="header" required value="<%= gifTextList.get('BUMPREM')?.header || '' %>" />
-  <br />
-  <h3>Bump-Erinnerungs-Nachricht-Beschreibung:</h3>
-  <textarea id="bumpRemText" name="text" rows="5" cols="90" ><% if (gifTextList.get("BUMPREM")) { %><%= gifTextList.get("BUMPREM").text %><% } %></textarea>
-  <br /><br /><br />
-  
-  <div id="bumpRemGifPreview">
-    <% if (gifTextList.get("BUMPREM") && gifTextList.get("BUMPREM").gif !== '') { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BUMPREM').gif %>/giphy.gif">
-    <% } %>
+      <form action="/serverconfig/message" method="POST">
+        <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+        <input type="hidden" name="messageType" value="BUMPREM">
+        <input type="hidden" name="giphyId" id="bumpRemGifId" value="<%= (gifTextList.get('BUMPREM') && gifTextList.get('BUMPREM').gif) ? gifTextList.get('BUMPREM').gif : '' %>">
+        <h3>Bump-Erinnerungs-Titel:</h3>
+        <input type="text" id="bumpRemHeader" name="header" required value="<%= gifTextList.get('BUMPREM')?.header || '' %>" />
+        <br />
+        <h3>Bump-Erinnerungs-Nachricht-Beschreibung:</h3>
+        <textarea id="bumpRemText" name="text" rows="5" cols="90"><% if (gifTextList.get("BUMPREM")) { %><%= gifTextList.get("BUMPREM").text %><% } %></textarea>
+        <br /><br /><br />
+
+        <div id="bumpRemGifPreview">
+          <% if (gifTextList.get("BUMPREM") && gifTextList.get("BUMPREM").gif !== '') { %>
+          <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BUMPREM').gif %>/giphy.gif">
+          <% } %>
+        </div>
+
+        <button type="button" onclick="openGiphyModal('bumpRemGifId', 'bumpRemGifPreview')">
+          GIF auswählen / ändern
+        </button>
+        <button type="button" onclick="clearGif('bumpRemGifId', 'bumpRemGifPreview')">Gif entfernen</button>
+        <button type="submit">Speichern</button>
+      </form>
+      <br />
+      <hr>
+      <br />
+      <form action="/serverconfig/message" method="POST">
+        <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+        <input type="hidden" name="messageType" value="BUMPTHX">
+        <input type="hidden" name="giphyId" id="bumpThxGifId" value="<%= (gifTextList.get('BUMPTHX') && gifTextList.get('BUMPTHX').gif) ? gifTextList.get('BUMPTHX').gif : '' %>">
+        <h3>Bump-Dankes-Titel:</h3>
+        <input type="text" id="bumpThxHeader" name="header" required value="<%= gifTextList.get('BUMPTHX')?.header || '' %>" />
+        <br />
+        <h3>Bump-Dankes-Nachricht-Beschreibung:</h3>
+        <textarea id="bumpThxText" name="text" rows="5" cols="90"><% if (gifTextList.get("BUMPTHX")) { %><%= gifTextList.get("BUMPTHX").text %><% } %></textarea>
+        <br /><br /><br />
+
+        <div id="bumpThxGifPreview">
+          <% if (gifTextList.get("BUMPTHX") && gifTextList.get("BUMPTHX").gif !== '') { %>
+          <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BUMPTHX').gif %>/giphy.gif">
+          <% } %>
+        </div>
+
+        <button type="button" onclick="openGiphyModal('bumpThxGifId', 'bumpThxGifPreview')">
+          GIF auswählen / ändern
+        </button>
+        <button type="button" onclick="clearGif('bumpThxGifId', 'bumpThxGifPreview')">Gif entfernen</button>
+        <button type="submit">Speichern</button>
+      </form>
+    </details>
+
+    <div id="giphyModal" class="giphy-modal">
+      <div class="giphy-header">
+        <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">
+        <button type="button" class="giphy-close" onclick="closeGiphyModal()">&times;</button>
+      </div>
+      <div id="giphyGrid" onscroll="handleScroll()"></div>
+    </div>
   </div>
-  
-  <button type="button" onclick="openGiphyModal('bumpRemGifId', 'bumpRemGifPreview')">
-    GIF auswählen / ändern
-  </button>
-  <button type="button" onclick="clearGif('bumpRemGifId', 'bumpRemGifPreview')">Gif entfernen</button>
-  <button type="submit">Speichern</button>
-</form>
-<br />
-<hr>
-<br />
-<form action="/serverconfig/message" method="POST">
-  <input type="hidden" name="guildId" value="<%= selectedServerId %>">
-  <input type="hidden" name="messageType" value="BUMPTHX">
-  <input type="hidden" name="giphyId" id="bumpThxGifId" value="<%= (gifTextList.get('BUMPTHX') && gifTextList.get('BUMPTHX').gif) ? gifTextList.get('BUMPTHX').gif : '' %>">
-      <h3>Bump-Dankes-Titel:</h3>
-  <input type="text" id="bumpThxHeader" name="header" required value="<%= gifTextList.get('BUMPTHX')?.header || '' %>" />
-  <br />
-  <h3>Bump-Dankes-Nachricht-Beschreibung:</h3>
-  <textarea id="bumpThxText" name="text" rows="5" cols="90"><% if (gifTextList.get("BUMPTHX")) { %><%= gifTextList.get("BUMPTHX").text %><% } %></textarea>
-  <br /><br /><br />
-  
-  <div id="bumpThxGifPreview">
-    <% if (gifTextList.get("BUMPTHX") && gifTextList.get("BUMPTHX").gif !== '') { %>
-      <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BUMPTHX').gif %>/giphy.gif">
-    <% } %>
-  </div>
-  
-  <button type="button" onclick="openGiphyModal('bumpThxGifId', 'bumpThxGifPreview')">
-    GIF auswählen / ändern
-  </button>
-  <button type="button" onclick="clearGif('bumpThxGifId', 'bumpThxGifPreview')">Gif entfernen</button>
-  <button type="submit">Speichern</button>
-</form>
-</details>
+  <script>
+    const GIPHY_API_KEY = '<%= giphyApiKey %>';
+    let currentSearch = '';
+    let debounceTimer;
+    let currentOffset = 0;
+    let isLoading = false;
+    let hasMore = true;
+    let activeInputId = null;
+    let activePreviewId = null;
 
-<div id="giphyModal" class="giphy-modal">
-  <div class="giphy-header">
-    <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">
-    <button type="button" class="giphy-close" onclick="closeGiphyModal()">&times;</button>
-  </div>
-  <div id="giphyGrid" onscroll="handleScroll()"></div>
-</div>
+    function clearGif(inputId, previewId) {
+      document.getElementById(inputId).value = '';
+      document.getElementById(previewId).innerHTML = '';
+    }
 
-<br /><br />
-    <a href="/">Zurück zur Startseite</a>
-
-<script>
-  const GIPHY_API_KEY = '<%= giphyApiKey %>';
-  let currentSearch = '';
-  let debounceTimer;
-  let currentOffset = 0;
-  let isLoading = false;
-  let hasMore = true;
-  let activeInputId = null;
-  let activePreviewId = null;
-
-  function clearGif(inputId, previewId) {
-  document.getElementById(inputId).value = '';
-  document.getElementById(previewId).innerHTML = '';
-}
-  function openGiphyModal(inputId, previewId) {
-    activeInputId = inputId;
-    activePreviewId = previewId;
-    const modal = document.getElementById('giphyModal');
-    modal.classList.add('active');
-    document.getElementById('giphySearch').value = '';
-    currentSearch = '';
-    currentOffset = 0;
-    hasMore = true;
-    document.getElementById('giphyGrid').innerHTML = '';
-    
-    fetchGifs();
-  }
-
-  function closeGiphyModal() {
-    document.getElementById('giphyModal').classList.remove('active');
-  }
-
-  function debounceSearch() {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => {
-      currentSearch = document.getElementById('giphySearch').value.trim();
+    function openGiphyModal(inputId, previewId) {
+      activeInputId = inputId;
+      activePreviewId = previewId;
+      const modal = document.getElementById('giphyModal');
+      modal.classList.add('active');
+      document.getElementById('giphySearch').value = '';
+      currentSearch = '';
       currentOffset = 0;
       hasMore = true;
       document.getElementById('giphyGrid').innerHTML = '';
-      fetchGifs();
-    }, 300);
-  }
 
-  async function fetchGifs() {
-    if (isLoading || !hasMore) return;
-    isLoading = true;
-    const endpoint = currentSearch ? 'search' : 'trending';
-    const queryParam = currentSearch ? `&q=${encodeURIComponent(currentSearch)}` : '';
-    const url = `https://api.giphy.com/v1/gifs/${endpoint}?api_key=${GIPHY_API_KEY}&limit=20&offset=${currentOffset}${queryParam}`;
-    try {
-      const response = await fetch(url);
-      const { data, pagination } = await response.json();
-      if (!data || data.length === 0) {
-        hasMore = false;
-        if (currentOffset === 0) {
-          document.getElementById('giphyGrid').innerHTML = '<p class="no_gif_found">Keine GIFs gefunden.</p>';
+      fetchGifs();
+    }
+
+    function closeGiphyModal() {
+      document.getElementById('giphyModal').classList.remove('active');
+    }
+
+    function debounceSearch() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        currentSearch = document.getElementById('giphySearch').value.trim();
+        currentOffset = 0;
+        hasMore = true;
+        document.getElementById('giphyGrid').innerHTML = '';
+        fetchGifs();
+      }, 300);
+    }
+
+    async function fetchGifs() {
+      if (isLoading || !hasMore) return;
+      isLoading = true;
+      const endpoint = currentSearch ? 'search' : 'trending';
+      const queryParam = currentSearch ? `&q=${encodeURIComponent(currentSearch)}` : '';
+      const url = `https://api.giphy.com/v1/gifs/${endpoint}?api_key=${GIPHY_API_KEY}&limit=20&offset=${currentOffset}${queryParam}`;
+      try {
+        const response = await fetch(url);
+        const {
+          data,
+          pagination
+        } = await response.json();
+        if (!data || data.length === 0) {
+          hasMore = false;
+          if (currentOffset === 0) {
+            document.getElementById('giphyGrid').innerHTML = '<p class="no-gif-found">Keine GIFs gefunden.</p>';
+          }
+          return;
         }
-        return;
-      }
 
+        const grid = document.getElementById('giphyGrid');
+        data.forEach(gif => {
+          const img = document.createElement('img');
+          img.src = gif.images.fixed_height_small.url;
+          img.style.width = '48%';
+          img.style.margin = '1%';
+          img.style.borderRadius = '6px';
+          img.style.cursor = 'pointer';
+          img.style.objectFit = 'cover';
+          img.onclick = () => selectGif(gif);
+          grid.appendChild(img);
+        });
+        currentOffset += data.length;
+        if (currentOffset >= pagination.total_count) {
+          hasMore = false;
+        }
+      } catch (err) {
+        console.error('Fehler beim Laden der GIFs:', err);
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    function handleScroll() {
       const grid = document.getElementById('giphyGrid');
-      data.forEach(gif => {
-        const img = document.createElement('img');
-        img.src = gif.images.fixed_height_small.url;
-        img.style.width = '48%';
-        img.style.margin = '1%';
-        img.style.borderRadius = '6px';
-        img.style.cursor = 'pointer';
-        img.style.objectFit = 'cover';
-        img.onclick = () => selectGif(gif);
-        grid.appendChild(img);
-      });
-      currentOffset += data.length;
-      if (currentOffset >= pagination.total_count) {
-        hasMore = false;
-      }
-    } catch (err) {
-      console.error('Fehler beim Laden der GIFs:', err);
-    } finally {
-      isLoading = false;
-    }
-  }
-
-  function handleScroll() {
-    const grid = document.getElementById('giphyGrid');
-    if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 50) {
-      fetchGifs();
-    }
-  }
-
-  function selectGif(gif) {
-    if (activeInputId) {
-      document.getElementById(activeInputId).value = gif.id;
-    }
-    if (activePreviewId) {
-      const preview = document.getElementById(activePreviewId);
-      if (preview) {
-        preview.innerHTML = `<img class="selected-gif-preview" src="https://media.giphy.com/media/${gif.id}/giphy.gif">`;
+      if (grid.scrollTop + grid.clientHeight >= grid.scrollHeight - 50) {
+        fetchGifs();
       }
     }
-    closeGiphyModal();
-  }
-</script>
-  </body>
+
+    function selectGif(gif) {
+      if (activeInputId) {
+        document.getElementById(activeInputId).value = gif.id;
+      }
+      if (activePreviewId) {
+        const preview = document.getElementById(activePreviewId);
+        if (preview) {
+          preview.innerHTML = `<img class="selected-gif-preview" src="https://media.giphy.com/media/${gif.id}/giphy.gif">`;
+        }
+      }
+      closeGiphyModal();
+    }
+  </script>
+</body>
+
 </html>

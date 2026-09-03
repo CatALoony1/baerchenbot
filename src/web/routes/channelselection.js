@@ -66,7 +66,8 @@ router.get('/', async (req, res) => {
         }
       }
     }
-    res.render('channelselection', {
+    return res.render('channelselection', {
+      guildIds: req.session.guildIds,
       servers: servers,
       selectedServerId: selectedServerId,
       alleTextChannels: textChannels,
@@ -77,7 +78,8 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.render('channelselction', {
+    returnres.render('channelselction', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       alleTextChannels: [],
@@ -167,7 +169,8 @@ router.post('/change-channel-:chosenobj', async (req, res) => {
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
-    res.render('channelselction', {
+    return res.render('channelselction', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       alleTextChannels: [],

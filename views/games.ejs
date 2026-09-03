@@ -8,7 +8,9 @@
 </head>
 
 <body>
-  <h1>Server & Datenbank</h1>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="games-main main">
+    <h1 class="header-spielkonfiguration page-header">Spielkonfiguration</h1>
   <% if (error) { %>
   <div class="error-box">
     <strong>Fehler:</strong>
@@ -173,6 +175,6 @@
     </form>
   </details>
   <% } %>
+  </div>
 </body>
-
 </html>

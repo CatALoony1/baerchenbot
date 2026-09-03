@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Bot Logs</title>
-    <link rel="stylesheet" href="/css/style.css">
-  </head>
-  <body>
-    <h1>Bot Logs</h1>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Bot Logs</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="logs-main main">
+    <h1 class=" header-botlogs page-header">Bot Logs</h1>
     <div class="toolbar">
       <label for="logSelect">Log-Datei wählen: </label>
       <select id="logSelect" onchange="changeLogFile(this.value)">
         <% logFiles.forEach(function(file) { %>
-          <option value="<%= file %>" <%= file === selectedFile ? 'selected' : '' %>>
-            <%= file %>
-          </option>
+        <option value="<%= file %>" <%= file === selectedFile ? 'selected' : '' %>>
+          <%= file %>
+        </option>
         <% }); %>
       </select>
     </div>
@@ -23,12 +27,12 @@
     <script>
       const logBox = document.getElementById('logBox');
       logBox.scrollTop = logBox.scrollHeight;
+
       function changeLogFile(filename) {
         window.location.href = `/logs?file=${encodeURIComponent(filename)}`;
       }
     </script>
+  </div>
+</body>
 
-    <br /><br />
-    <a href="/">Zurück zur Startseite</a>
-  </body>
 </html>

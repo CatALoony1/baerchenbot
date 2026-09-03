@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>User Management</title>
-    <link rel="stylesheet" href="/css/style.css" />
-  </head>
-  <body>
-    <h1>User Management</h1>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>User Management</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="usr-mgmt-main main">
+    <h1 class="header-usermanagement page-header">User Management</h1>
     <% if (error) { %>
     <div class="error-box">
       <strong>Fehler:</strong>
@@ -31,14 +35,9 @@
           <td><%= user.guildIds %></td>
           <td>
             <% if(user.user !== "Jonas"){ %>
-            <form
-              action="/user-management/delete"
-              method="POST"
-              class="delete_user_form"
-              onsubmit="return confirm('Wirklich löschen?');"
-            >
+            <form action="/user-management/delete" method="POST" class="delete-user-form" onsubmit="return confirm('Wirklich löschen?');">
               <input type="hidden" name="userId" value="<%= user._id %>" />
-              <button type="submit" class="delete_user_btn">Löschen</button>
+              <button type="submit" class="delete-user-btn">Löschen</button>
             </form>
             <% } %>
           </td>
@@ -60,7 +59,7 @@
       <input type="text" id="serverids" name="serverids" required />
       <button type="submit">User eintragen</button>
     </form>
-    <br /><br />
-    <a href="/">Zurück zur Startseite</a>
-  </body>
+  </div>
+</body>
+
 </html>

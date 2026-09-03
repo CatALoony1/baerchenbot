@@ -12,12 +12,14 @@ router.get('/', async (req, res) => {
     }
     const allUsers = await WebUser.find({}).select('-password -__v').lean();
     return res.render('user-management', {
+      guildIds: req.session.guildIds,
       allUsers: allUsers,
       error: null,
     });
   } catch (error) {
     console.log(error);
     return res.render('user-management', {
+      guildIds: req.session.guildIds,
       allUsers: null,
       error: error.message,
     });
@@ -56,6 +58,7 @@ router.post('/create', async (req, res) => {
         `Failed to create user: ${name} - executed by session user: ${req.session.userName}`,
       );
       return res.render('user-management', {
+        guildIds: req.session.guildIds,
         allUsers: allUsers,
         error: 'Der Nutzername ist bereits vergeben!',
       });
@@ -63,6 +66,7 @@ router.post('/create', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('user-management', {
+      guildIds: req.session.guildIds,
       allUsers: null,
       error: error.message,
     });

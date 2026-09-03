@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Datenbank - Dashboard</title>
-    <link rel="stylesheet" href="/css/style.css">
-  </head>
-  <body>
-    <h1>Server & Datenbank</h1>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Datenbank - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="db-main main">
+    <h1 class="header-datenbank page-header">Server & Datenbank</h1>
     <% if (error) { %>
     <div class="error-box">
       <strong>Fehler:</strong>
@@ -17,20 +21,20 @@
       <label for="serverId">Wähle einen Server:</label>
       <select name="serverId" id="serverId">
         <option value="">-- Bitte wählen --</option>
-            <% servers.forEach(function(server) { %>
-                <option value="<%= server.id %>" <%= server.id === selectedServerId ? 'selected' : '' %>>
-                    <%= server.name %>
-                </option>
-            <% }); %>
-        </select>
-        <label for="table">Wähle eine Tabelle:</label>
-        <select name="table" id="table">
-            <option value="">-- Bitte wählen --</option>
-            <% tabellen.forEach(function(tabelle) { %>
-                <option value="<%= tabelle %>" <%= tabelle === selectedTable ? 'selected' : '' %>>
-                    <%= tabelle %>
-                </option>
-            <% }); %>
+        <% servers.forEach(function(server) { %>
+        <option value="<%= server.id %>" <%= server.id === selectedServerId ? 'selected' : '' %>>
+          <%= server.name %>
+        </option>
+        <% }); %>
+      </select>
+      <label for="table">Wähle eine Tabelle:</label>
+      <select name="table" id="table">
+        <option value="">-- Bitte wählen --</option>
+        <% tabellen.forEach(function(tabelle) { %>
+        <option value="<%= tabelle %>" <%= tabelle === selectedTable ? 'selected' : '' %>>
+          <%= tabelle %>
+        </option>
+        <% }); %>
       </select>
       <button type="submit">Tabellen laden</button>
     </form>
@@ -70,8 +74,7 @@
     <% } else if (selectedServerId && selectedTable) { %>
     <p>Es gibt keine Datensätze</p>
     <% } %>
+  </div>
+</body>
 
-    <br /><br />
-    <a href="/">Zurück zur Startseite</a>
-  </body>
 </html>

@@ -1,0 +1,17 @@
+<nav class="idx-sidebar">
+  <a href="/" class="idx-btn back-btn">&#127968;</a>
+  <a href="/user-activity" class="idx-btn user-activity-btn">Nutzeraktivität</a>
+  <a href="/channelselection" class="idx-btn channelselection-btn">Kanäle auswählen</a>
+  <a href="/serverconfig" class="idx-btn serverconfig-btn">Server konfigurieren</a>
+  <a href="/games" class="idx-btn games-btn">Spiele konfigurieren</a>
+  <a href="/logout" class="idx-btn logout-btn">Logout</a>
+  <a href="/change-password" class="idx-btn change-pwd-btn">Passwort ändern</a>
+  <% if (guildIds === 'all') { %>
+  <br /><br />
+  <h1 class="admin_bereich">Admin Bereich</h1>
+  <a href="/user-management" class="idx-btn user-management-btn">User Management</a>
+  <a href="/read-database" class="idx-btn read-database-btn">Datenbank auslesen</a>
+  <a href="/jobs" class="idx-btn jobs-btn">Jobs steuern</a>
+  <a href="/logs" class="idx-btn logs-btn">Logs anschauen</a>
+  <% } %>
+</nav>

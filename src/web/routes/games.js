@@ -72,6 +72,7 @@ router.get('/', async (req, res) => {
       }
     }
     return res.render('games', {
+      guildIds: req.session.guildIds,
       servers: servers,
       selectedServerId: selectedServerId,
       moneyConfMap: moneyConfMap,
@@ -82,6 +83,7 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('games', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
@@ -112,6 +114,7 @@ router.post('/money', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('games', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
@@ -140,6 +143,7 @@ router.post('/quiz', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('games', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
@@ -164,6 +168,7 @@ router.post('/hangman', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('games', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
@@ -188,6 +193,7 @@ router.post('/rad', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('games', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),
@@ -240,6 +246,7 @@ router.post('/lotto', async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.render('games', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       moneyConfMap: new Map(),

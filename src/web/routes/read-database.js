@@ -40,7 +40,8 @@ router.get('/', async (req, res) => {
       console.log(`Table ${selectedTable} is filtered out.`);
       error = 'Diese Tabelle darf nicht angezeigt werden!';
     }
-    res.render('read-database', {
+    return res.render('read-database', {
+      guildIds: req.session.guildIds,
       servers: servers,
       selectedServerId: selectedServerId,
       alleDaten: alleDaten,
@@ -50,7 +51,8 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.render('read-database', {
+    return res.render('read-database', {
+      guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       alleDaten: null,
