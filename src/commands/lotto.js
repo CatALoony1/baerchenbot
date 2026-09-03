@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const Lottozahlen = require('../models/Lottozahlen');
 const giveMoney = require('../utils/giveMoney');
+const { confCache } = require('../utils/data/cache');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -91,11 +92,11 @@ module.exports = {
       }
       if (anzahlNullen == 1) {
         interaction.editReply(
-          `Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit einer Null endet und erhälst somit ${moneyToGive} Blattläuse. Deine Zahl war die ${lottozahl}`,
+          `Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit einer Null endet und erhälst somit ${moneyToGive} ${confCache.get(interaction.guild.id).get('MONEY_NAME')}. Deine Zahl war die ${lottozahl}`,
         );
       } else {
         interaction.editReply(
-          `Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit ${anzahlNullen} Nullen endet und erhälst somit ${moneyToGive} Blattläuse. Deine Zahl war die ${lottozahl}`,
+          `Du hast diesmal nicht den Jackpot geknackt, aber du hast eine Zahl die mit ${anzahlNullen} Nullen endet und erhälst somit ${moneyToGive} ${confCache.get(interaction.guild.id).get('MONEY_NAME')}. Deine Zahl war die ${lottozahl}`,
         );
       }
     } else {

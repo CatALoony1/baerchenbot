@@ -2,25 +2,26 @@ const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 const removeMoney = require('../utils/removeMoney');
 const giveMoney = require('../utils/giveMoney');
 const GameUser = require('../models/GameUser');
+const { confCache } = require('../utils/data/cache');
 require('../models/Bankkonten');
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('geschenk')
     .setDescription(
-      'Verschenke Blattläuse an einen Nutzer (es wird von dir abgezogen).',
+      'Verschenke Spielwährung an einen Nutzer (es wird von dir abgezogen).',
     )
     .addUserOption((option) =>
       option
         .setName('nutzer')
-        .setDescription('Nutzer dem du Blattläuse schenken willst.')
+        .setDescription('Nutzer dem du Spielwährung schenken willst.')
         .setRequired(true),
     )
     .addIntegerOption((option) =>
       option
         .setName('geldmenge')
         .setDescription(
-          'Die Menge an Blattläuse die der Nutzer von dir erhalten soll.',
+          'Die Menge an Spielwährung die der Nutzer von dir erhalten soll.',
         )
         .setRequired(true)
         .setMinValue(1),
@@ -58,7 +59,7 @@ module.exports = {
       }
       if (interaction.user.id === targetUserId) {
         interaction.editReply(
-          'Du kannst dir selbst keine Blattläuse schenken!',
+          `Du kannst dir selbst keine ${confCache.get(interaction.guild.id).get('MONEY_NAME')} schenken!`,
         );
         return;
       }
@@ -69,7 +70,7 @@ module.exports = {
       }).populate('bankkonto');
       if (!user || !user.bankkonto || user.bankkonto.currentMoney < geldMenge) {
         interaction.editReply(
-          `Du hast nicht genug Blattläuse, um ${geldMenge} Blattläuse zu verschenken!`,
+          `Du hast nicht genug ${confCache.get(interaction.guild.id).get('MONEY_NAME')}, um ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} zu verschenken!`,
         );
         return;
       }
@@ -79,11 +80,11 @@ module.exports = {
       await giveMoney(targetUserObj, geldMenge);
       if (reason !== '') {
         await interaction.editReply(
-          `${targetUserObj} du hast ${geldMenge} Blattläuse von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`,
+          `${targetUserObj} du hast ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`,
         );
       } else {
         await interaction.editReply(
-          `${targetUserObj} du hast ${geldMenge} Blattläuse von ${interaction.member} erhalten!`,
+          `${targetUserObj} du hast ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} von ${interaction.member} erhalten!`,
         );
       }
     } catch (error) {

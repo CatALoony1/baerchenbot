@@ -5,6 +5,7 @@ const Gluecksrad = require('../models/Gluecksrad');
 const GameUser = require('../models/GameUser');
 require('../models/Bankkonten');
 require('dotenv').config();
+const { confCache } = require('../utils/data/cache');
 
 function getRandom(min, max) {
   min = Math.ceil(min);
@@ -25,7 +26,7 @@ module.exports = {
     .addIntegerOption((option) =>
       option
         .setName('einsatz')
-        .setDescription('Anzahl an Blattläuse die du setzen möchtest.')
+        .setDescription('Anzahl an Spielwährung die du setzen möchtest.')
         .setRequired(true)
         .setMaxValue(10000)
         .setMinValue(1),
@@ -52,7 +53,7 @@ module.exports = {
       }).populate('bankkonto');
       if (!user || !user.bankkonto || user.bankkonto.currentMoney < einsatz) {
         interaction.editReply(
-          `Du hast nicht genug Blattläuse, um ${einsatz} Blattläuse zu setzen!`,
+          `Du hast nicht genug ${confCache.get(interaction.guild.id).get('MONEY_NAME')}, um ${einsatz} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} zu setzen!`,
         );
         return;
       }
@@ -73,7 +74,7 @@ module.exports = {
       const targetUserObj = interaction.member;
       await removeMoney(targetUserObj, einsatz);
       await interaction.editReply(
-        `Dein Einsatz in Höhe von ${einsatz} Blattläuse wurde abgezogen!`,
+        `Dein Einsatz in Höhe von ${einsatz} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} wurde abgezogen!`,
       );
       const delay = 1000;
       let sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
@@ -90,24 +91,24 @@ module.exports = {
         if (result == einsatz) {
           await giveMoney(targetUserObj, result);
           await interaction.editReply(
-            `Du hast deinen Einsatz von ${einsatz} Blattläuse zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Blattläuse`,
+            `Du hast deinen Einsatz von ${einsatz} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} zurückgewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} ${confCache.get(interaction.guild.id).get('MONEY_NAME')}`,
           );
         } else if (result == gluecksrad.pool) {
           await giveMoney(targetUserObj, result);
           await interaction.editReply(
-            `Du hast den Jackpot geknackt und ${result} Blattläuse gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Blattläuse`,
+            `Du hast den Jackpot geknackt und ${result} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} ${confCache.get(interaction.guild.id).get('MONEY_NAME')}`,
           );
         } else {
           await giveMoney(targetUserObj, result);
           await interaction.editReply(
-            `Du hast ${result} Blattläuse gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Blattläuse`,
+            `Du hast ${result} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} gewonnen!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} ${confCache.get(interaction.guild.id).get('MONEY_NAME')}`,
           );
         }
         result = result * -1;
       } else {
         result = Math.floor(result / 2);
         await interaction.editReply(
-          `Du hast ${result} Blattläuse verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} Blattläuse`,
+          `Du hast ${result} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} verloren!\n\nGewinnchance: ${gewinnchance}% | Pool: ${gluecksrad.pool} ${confCache.get(interaction.guild.id).get('MONEY_NAME')}`,
         );
         await removeMoney(targetUserObj, result);
       }
@@ -120,7 +121,7 @@ module.exports = {
         if (gluecksrad.sonderpool != 0) {
           await giveMoney(targetUserObj, gluecksrad.sonderpool);
           await interaction.channel.send(
-            `Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool} Blattläuse erhalten!`,
+            `Glückwunsch ${interaction.member}! Du hast bei der Sonderverlosung gewonnen und den Sonderpool von ${gluecksrad.sonderpool} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} erhalten!`,
           );
           gluecksrad.sonderpool = 0;
         }

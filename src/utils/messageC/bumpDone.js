@@ -2,6 +2,8 @@ const Bump = require('../../models/Bump');
 const Level = require('../../models/Level');
 require('dotenv').config();
 const { Message, EmbedBuilder } = require('discord.js');
+const { confCache } = require('../data/cache');
+
 /**
  *
  * @param {Message} message
@@ -34,7 +36,7 @@ async function bumpDone(message) {
       const embed = new EmbedBuilder()
         .setTitle('Dankeschön für deine Untersützung!❤️')
         .setDescription(
-          `Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung und 15% auf jegliche Blattläuse!`,
+          `Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung und 15% auf jegliche ${confCache.get(interaction.guild.id).get('MONEY_NAME')}!`,
         )
         .setThumbnail(
           member.user.displayAvatarURL({ format: 'png', dynamic: true }),

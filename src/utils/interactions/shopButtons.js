@@ -6,6 +6,7 @@ require('../../models/Inventar');
 const Items = require('../../models/Items');
 const removeMoney = require('../removeMoney');
 require('dotenv').config();
+const { confCache } = require('../data/cache');
 
 async function shopButtons(interaction) {
   let targetMessage = await interaction.channel.messages.fetch(
@@ -59,7 +60,9 @@ async function shopButtons(interaction) {
         description
           .substring(
             description.indexOf('Preis:') + 7,
-            description.indexOf('Blattläuse') - 1,
+            description.indexOf(
+              confCache.get(interaction.guild.id).get('MONEY_NAME'),
+            ) - 1,
           )
           .replaceAll('.', ''),
       );
@@ -79,13 +82,16 @@ async function shopButtons(interaction) {
       }
       if (user.bankkonto.currentMoney < price) {
         await interaction.reply({
-          content: 'Du hast nicht genug Blattläuse auf deinem Bankkonto!',
+          content: `Du hast nicht genug ${confCache.get(interaction.guild.id).get('MONEY_NAME')} auf deinem Bankkonto!`,
           flags: MessageFlags.Ephemeral,
         });
         return;
       }
       if (!itemName.includes('Keks')) {
-        const item = await Items.findOne({ name: itemName });
+        const item = await Items.findOne({
+          name: itemName,
+          guildId: interaction.guild.id,
+        });
         if (!item) {
           await interaction.reply({
             content: `Das Item ${itemName} existiert nicht!`,
@@ -112,16 +118,11 @@ async function shopButtons(interaction) {
           });
         }
       } else {
-        const booster = interaction.member.roles.cache.some(
-          (role) => role.name === 'Server Booster',
-        )
-          ? true
-          : false;
         let amount = price;
-        if (booster) {
-          amount = Math.floor((amount * 100) / 90);
-        }
-        const item = await Items.findOne({ name: 'Keks' });
+        const item = await Items.findOne({
+          name: 'Keks',
+          guildId: interaction.guild.id,
+        });
         if (!item) {
           await interaction.reply({
             content: `Das Item Keks existiert nicht!`,

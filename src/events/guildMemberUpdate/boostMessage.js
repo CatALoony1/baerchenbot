@@ -1,6 +1,8 @@
 const { serverConfCache } = require('../../utils/data/cache');
 const { EmbedBuilder } = require('discord.js');
 const getGifById = require('../../utils/getGifById');
+const { confCache } = require('../../utils/data/cache');
+
 module.exports = {
   run: async (oldMember, newMember) => {
     const oldStatus = oldMember.premiumSince;
@@ -35,7 +37,9 @@ module.exports = {
               iconURL: newMember.user.displayAvatarURL({ size: 256 }),
             })
             .setTitle(`Danke für den Serverboost!❤️`)
-            .setDescription(`Als Dank erhältst du 15% mehr Blattläuse und XP.`)
+            .setDescription(
+              `Als Dank erhältst du 15% mehr ${confCache.get(newMember.guild.id).get('MONEY_NAME')} und XP.`,
+            )
             .setImage(gifUrl);
           await targetChannel.send({
             content: `||<@${newMember.id}>||`,

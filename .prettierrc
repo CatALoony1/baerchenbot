@@ -1,5 +1,4 @@
 {
-  "plugins": ["prettier-plugin-ejs"],
   "semi": true,
   "singleQuote": true,
   "tabWidth": 2,

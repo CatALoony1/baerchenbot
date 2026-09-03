@@ -5,6 +5,9 @@ const removeMoney = require('../utils/removeMoney.js');
 const giveMoney = require('../utils/giveMoney.js');
 const getGifById = require('../utils/getGifById.js');
 const { serverConfCache } = require('../utils/data/cache');
+const { confCache } = require('../utils/data/cache');
+const GameUser = require('../models/GameUser.js');
+require('../models/Bankkonten.js');
 
 let checkActiveItemsJob = null;
 
@@ -55,7 +58,7 @@ function startJob(client) {
                       return;
                     }
                     await targetChannel.send({
-                      content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
+                      content: `Bei <@${activeItem.usedOn}> ist eine Bombe explodiert! **${amount}** ${confCache.get(guild.id).get('MONEY_NAME')} sind verpufft!`,
                       files: [gifUrl],
                     });
                   }
@@ -107,11 +110,24 @@ function startJob(client) {
                     (await guild.members.cache.get(activeItem.usedOn)) ||
                     (await guild.members.fetch(activeItem.usedOn));
                   if (userObj && usedOnObj) {
-                    await removeMoney(usedOnObj, 1000);
-                    await giveMoney(userObj, 1000);
-                    await targetChannel.send(
-                      `Von <@${activeItem.usedOn}> wurden 1000 Blattläuse Schulden an <@${activeItem.user}> übergeben.`,
-                    );
+                    const usedOnGameUser = await GameUser.findOne({
+                      userId: activeItem.usedOn,
+                      guildId: guild.id,
+                    }).populate('bankkonto');
+                    if (usedOnGameUser && usedOnGameUser.bankkonto) {
+                      await removeMoney(
+                        usedOnObj,
+                        usedOnGameUser.bankkonto.currentMoney * 0.01,
+                      );
+                      await giveMoney(userObj, 1000);
+                      await targetChannel.send(
+                        `Von <@${activeItem.usedOn}> wurden 1000 ${confCache.get(guild.id).get('MONEY_NAME')} Schulden an <@${activeItem.user}> übergeben.`,
+                      );
+                    } else {
+                      await targetChannel.send(
+                        `<@${activeItem.usedOn}> hat kein Bankkonto, daher konnte der Schuldschein nicht ausgeführt werden. Ganz schön blöd für <@${activeItem.user}>.`,
+                      );
+                    }
                   }
                 }
               }

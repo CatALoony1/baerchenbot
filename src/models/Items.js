@@ -16,13 +16,9 @@ const itemsSchema = new Schema({
     type: Boolean,
     default: false,
   },
-  available: {
-    type: Boolean,
-    default: true,
-  },
-  guildIds: {
-    type: [String],
-    default: [],
+  guildId: {
+    type: String,
+    required: true,
   },
 });
 

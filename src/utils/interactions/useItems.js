@@ -23,7 +23,7 @@ const VoiceChannel = require('../../models/VoiceChannel');
 const removeMoney = require('../removeMoney.js');
 const giveMoney = require('../giveMoney.js');
 const getGifById = require('../getGifById.js');
-const { serverConfCache } = require('../data/cache');
+const { serverConfCache, confCache } = require('../data/cache');
 
 const hugTexts = [
   (author, target) => `${author} umarmt ${target} ganz fest! Awwww! ❤️`,
@@ -333,16 +333,16 @@ async function useItems(interaction, client) {
           content = `Möchtest du den obersten Platz aktivieren?`;
           break;
         }
-        case 'Blattläuse-Klau-Banane': {
+        case 'Klau-Banane': {
           const selectMenu = new UserSelectMenuBuilder()
             .setCustomId('useItem_BlattläuseKlauBanane_select')
             .setPlaceholder(
-              'Wähle einen Nutzer aus, dessen Blattläuse du klauen möchtest.',
+              `Wähle einen Nutzer aus, dessen ${confCache.get(interaction.guild.id).get('MONEY_NAME')} du klauen möchtest.`,
             )
             .setMinValues(1)
             .setMaxValues(1);
           firstRow = new ActionRowBuilder().addComponents(selectMenu);
-          content = `Wähle einen Nutzer aus, dessen Blattläuse du klauen möchtest.`;
+          content = `Wähle einen Nutzer aus, dessen ${confCache.get(interaction.guild.id).get('MONEY_NAME')} du klauen möchtest.`;
           break;
         }
         case 'Schuldschein': {
@@ -1184,14 +1184,17 @@ async function useItemBombe(interaction) {
         beweiseButton,
       );
       await interaction.update({
-        content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach Blattläusen durchsuchen oder Beweise sichern möchtest.`,
+        content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach ${confCache.get(interaction.guild.id).get('MONEY_NAME')} durchsuchen oder Beweise sichern möchtest.`,
         components: [row],
       });
       activeItem.extras = 'defused';
       await activeItem.save();
       return;
     } else {
-      const amount = getRandom(20000, 40000);
+      const amount = getRandom(
+        Number(confCache.get(interaction.guild.id).get('BOMB_EX_MIN')),
+        Number(confCache.get(interaction.guild.id).get('BOMB_EX_MAX')),
+      );
       await removeMoney(interaction.member, amount);
       const gifUrl = await getGifById('mZryFzM65MtpJ5fOMj');
       if (!gifUrl.includes('http')) {
@@ -1199,7 +1202,7 @@ async function useItemBombe(interaction) {
         return;
       }
       await interaction.update({
-        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** Blattläuse sind verpufft!`,
+        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** ${confCache.get(interaction.guild.id).get('MONEY_NAME')} sind verpufft!`,
         files: [gifUrl],
         components: [],
       });
@@ -1217,10 +1220,13 @@ async function useItemBombe(interaction) {
       });
       return;
     }
-    const amount = getRandom(10000, 20000);
+    const amount = getRandom(
+      Number(confCache.get(interaction.guild.id).get('BOMB_DEF_MIN')),
+      Number(confCache.get(interaction.guild.id).get('BOMB_DEF_MAX')),
+    );
     await giveMoney(interaction.member, amount);
     await interaction.update({
-      content: `Du hast die Bombe durchsucht und **${amount}** Blattläuse gefunden!`,
+      content: `Du hast die Bombe durchsucht und **${amount}** ${confCache.get(interaction.guild.id).get('MONEY_NAME')} gefunden!`,
       components: [],
       files: [],
     });
@@ -1264,7 +1270,7 @@ async function useItemBlattläuseKlauBanane(interaction) {
     { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
   );
   const itemId = user.inventar.items.findIndex(
-    (item) => item.item.name === 'Blattläuse-Klau-Banane',
+    (item) => item.item.name === 'Klau-Banane',
   );
   if (user.inventar.items[itemId].quantity > 1) {
     user.inventar.items[itemId].quantity -= 1;
@@ -1272,7 +1278,7 @@ async function useItemBlattläuseKlauBanane(interaction) {
     user.inventar.items.splice(itemId, 1);
   } else {
     await interaction.update({
-      content: 'Du hast keine Blattläuse Klau Banane in deinem Inventar!',
+      content: `Du hast keine ${confCache.get(interaction.guild.id).get('MONEY_NAME')} Klau Banane in deinem Inventar!`,
       components: [],
       flags: MessageFlags.Ephemeral,
     });
@@ -1280,7 +1286,10 @@ async function useItemBlattläuseKlauBanane(interaction) {
   }
   await user.inventar.save();
   const channel = interaction.channel;
-  const amout = getRandom(10000, 30000);
+  const amout = getRandom(
+    Number(confCache.get(interaction.guild.id).get('KLAU_BANANE_MIN')),
+    Number(confCache.get(interaction.guild.id).get('KLAU_BANANE_MAX')),
+  );
   await removeMoney(targetMemberObject, amout);
   await giveMoney(interaction.member, amout);
   await interaction.update({
@@ -1289,7 +1298,7 @@ async function useItemBlattläuseKlauBanane(interaction) {
     flags: MessageFlags.Ephemeral,
   });
   await channel.send({
-    content: `<@${interaction.user.id}> warf eine Blattläuse-Klau-Banane auf <@${targetUserId}> und klaute **${amout}** Blattläuse!`,
+    content: `<@${interaction.user.id}> warf eine Klau-Banane auf <@${targetUserId}> und klaute **${amout}** ${confCache.get(interaction.guild.id).get('MONEY_NAME')}!`,
   });
 }
 
@@ -1497,7 +1506,10 @@ async function useItemKeks(interaction) {
       return;
     }
     await user.inventar.save();
-    const item = await Items.findOne({ name: 'Keks' });
+    const item = await Items.findOne({
+      name: 'Keks',
+      guildId: interaction.guild.id,
+    });
     const itemIndex = otheruser.inventar.items.findIndex((inventarItem) =>
       inventarItem.item.equals(item._id),
     );
