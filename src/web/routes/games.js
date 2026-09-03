@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
         itemConfMap = new Map(gameConf.map((item) => [item.key, item.value]));
         const availableItems = await Items.find({ guildId: selectedServerId });
         itemsMap = new Map(
-          Array.from(itemMap.entries()).map(([key, value]) => {
+          Array.from(itemMap).map(([key, value]) => {
             const itemInAvailable = availableItems.some(
               (item) => item.name === key,
             );
