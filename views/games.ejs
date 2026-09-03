@@ -145,6 +145,7 @@
               <th>Beschreibung</th>
               <th>Aktiv</th>
               <th>Einstellungen</th>
+              <th>Speichern</th>
             </tr>
           </thead>
           <tbody>
@@ -157,16 +158,24 @@
               </td>
               <td>
                 <% if (itemName === 'Bombe') {%>
-                <input type="number" class="games-item-input" name="BOMB_EX_MIN" value="<%= itemConfMap.get('BOMB_EX_MIN') || 0 %>" required>
-                <input type="number" class="games-item-input" name="BOMB_EX_MAX" value="<%= itemConfMap.get('BOMB_EX_MAX') || 0 %>" required>
-                <input type="number" class="games-item-input" name="BOMB_DEF_MIN" value="<%= itemConfMap.get('BOMB_DEF_MIN') || 0 %>" required>
-                <input type="number" class="games-item-input" name="BOMB_DEF_MAX" value="<%= itemConfMap.get('BOMB_DEF_MAX') || 0 %>" required>
+                <label for="bomb-ex-min">Mindestabzug bei explosion der Bombe:</label>
+                <input id="bomb-ex-min" type="number" class="games-item-input" name="BOMB_EX_MIN" value="<%= itemConfMap.get('BOMB_EX_MIN') || 0 %>" required>
+                <label for="bomb-ex-max">Maximalabzug bei explosion der Bombe:</label>
+                <input id="bomb-ex-max" type="number" class="games-item-input" name="BOMB_EX_MAX" value="<%= itemConfMap.get('BOMB_EX_MAX') || 0 %>" required>
+                <label for="bomb-def-min">Mindestgewinn bei entschärfen der Bombe:</label>
+                <input id="bomb-def-min" type="number" class="games-item-input" name="BOMB_DEF_MIN" value="<%= itemConfMap.get('BOMB_DEF_MIN') || 0 %>" required>
+                <label for="bomb-def-max">Maximalgewinn bei entschärfen der Bombe:</label>
+                <input id="bomb-def-max" type="number" class="games-item-input" name="BOMB_DEF_MAX" value="<%= itemConfMap.get('BOMB_DEF_MAX') || 0 %>" required>
                 <% } else if (itemName === 'Klau-Banane') { %>
-                <input type="number" class="games-item-input" name="KLAU_BANANE_MIN" value="<%= itemConfMap.get('KLAU_BANANE_MIN') || 0 %>" required>
-                <input type="number" class="games-item-input" name="KLAU_BANANE_MAX" value="<%= itemConfMap.get('KLAU_BANANE_MAX') || 0 %>" required>
+                <label for="klau-max">Mindestabzug bei Nutzen der Klaubanane:</label>
+                <input id="klau-min" type="number" class="games-item-input" name="KLAU_BANANE_MIN" value="<%= itemConfMap.get('KLAU_BANANE_MIN') || 0 %>" required>
+                <label for="klau-max">Maximalabzug bei Nutzen der Klaubanane:</label>
+                <input id="klau-max" type="number" class="games-item-input" name="KLAU_BANANE_MAX" value="<%= itemConfMap.get('KLAU_BANANE_MAX') || 0 %>" required>
                 <% } %>
                 <input type="number" class="games-item-input" name="price_<%= itemName %>" value="<%= item.price || 0 %>">
                 <input type="checkbox" class="games-item-ckbx" name="boost_<%= itemName %>" <%= item.boostonly ? 'checked' : '' %>>
+              </td>
+              <td>
                 <button type="submit" class="games-item-sv-one" name="singleSave" value="<%= itemName %>">Speichern</button>
               </td>
             </tr>
