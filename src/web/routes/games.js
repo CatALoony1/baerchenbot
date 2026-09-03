@@ -4,7 +4,7 @@ const router = express.Router();
 const Config = require('../../models/Config');
 const Items = require('../../models/Items');
 const { refreshConfCache } = require('../../utils/data/cache');
-const { itemMap } = require('../../utils/data/Items');
+const itemMap = require('../../utils/data/Items');
 
 router.get('/', async (req, res) => {
   try {
@@ -46,7 +46,7 @@ router.get('/', async (req, res) => {
         itemConfMap = new Map(gameConf.map((item) => [item.key, item.value]));
         const availableItems = await Items.find({ guildId: selectedServerId });
         itemsMap = new Map(
-          Array.from(itemMap).map(([key, value]) => {
+          Array.from(itemMap.entries()).map(([key, value]) => {
             const itemInAvailable = availableItems.some(
               (item) => item.name === key,
             );
