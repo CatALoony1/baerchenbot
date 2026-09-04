@@ -173,7 +173,7 @@
                 <label for="klau-max">Maximalabzug bei Nutzen der Klaubanane:</label>
                 <input id="klau-max" type="number" class="games-item-input" name="KLAU_BANANE_MAX" value="<%= itemConfMap.get('KLAU_BANANE_MAX') || 0 %>" required>
                 <% } %>
-                <label for="item-price-<%= itemName %>">Preis des items:</label>
+                <label for="item-price-<%= itemName %>">Preis des Items:</label>
                 <input id="item-price-<%= itemName %>" type="number" class="games-item-input" name="price_<%= itemName %>" value="<%= item.price || 0 %>">
                 <label for="ckbx-boost-<%= itemName %>">Nur für Booster?</label>
                 <input id="ckbx-boost-<%= itemName %>" type="checkbox" class="games-item-ckbx" name="boost_<%= itemName %>" <%= item.boostonly ? 'checked' : '' %>>

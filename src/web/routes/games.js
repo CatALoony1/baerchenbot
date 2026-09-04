@@ -299,28 +299,28 @@ function addItemToList(req, itemName, itemList, additionalSaves, guildId) {
   });
   itemList.add(item);
   if (itemName === 'Bombe' && available) {
-    additionalSaves.set(
+    additionalSaves.add(
       new Config({
         key: 'BOMB_EX_MIN',
         value: req.body['BOMB_EX_MIN'],
         guildId: guildId,
       }),
     );
-    additionalSaves.set(
+    additionalSaves.add(
       new Config({
         key: 'BOMB_EX_MAX',
         value: req.body['BOMB_EX_MAX'],
         guildId: guildId,
       }),
     );
-    additionalSaves.set(
+    additionalSaves.add(
       new Config({
         key: 'BOMB_DEF_MIN',
         value: req.body['BOMB_DEF_MIN'],
         guildId: guildId,
       }),
     );
-    additionalSaves.set(
+    additionalSaves.add(
       new Config({
         key: 'BOMB_DEF_MAX',
         value: req.body['BOMB_DEF_MAX'],
@@ -328,14 +328,14 @@ function addItemToList(req, itemName, itemList, additionalSaves, guildId) {
       }),
     );
   } else if (itemName === 'Klau-Banane' && available) {
-    additionalSaves.set(
+    additionalSaves.add(
       new Config({
         key: 'KLAU_BANANE_MIN',
         value: req.body['KLAU_BANANE_MIN'],
         guildId: guildId,
       }),
     );
-    additionalSaves.set(
+    additionalSaves.add(
       new Config({
         key: 'KLAU_BANANE_MAX',
         value: req.body['KLAU_BANANE_MAX'],
