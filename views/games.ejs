@@ -154,7 +154,8 @@
               <td><%= itemName %></td>
               <td><%= item.description %></td>
               <td>
-                <input type="checkbox" class="games-item-avai-ckbx" name="available_<%= itemName %>" <%= item.available ? 'checked' : '' %>>
+                <label for="ckbx-avai-<%= itemName %>">Aktiv?</label>
+                <input id="ckbx-avai-<%= itemName %>" type="checkbox" class="games-item-avai-ckbx" name="available_<%= itemName %>" <%= item.available ? 'checked' : '' %>>
               </td>
               <td>
                 <% if (itemName === 'Bombe') {%>
@@ -172,8 +173,10 @@
                 <label for="klau-max">Maximalabzug bei Nutzen der Klaubanane:</label>
                 <input id="klau-max" type="number" class="games-item-input" name="KLAU_BANANE_MAX" value="<%= itemConfMap.get('KLAU_BANANE_MAX') || 0 %>" required>
                 <% } %>
-                <input type="number" class="games-item-input" name="price_<%= itemName %>" value="<%= item.price || 0 %>">
-                <input type="checkbox" class="games-item-ckbx" name="boost_<%= itemName %>" <%= item.boostonly ? 'checked' : '' %>>
+                <label for="item-price-<%= itemName %>">Preis des items:</label>
+                <input id="item-price-<%= itemName %>" type="number" class="games-item-input" name="price_<%= itemName %>" value="<%= item.price || 0 %>">
+                <label for="ckbx-boost-<%= itemName %>">Nur für Booster?</label>
+                <input id="ckbx-boost-<%= itemName %>" type="checkbox" class="games-item-ckbx" name="boost_<%= itemName %>" <%= item.boostonly ? 'checked' : '' %>>
               </td>
               <td>
                 <button type="submit" class="games-item-sv-one" name="singleSave" value="<%= itemName %>">Speichern</button>
