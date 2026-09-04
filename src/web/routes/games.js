@@ -262,15 +262,33 @@ router.post('/items', async (req, res) => {
     const { guildId, singleSave } = req.body;
     const itemList = new Set();
     const additionalSaves = new Set();
+    const loeschListe = new Set();
     if (singleSave) {
       const itemName = singleSave;
-      addItemToList(req, itemName, itemList, additionalSaves, guildId);
+      addItemToList(
+        req,
+        itemName,
+        itemList,
+        additionalSaves,
+        loeschListe,
+        guildId,
+      );
     } else {
       for (const itemName of itemMap.keys()) {
-        addItemToList(req, itemName, itemList, additionalSaves, guildId);
+        addItemToList(
+          req,
+          itemName,
+          itemList,
+          additionalSaves,
+          loeschListe,
+          guildId,
+        );
       }
     }
     await addToDbItems(itemList, additionalSaves, guildId);
+    if (loeschListe.size > 0) {
+      await deleteFromDbItems(loeschListe, guildId);
+    }
     const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
     return res.redirect(targetUrl);
   } catch (error) {
@@ -286,62 +304,81 @@ router.post('/items', async (req, res) => {
   }
 });
 
-function addItemToList(req, itemName, itemList, additionalSaves, guildId) {
+async function deleteFromDbItems(loeschListe, guildId) {
+  const itemNames = Array.from(loeschListe);
+  await Items.deleteMany({
+    guildId: guildId,
+    name: { $in: itemNames },
+  });
+}
+
+function addItemToList(
+  req,
+  itemName,
+  itemList,
+  additionalSaves,
+  loeschListe,
+  guildId,
+) {
   const available = req.body[`available_${itemName}`];
   const price = req.body[`price_${itemName}`];
   const boostOnly = req.body[`boost_${itemName}`];
-  const item = new Items({
-    name: itemName,
-    beschreibung: itemMap.get(itemName),
-    preis: price,
-    boostOnly: boostOnly,
-    guildId: guildId,
-  });
-  itemList.add(item);
-  if (itemName === 'Bombe' && available) {
-    additionalSaves.add(
-      new Config({
-        key: 'BOMB_EX_MIN',
-        value: req.body['BOMB_EX_MIN'],
-        guildId: guildId,
-      }),
-    );
-    additionalSaves.add(
-      new Config({
-        key: 'BOMB_EX_MAX',
-        value: req.body['BOMB_EX_MAX'],
-        guildId: guildId,
-      }),
-    );
-    additionalSaves.add(
-      new Config({
-        key: 'BOMB_DEF_MIN',
-        value: req.body['BOMB_DEF_MIN'],
-        guildId: guildId,
-      }),
-    );
-    additionalSaves.add(
-      new Config({
-        key: 'BOMB_DEF_MAX',
-        value: req.body['BOMB_DEF_MAX'],
-        guildId: guildId,
-      }),
-    );
-  } else if (itemName === 'Klau-Banane' && available) {
-    additionalSaves.add(
-      new Config({
-        key: 'KLAU_BANANE_MIN',
-        value: req.body['KLAU_BANANE_MIN'],
-        guildId: guildId,
-      }),
-    );
-    additionalSaves.add(
-      new Config({
-        key: 'KLAU_BANANE_MAX',
-        value: req.body['KLAU_BANANE_MAX'],
-        guildId: guildId,
-      }),
-    );
+  if (available) {
+    const item = new Items({
+      name: itemName,
+      beschreibung: itemMap.get(itemName),
+      preis: price,
+      boostOnly: boostOnly,
+      guildId: guildId,
+    });
+    itemList.add(item);
+    if (itemName === 'Bombe') {
+      additionalSaves.add(
+        new Config({
+          key: 'BOMB_EX_MIN',
+          value: req.body['BOMB_EX_MIN'],
+          guildId: guildId,
+        }),
+      );
+      additionalSaves.add(
+        new Config({
+          key: 'BOMB_EX_MAX',
+          value: req.body['BOMB_EX_MAX'],
+          guildId: guildId,
+        }),
+      );
+      additionalSaves.add(
+        new Config({
+          key: 'BOMB_DEF_MIN',
+          value: req.body['BOMB_DEF_MIN'],
+          guildId: guildId,
+        }),
+      );
+      additionalSaves.add(
+        new Config({
+          key: 'BOMB_DEF_MAX',
+          value: req.body['BOMB_DEF_MAX'],
+          guildId: guildId,
+        }),
+      );
+    } else if (itemName === 'Klau-Banane') {
+      additionalSaves.add(
+        new Config({
+          key: 'KLAU_BANANE_MIN',
+          value: req.body['KLAU_BANANE_MIN'],
+          guildId: guildId,
+        }),
+      );
+      additionalSaves.add(
+        new Config({
+          key: 'KLAU_BANANE_MAX',
+          value: req.body['KLAU_BANANE_MAX'],
+          guildId: guildId,
+        }),
+      );
+    }
+  } else {
+    loeschListe.add(itemName);
   }
 }
 
