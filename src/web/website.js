@@ -12,6 +12,7 @@ const logs = require('./routes/logs');
 const jobs = require('./routes/jobs');
 const channelselection = require('./routes/channelselection');
 const serverconfig = require('./routes/serverconfig');
+const darkmode = require('./routes/darkmode');
 const app = express();
 const port = 3003;
 const WebUser = require('../models/WebUser');
