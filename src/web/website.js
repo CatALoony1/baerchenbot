@@ -116,7 +116,7 @@ function startWebsite(client) {
     );
     const message = req.session.message || null;
     req.session.message = null;
-    console.log(guild.iconURL());
+    console.log(guild.iconURL({ size: 256 }));
     return res.render('index', {
       servers: servers,
       message: message,
