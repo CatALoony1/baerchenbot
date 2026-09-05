@@ -1,5 +1,6 @@
 <nav class="idx-sidebar">
   <a href="/" class="idx-btn back-btn">&#127968;</a>
+
   <a href="/user-activity" class="idx-btn user-activity-btn">Nutzeraktivität</a>
   <a href="/channelselection" class="idx-btn channelselection-btn">Kanäle auswählen</a>
   <a href="/serverconfig" class="idx-btn serverconfig-btn">Server konfigurieren</a>
@@ -14,4 +15,7 @@
   <a href="/jobs" class="idx-btn jobs-btn">Jobs steuern</a>
   <a href="/logs" class="idx-btn logs-btn">Logs anschauen</a>
   <% } %>
+  <form action="/darkmode" methode="POST">
+    <button type="submit" class="idx-btn darkmode-btn">Dunkelmodus</button>
+  </form>
 </nav>

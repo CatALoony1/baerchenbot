@@ -63,6 +63,7 @@ function startWebsite(client) {
       req.session.userName = user.user;
       req.session.guildIds = user.guildIds;
       req.session.initialPWD = user.initialPWD;
+      req.session.darkmode = false;
       if (user.initialPWD) {
         return res.redirect('/change-password');
       }
@@ -135,6 +136,7 @@ function startWebsite(client) {
   app.use('/channelselection', requireLogin, channelselection);
   app.use('/serverconfig', requireLogin, serverconfig);
   app.use('/games', requireLogin, games);
+  app.use('/darkmode', requireLogin, darkmode);
 
   app.get(/(.*)/, (req, res) => {
     return res.redirect('/');

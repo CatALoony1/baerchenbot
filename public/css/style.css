@@ -7,12 +7,20 @@ table {
   border-collapse: collapse;
   border: #393939;
 }
-body {
+/*body {
   background-color: #ffffff;
-}
+}*/
 /*
 Hier folgt Class content
 */
+
+.darkmode {
+  background-color: #393939;
+}
+
+.lightmode {
+  background-color: #ffffff;
+}
 
 /* Sidebar */
 .idx-sidebar {
