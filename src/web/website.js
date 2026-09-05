@@ -123,6 +123,7 @@ function startWebsite(client) {
       selectedServerId: selectedServerId,
       onlineMemNum: onlineMemNum,
       humanMemNum: humanMemNum,
+      serverIcon: guild.iconURL(),
     });
   });
   app.use('/read-database', requireLogin, readDatabaseRouter);
