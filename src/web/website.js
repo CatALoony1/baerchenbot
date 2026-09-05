@@ -126,6 +126,7 @@ function startWebsite(client) {
       onlineMemNum: onlineMemNum,
       humanMemNum: humanMemNum,
       serverIcon: guild.iconURL(),
+      darkmode: req.session.darkmode,
     });
   });
   app.use('/read-database', requireLogin, readDatabaseRouter);
