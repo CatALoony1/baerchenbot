@@ -65,7 +65,7 @@ const levelSchema = new Schema({
   },
   bumps: {
     type: Number,
-    defaule: 0,
+    default: 0,
   },
 });
 
