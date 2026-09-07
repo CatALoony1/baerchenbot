@@ -5,9 +5,11 @@
   <meta charset="UTF-8" />
   <title>Bot Dashboard</title>
   <link rel="stylesheet" href="/css/style.css" />
+  <!--Skript ausführen, welches überprüft was voreingestellt ist-->
+  <%- include('partials/darkmode-script') %>
 </head>
 
-<body class="<%= darkmode ? 'darkmode' : 'lightmode' %>">
+<body>
   <%- include('partials/sidebar', {guildIds: guildIds}) %>
   <div class=" idx-main main">
     <h1 class="idx-header">Willkommen im Control Panel!</h1>

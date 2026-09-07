@@ -1,5 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap');
 /*
+Hier folgen variablen
+:root entspricht den default werten die genutzt werden, wenn es keine class gibt oder die class keine variablen definiert hat
+*/
+:root {
+  --bg-color: #ffffff;
+  --sdbar-bg: linear-gradient(0deg, #8de0e0, #8de0e0);
+}
+
+.darkmode {
+  --bg-color: #393939;
+  --sdbar-bg: linear-gradient(0deg, #538d8d, #538d8d);
+}
+
+/*
 Hier folgt Element content
 */
 
@@ -7,24 +21,16 @@ table {
   border-collapse: collapse;
   border: #393939;
 }
-/*body {
-  background-color: #ffffff;
-}*/
+body {
+  background-color: var(--bg-color);
+}
 /*
 Hier folgt Class content
 */
 
-.darkmode {
-  background-color: #393939;
-}
-
-.lightmode {
-  background-color: #ffffff;
-}
-
 /* Sidebar */
 .idx-sidebar {
-  background: linear-gradient(0deg, #8de0e0, #8de0e0);
+  background: var(--sdbar-bg);
   position: fixed;
   top: 0;
   left: 0;

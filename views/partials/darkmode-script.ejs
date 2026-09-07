@@ -1,0 +1,13 @@
+<!--<Wird beim öffnen einer Seite ausgeführt um zu checken was eingestellt ist -->
+<script>
+  //variable darkmode aus lokalem speicher (im Browser) auslesen
+  const savState = localStorage.getItem('darkmode');
+  //Systempreferenzen aus dem browser auslesen
+  const sysDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  //Wenn darkmode ausgewählt ist
+  if (savState === 'dark' || (!savState && sysDark)) {
+    //Darkmode class zu html tag hinzufügen
+    document.documentElement.classList.add('darkmode');
+  }
+</script>

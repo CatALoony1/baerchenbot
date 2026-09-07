@@ -12,7 +12,6 @@ const logs = require('./routes/logs');
 const jobs = require('./routes/jobs');
 const channelselection = require('./routes/channelselection');
 const serverconfig = require('./routes/serverconfig');
-const darkmode = require('./routes/darkmode');
 const app = express();
 const port = 3003;
 const WebUser = require('../models/WebUser');
@@ -64,7 +63,6 @@ function startWebsite(client) {
       req.session.userName = user.user;
       req.session.guildIds = user.guildIds;
       req.session.initialPWD = user.initialPWD;
-      req.session.darkmode = false;
       if (user.initialPWD) {
         return res.redirect('/change-password');
       }
@@ -126,7 +124,6 @@ function startWebsite(client) {
       onlineMemNum: onlineMemNum,
       humanMemNum: humanMemNum,
       serverIcon: guild.iconURL(),
-      darkmode: req.session.darkmode,
     });
   });
   app.use('/read-database', requireLogin, readDatabaseRouter);
@@ -138,7 +135,6 @@ function startWebsite(client) {
   app.use('/channelselection', requireLogin, channelselection);
   app.use('/serverconfig', requireLogin, serverconfig);
   app.use('/games', requireLogin, games);
-  app.use('/darkmode', requireLogin, darkmode);
 
   app.get(/(.*)/, (req, res) => {
     return res.redirect('/');
