@@ -12,6 +12,8 @@ function updateBtnText() {
   }
 }
 
+updateBtnText();
+
 //Einen Listener hinzufügen, der den Knopf "abhört", ob er geklickt wird und dann die aktion in der geschweiften Klammer ausführt
 darkmodeBtn.addEventListener('click', () => {
   //fügt die darkmode class hinzu, bzw. entfernt sie. Toggle regelt das automatisch
