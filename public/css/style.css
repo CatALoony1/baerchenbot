@@ -38,6 +38,10 @@ h2{
 label{
   color: var(--txt-color)
 }
+summary{
+  color: var(--txt-color);
+  font-family: 'Roboto Condensed', sans-serif;
+}
 th{
   color: var(--txt-color);
   font-family: 'Cantarell', sans-serif;
