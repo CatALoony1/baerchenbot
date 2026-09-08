@@ -29,18 +29,26 @@ body {
 }
 h1{
   color: var(--txt-color);
+  font-family: 'Roboto Condensed', sans-serif;
 }
 h2{
   color: var(--txt-color);
+  font-family: 'Roboto Condensed', sans-serif;
 }
 label{
   color: var(--txt-color)
 }
 th{
   color: var(--txt-color);
+  font-family: 'Cantarell', sans-serif;
 }
 td{
   color: var(--txt-color);
+  font-family: 'Cantarell', sans-serif;
+}
+p{
+  color: var(--txt-color);
+  font-family: 'Cantarell', sans-serif;
 }
 
 /*
