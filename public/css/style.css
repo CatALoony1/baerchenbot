@@ -6,11 +6,13 @@ Hier folgen variablen
 :root {
   --bg-color: #ffffff;
   --sdbar-bg: linear-gradient(0deg, #8de0e0, #8de0e0);
+  --txt-color: #18191e
 }
 
 .darkmode {
-  --bg-color: #e1e1e1;
-  --sdbar-bg: linear-gradient(0deg, #538d8d, #538d8d);
+  --bg-color: #1c1d23;
+  --sdbar-bg: #18191e;
+  --txt-color: #F8F9FA;
 }
 
 /*
@@ -31,6 +33,7 @@ Hier folgt Class content
 /* Sidebar */
 .idx-sidebar {
   background: var(--sdbar-bg);
+  color: var(--txt-color);
   position: fixed;
   top: 0;
   left: 0;
@@ -55,6 +58,7 @@ Hier folgt Class content
 /* Texte */
 .idx-header {
   font-family: 'Roboto Condensed', sans-serif;
+  color: var(--txt-color);
   font-size: 40px;
   word-spacing: px;
   letter-spacing: px;
@@ -101,6 +105,7 @@ Hier folgt Class content
   border-radius: 5px;
   font-family: 'Roboto Condensed', sans-serif;
   background-color: var(--sdbar-bg);
+  color: var(--txt-color-dm);
 }
 .idx-btn:hover {
   background-color: #6fb0b0;
