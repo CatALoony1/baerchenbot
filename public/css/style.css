@@ -100,7 +100,7 @@ Hier folgt Class content
   text-decoration: none;
   border-radius: 5px;
   font-family: 'Roboto Condensed', sans-serif;
-  background-color: #8de0e0;
+  background-color: var(--sdbar-bg);
 }
 .idx-btn:hover {
   background-color: #6fb0b0;
