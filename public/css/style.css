@@ -83,6 +83,12 @@ Hier folgt Class content
   margin-left: 200px;
   text-align: center;
 }
+.login-main{
+  text-align: center;
+  display:grid;
+  justify-content: center;
+  gap: 8px;
+}
 
 /* Texte */
 .idx-header {
