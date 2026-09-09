@@ -12,6 +12,7 @@ const logs = require('./routes/logs');
 const jobs = require('./routes/jobs');
 const channelselection = require('./routes/channelselection');
 const serverconfig = require('./routes/serverconfig');
+const roleSelect = require('./routes/role-select');
 const app = express();
 const port = 3003;
 const WebUser = require('../models/WebUser');
@@ -135,6 +136,7 @@ function startWebsite(client) {
   app.use('/channelselection', requireLogin, channelselection);
   app.use('/serverconfig', requireLogin, serverconfig);
   app.use('/games', requireLogin, games);
+  app.use('role-select', requireLogin, roleSelect);
 
   app.get(/(.*)/, (req, res) => {
     return res.redirect('/');
