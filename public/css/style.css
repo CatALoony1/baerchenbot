@@ -5,7 +5,7 @@ Hier folgen variablen
 :root entspricht den default werten die genutzt werden, wenn es keine class gibt oder die class keine variablen definiert hat
 */
 :root {
-  --bg-color: #ffffff;
+  --bg-color: #d4d4d4;
   --sdbar-bg: linear-gradient(0deg, #8de0e0, #8de0e0);
   --txt-color: #18191e
 }
@@ -13,7 +13,7 @@ Hier folgen variablen
 .darkmode {
   --bg-color: #1c1d23;
   --sdbar-bg: #18191e;
-  --txt-color: #F8F9FA;
+  --txt-color: #d4d4d4;
 }
 
 /*
@@ -82,11 +82,6 @@ Hier folgt Class content
   right: 0;
   margin-left: 200px;
   text-align: center;
-}
-.log-container{
-  text-align: left;
-  white-space: pre-wrap; 
-  font-family: monospace;
 }
 
 /* Texte */
@@ -185,21 +180,23 @@ Hier folgt Class content
   display: inline;
 }
 /* Tabellen */
-.user-messages-td {
+.td-align-l{
+  text-align: left;
+}
+.td-align-r{
   text-align: right;
 }
-.user-vctime-td {
+.td-align-c{
   text-align: center;
-}
-.user-lastmessage-td {
-  text-align: right;
 }
 /* Ki generierter Kram, was weiß denn ich
 Für die Anzeige der Logdateien und das Giphy PopUp
 */
 .log-container {
-  background-color: #1e1e1e;
+  background-color: #1c1d23;
   color: #d4d4d4;
+  text-align: left;
+  white-space: pre-wrap; 
   font-family: 'Consolas', 'Courier New', monospace;
   padding: 15px;
   border-radius: 6px;
@@ -231,6 +228,9 @@ Für die Anzeige der Logdateien und das Giphy PopUp
 }
 
 #giphyGrid {
+  flex: 1;
+  overflow-y: auto;
+}
   flex: 1;
   overflow-y: auto;
 }
