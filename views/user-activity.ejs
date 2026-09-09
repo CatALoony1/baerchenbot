@@ -49,12 +49,12 @@
       <tbody>
         <% users.forEach(function(user) { %>
         <tr>
-          <td>
+          <td class="td-align-l">
             <strong><%= user.name %></strong>
           </td>
-          <td class="user-messages-td"><%= user.messages %></td>
-          <td class="user-vctime-td"><%= user.voiceTime %></td>
-          <td class="user-lastmessage-td"><%= user.lastMessage %></td>
+          <td class="user-messages-td td-align-r"><%= user.messages %></td>
+          <td class="user-vctime-td td-align-c"><%= user.voiceTime %></td>
+          <td class="user-lastmessage-td td-align-r"><%= user.lastMessage %></td>
           <% const awayList = away ? away.split(',').map(name => name.trim()) : []; %>
           <% if (awayList.includes(user.name)) { %>
           <td>
