@@ -136,7 +136,7 @@ function startWebsite(client) {
   app.use('/channelselection', requireLogin, channelselection);
   app.use('/serverconfig', requireLogin, serverconfig);
   app.use('/games', requireLogin, games);
-  app.use('role-select', requireLogin, roleSelect);
+  app.use('/role-select', requireLogin, roleSelect);
 
   app.get(/(.*)/, (req, res) => {
     return res.redirect('/');
