@@ -81,7 +81,12 @@ Hier folgt Class content
   bottom: 0;
   right: 0;
   margin-left: 200px;
-  text-align-last: center;
+  text-align: center;
+}
+.log-container{
+  text-align: left;
+  white-space: pre-wrap; 
+  font-family: monospace;
 }
 
 /* Texte */
