@@ -7,15 +7,14 @@ Hier folgen variablen
 :root {
   --bg-color: #ffffff;
   --sdbar-bg: linear-gradient(0deg, #8de0e0, #8de0e0);
-  --txt-color: #18191e
-  --dep-bg: #d4d4d4;
+  --txt-color: #18191e --dep-bg: #d4d4d4;
 }
 
 .darkmode {
   --bg-color: #1c1d23;
   --sdbar-bg: #18191e;
   --txt-color: #d4d4d3;
-  --dep-bg: #18191e
+  --dep-bg: #18191e;
 }
 
 /*
@@ -29,30 +28,30 @@ table {
 body {
   background-color: var(--bg-color);
 }
-h1{
+h1 {
   color: var(--txt-color);
   font-family: 'Roboto Condensed', sans-serif;
 }
-h2{
+h2 {
   color: var(--txt-color);
   font-family: 'Roboto Condensed', sans-serif;
 }
-label{
-  color: var(--txt-color)
+label {
+  color: var(--txt-color);
 }
-summary{
+summary {
   color: var(--txt-color);
   font-family: 'Roboto Condensed', sans-serif;
 }
-th{
+th {
   color: var(--txt-color);
   font-family: 'Cantarell', sans-serif;
 }
-td{
+td {
   color: var(--txt-color);
   font-family: 'Cantarell', sans-serif;
 }
-p{
+p {
   color: var(--txt-color);
   font-family: 'Cantarell', sans-serif;
 }
@@ -85,16 +84,16 @@ Hier folgt Class content
   margin-left: 200px;
   text-align: center;
 }
-.login-main{
+.login-main {
   margin: auto;
   width: 200px;
   text-align: center;
-  display:grid;
+  display: grid;
   justify-content: center;
   gap: 10px;
   padding: 20px;
   border-radius: 10px;
-  background-color: var(--dep-bg)
+  background-color: var(--dep-bg);
 }
 
 /* Texte */
@@ -148,6 +147,8 @@ Hier folgt Class content
   font-family: 'Roboto Condensed', sans-serif;
   background-color: var(--sdbar-bg);
   color: var(--txt-color-dm);
+  user-select: none;
+  cursor: pointer;
 }
 .idx-btn:hover {
   background-color: #6fb0b0;
@@ -193,13 +194,13 @@ Hier folgt Class content
   display: inline;
 }
 /* Tabellen */
-.td-align-l{
+.td-align-l {
   text-align: left;
 }
-.td-align-r{
+.td-align-r {
   text-align: right;
 }
-.td-align-c{
+.td-align-c {
   text-align: center;
 }
 /* Ki generierter Kram, was weiß denn ich
@@ -209,7 +210,7 @@ Für die Anzeige der Logdateien und das Giphy PopUp
   background-color: #1c1d23;
   color: #d4d4d4;
   text-align: left;
-  white-space: pre-wrap; 
+  white-space: pre-wrap;
   font-family: 'Consolas', 'Courier New', monospace;
   padding: 25px;
   border-radius: 6px;
@@ -241,9 +242,6 @@ Für die Anzeige der Logdateien und das Giphy PopUp
 }
 
 #giphyGrid {
-  flex: 1;
-  overflow-y: auto;
-}
   flex: 1;
   overflow-y: auto;
 }
