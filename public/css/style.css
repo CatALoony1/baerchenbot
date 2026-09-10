@@ -5,16 +5,16 @@ Hier folgen variablen
 :root entspricht den default werten die genutzt werden, wenn es keine class gibt oder die class keine variablen definiert hat
 */
 :root {
-  --bg-color: #ffffff;
+  --bg-color: #FDFBF7;
   --sdbar-bg: linear-gradient(0deg, #8de0e0, #8de0e0);
   --txt-color: #18191e;
-  --dep-bg: #d4d4d4;
+  --dep-bg: #dfdacffa;
 }
 
 .darkmode {
   --bg-color: #1c1d23;
   --sdbar-bg: #18191e;
-  --txt-color: #d4d4d4;
+  --txt-color: #E9ECEF;
   --dep-bg: #18191e;
 }
 
@@ -173,7 +173,7 @@ Hier folgt Class content
   border-radius:5px;
   font-family: 'Roboto Condensed', sans-serif;
   background-color: #d5558ed6;
-  color: var(--txt-color);
+  color: #d4d4d4;
   cursor: pointer;
   text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
 }
@@ -230,13 +230,12 @@ Hier folgt Class content
 /* Eingabefelder - will net so wie ich will >:c*/
 .input-login{
   display:block;
-  background-color:var(--dep-bg);
+  background-color: #1e190cfa;
   font-size: 20px;
   font-weight: 500;
   padding: 2px;
   border-radius:5px;
   font-family: 'Cantarell', sans-serif;
-  background-color: #d5558ed6;
   color: var(--txt-color);
   }
 /* Ki generierter Kram, was weiß denn ich
