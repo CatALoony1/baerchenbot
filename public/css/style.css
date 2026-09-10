@@ -5,15 +5,17 @@ Hier folgen variablen
 :root entspricht den default werten die genutzt werden, wenn es keine class gibt oder die class keine variablen definiert hat
 */
 :root {
-  --bg-color: #d4d4d4;
+  --bg-color: #ffffff;
   --sdbar-bg: linear-gradient(0deg, #8de0e0, #8de0e0);
   --txt-color: #18191e
+  --dep-bg: #d4d4d4;
 }
 
 .darkmode {
   --bg-color: #1c1d23;
   --sdbar-bg: #18191e;
   --txt-color: #d4d4d4;
+  --dep-bg: #18191e
 }
 
 /*
@@ -84,10 +86,15 @@ Hier folgt Class content
   text-align: center;
 }
 .login-main{
+  margin: auto;
+  width: 200px;
   text-align: center;
   display:grid;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: var(--dep-bg)
 }
 
 /* Texte */
