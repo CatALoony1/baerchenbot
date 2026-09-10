@@ -7,7 +7,8 @@ Hier folgen variablen
 :root {
   --bg-color: #ffffff;
   --sdbar-bg: linear-gradient(0deg, #8de0e0, #8de0e0);
-  --txt-color: #18191e --dep-bg: #d4d4d4;
+  --txt-color: #18191e;
+  --dep-bg: #d4d4d4;
 }
 
 .darkmode {
@@ -86,7 +87,8 @@ Hier folgt Class content
 }
 .login-main {
   margin: auto;
-  width: 200px;
+  margin-top:200px;
+  width: 300px;
   text-align: center;
   display: grid;
   justify-content: center;
@@ -107,6 +109,14 @@ Hier folgt Class content
 .admin-bereich {
   font-family: 'Roboto Condensed', sans-serif;
   font-size: 25px;
+}
+.title-login{
+   font-size: 48px
+}
+.label-login{
+  font-family: 'Cantarell', sans-serif;
+  font-size: 32px;
+  letter-spacing: -1px;
 }
 .p-error-message {
   color: red;
@@ -146,12 +156,26 @@ Hier folgt Class content
   border-radius: 5px;
   font-family: 'Roboto Condensed', sans-serif;
   background-color: var(--sdbar-bg);
-  color: var(--txt-color-dm);
+  color: var(--txt-color);
   user-select: none;
   cursor: pointer;
 }
 .idx-btn:hover {
   background-color: #6fb0b0;
+}
+.btn-login{
+  font-size: 32px;
+  letter-spacing: -1px;
+  font-weight: 500;
+  margin-top:25px;
+  margin-bottom:25px;
+  padding: 5px;
+  border-radius:5px;
+  font-family: 'Roboto Condensed', sans-serif;
+  background-color: #d5558ed6;
+  color: var(--txt-color);
+  cursor: pointer;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.4);
 }
 
 .start-btn {
@@ -203,6 +227,18 @@ Hier folgt Class content
 .td-align-c {
   text-align: center;
 }
+/* Eingabefelder - will net so wie ich will >:c*/
+.input-login{
+  display:block;
+  background-color:var(--dep-bg);
+  font-size: 20px;
+  font-weight: 500;
+  padding: 2px;
+  border-radius:5px;
+  font-family: 'Cantarell', sans-serif;
+  background-color: #d5558ed6;
+  color: var(--txt-color);
+  }
 /* Ki generierter Kram, was weiß denn ich
 Für die Anzeige der Logdateien und das Giphy PopUp
 */
