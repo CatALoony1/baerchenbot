@@ -2,6 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', (req, res) => {
+  const client = req.discordClient;
+  let servers = client.guilds.cache.map((guild) => ({
+    id: guild.id,
+    name: guild.name,
+  }));
   let rollen = [];
   const selectedServerId = req.query.serverId || servers[0]?.id;
   const allowedGuilds = req.session.guildIds;
