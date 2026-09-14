@@ -13,19 +13,16 @@
   <%- include('partials/sidebar', {guildIds: guildIds}) %>
   <div class="logs-main main">
     <h1 class=" header-botlogs page-header">Bot Logs</h1>
-    <div class="toolbar">
-      <label for="logSelect">Log-Datei wählen: </label>
-      <select id="logSelect" onchange="changeLogFile(this.value)">
-        <% logFiles.forEach(function(file) { %>
-        <option value="<%= file %>" <%= file === selectedFile ? 'selected' : '' %>>
-          <%= file %>
-        </option>
-        <% }); %>
-      </select>
-    </div>
-
+    <label for="logSelect">Log-Datei wählen: </label>
+    <select id="logSelect" onchange="changeLogFile(this.value)">
+      <% logFiles.forEach(function(file) { %>
+      <option value="<%= file %>" <%= file === selectedFile ? 'selected' : '' %>>
+        <%= file %>
+      </option>
+      <% }); %>
+    </select>
+    <br />
     <div class="log-container" id="logBox"><%= logData %></div>
-
     <script>
       const logBox = document.getElementById('logBox');
       logBox.scrollTop = logBox.scrollHeight;

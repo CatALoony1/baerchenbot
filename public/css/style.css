@@ -269,17 +269,15 @@ Hier folgt Class content
 }
 
 .giphy-modal-div {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 450px;
-  max-width: 90vw;
-  height: 550px;
-  background: var(--bg-color);
-  flex-direction: column;
-  box-sizing: border-box;
+  background-color: var(--bg-color);
+  padding: 20px;
   border-radius: 20px;
+  width: 100%;
+  max-width: 400px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  margin: auto;
 }
 
 .giphy-modal-outer-div {
@@ -297,27 +295,15 @@ Hier folgt Class content
   padding: 20px;
   box-sizing: border-box;
 }
-/* Ki generierter Kram, was weiß denn ich
-Für die Anzeige der Logdateien und das Giphy PopUp
-*/
+
 .log-container {
   background-color: #1c1d23;
   color: #d4d4d4;
   text-align: left;
-  white-space: pre-wrap;
   font-family: 'Consolas', 'Courier New', monospace;
   padding: 25px;
   border-radius: 6px;
-  height: 500px;
+  height: 80vh;
   overflow-y: auto;
   white-space: pre-wrap;
-  word-break: break-all;
-}
-.toolbar {
-  margin-bottom: 15px;
-}
-
-#giphyGrid {
-  flex: 1;
-  overflow-y: auto;
 }
