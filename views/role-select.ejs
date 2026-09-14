@@ -9,11 +9,74 @@
   <%- include('partials/darkmode-script') %>
 </head>
 
-<body>
+<body data-sel-names="<%- JSON.stringify(allSelNames) %>">
   <%- include('partials/sidebar', {guildIds: guildIds}) %>
-  <div class="role-select-main main">
-    <h1 class="header-role-select page-header">Selfroles verwalten</h1>
+  <div class="rl-sel-main main">
+    <h1 class="header-rl-sel page-header">Selfroles verwalten</h1>
+    <form action="/role-select" method="GET">
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId" onchange="this.form.submit()">
+        <option value="" disabled <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
+        <% servers.forEach(function(server, index) { %>
+        <% 
+        const isSelected = selectedServerId 
+          ? server.id === selectedServerId 
+          : index === 0; 
+      %>
+        <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
+          <%= server.name %>
+        </option>
+        <% }); %>
+      </select>
+    </form>
+    <button id="rl-sel-addBtn" class="rol-sel-add-btn">Hinzufügen</button>
+    <div id="rl-sel-popUpModal" class="rl-sel-popup-div">
+      <div class="rl-sel-popup-ctnt-div">
+        <h2>Füge eine Selfroles Auswahl hinzu</h2>
+        <form action="/role-select/add" method="GET" class="rol-sel-add-btn-form">
+          <label for="selName">Name/Bezeichnung des Selfroles Auswahl</label>
+          <input type="text" id="selName" name="selName" required />
+          <span id="error-msg" style="color: red; display: none;">Dieser Name existiert bereits!</span>
+          <% rollen.forEach(function(id, name) { %>
+          <input id="<%= id %>" type="checkbox" name="<%= name %>_role" value="<%= id %>">
+          <label for="<% id %>"><%= name %></label>
+          <% }); %>
+          <button type="submit" id="rl-sel-submitAddBtn" class="rol-sel-add-btn">Hinzufügen</button>
+        </form>
+      </div>
+    </div>
   </div>
+  <script>
+    const allSelNames = JSON.parse(document.body.dataset.selNames || '[]');
+    const selName = document.getElementById('selName');
+    const submitAddBtn = document.getElementById('rl-sel-submitAddBtn');
+    const errorMsg = document.getElementById('error-msg');
+    const addBtn = document.getElementById('rl-sel-addBtn');
+    const modal = document.getElementById('rl-sel-popUpModal');
+
+    function validateName() {
+      const inputValue = selName.value.trim().toLowerCase();
+      const exists = allSelNames.some(name => name.toLowerCase() === inputValue);
+      if (exists) {
+        errorMsg.style.display = 'block';
+        submitAddBtn.disabled = true;
+      } else {
+        errorMsg.style.display = 'none';
+        submitAddBtn.disabled = false;
+      }
+    }
+
+    selName.addEventListener('input', validateName);
+
+    addBtn.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        modal.style.display = 'none';
+      }
+    });
+  </script>
 </body>
 
 </html>
