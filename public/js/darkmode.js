@@ -9,7 +9,7 @@ function updateBtnText() {
     darkmodeBtn.title = 'Lightmode aktivieren';
     darkmodeBtn.innerHTML = '&#127769;';
   } else {
-    darkmodeBtn.innerHTML = '&#9728;';
+    darkmodeBtn.innerHTML = '&#x2600;&#xFE0F;';
     darkmodeBtn.title = 'Darkmode aktivieren';
   }
 }

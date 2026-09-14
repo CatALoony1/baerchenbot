@@ -76,6 +76,10 @@ Hier folgt Class content
   box-sizing: border-box;
 }
 
+.sdbar-menu-div {
+  margin-top: auto;
+}
+
 /* Mainscreens */
 .main {
   top: 0;
