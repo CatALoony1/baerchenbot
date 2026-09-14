@@ -247,7 +247,7 @@ Hier folgt Class content
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.8);
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -258,14 +258,44 @@ Hier folgt Class content
 
 .rl-sel-popup-ctnt-div {
   background-color: var(--bg-color);
-  padding: 30px;
-  border-radius: 8px;
+  padding: 20px;
+  border-radius: 20px;
   width: 100%;
   max-width: 400px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
   margin: auto;
+}
+
+.giphy-modal-div {
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 450px;
+  max-width: 90vw;
+  height: 550px;
+  background: var(--bg-color);
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 20px;
+}
+
+.giphy-modal-outer-div {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  overflow-y: auto;
+  padding: 20px;
+  box-sizing: border-box;
 }
 /* Ki generierter Kram, was weiß denn ich
 Für die Anzeige der Logdateien und das Giphy PopUp
@@ -285,24 +315,6 @@ Für die Anzeige der Logdateien und das Giphy PopUp
 }
 .toolbar {
   margin-bottom: 15px;
-}
-.giphy-modal {
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 450px;
-  max-width: 90vw;
-  height: 550px;
-  background: var(--bg-color);
-  border: 1px solid #ccc;
-  z-index: 1000;
-  flex-direction: column;
-}
-
-.giphy-modal.active {
-  display: flex;
 }
 
 #giphyGrid {

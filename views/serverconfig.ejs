@@ -272,13 +272,14 @@
         <button type="submit">Speichern</button>
       </form>
     </details>
-
-    <div id="giphyModal" class="giphy-modal">
-      <div class="giphy-header">
-        <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">
-        <button type="button" class="giphy-close" onclick="closeGiphyModal()">&times;</button>
+    <div id="giphyModal-outer" class="giphy-modal-outer-div">
+      <div id="giphyModal" class="giphy-modal-div">
+        <div class="giphy-header">
+          <input type="text" id="giphySearch" placeholder="In Giphy suchen..." oninput="debounceSearch()">
+          <button type="button" class="giphy-close" onclick="closeGiphyModal()">&times;</button>
+        </div>
+        <div id="giphyGrid" onscroll="handleScroll()"></div>
       </div>
-      <div id="giphyGrid" onscroll="handleScroll()"></div>
     </div>
   </div>
   <script>
@@ -290,6 +291,7 @@
     let hasMore = true;
     let activeInputId = null;
     let activePreviewId = null;
+    const modal = document.getElementById('giphyModal-outer');
 
     function clearGif(inputId, previewId) {
       document.getElementById(inputId).value = '';
@@ -299,8 +301,7 @@
     function openGiphyModal(inputId, previewId) {
       activeInputId = inputId;
       activePreviewId = previewId;
-      const modal = document.getElementById('giphyModal');
-      modal.classList.add('active');
+      modal.style.display = 'flex';
       document.getElementById('giphySearch').value = '';
       currentSearch = '';
       currentOffset = 0;
@@ -311,7 +312,7 @@
     }
 
     function closeGiphyModal() {
-      document.getElementById('giphyModal').classList.remove('active');
+      modal.style.display = 'none';
     }
 
     function debounceSearch() {
@@ -387,6 +388,11 @@
       }
       closeGiphyModal();
     }
+    window.addEventListener('click', (event) => {
+      if (event.target === modal) {
+        closeGiphyModal();
+      }
+    });
   </script>
 </body>
 

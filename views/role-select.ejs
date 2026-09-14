@@ -37,10 +37,12 @@
           <label for="selName">Name/Bezeichnung des Selfroles Auswahl</label>
           <input type="text" id="selName" name="selName" required />
           <span id="error-msg" style="color: red; display: none;">Dieser Name existiert bereits!</span>
-          <% rollen.forEach(function(id, name) { %>
-          <input id="<%= id %>" type="checkbox" name="<%= name %>_role" value="<%= id %>">
-          <label for="<% id %>"><%= name %></label>
+          <% rollen.forEach(function(role) { %>
+          <br />
+          <input id="<%= role.id %>" type="checkbox" name="<%= role.name %>_role" value="<%= role.id %>">
+          <label for="<% role.id %>"><%= role.name %></label>
           <% }); %>
+          <br />
           <button type="submit" id="rl-sel-submitAddBtn" class="rol-sel-add-btn">Hinzufügen</button>
         </form>
       </div>
