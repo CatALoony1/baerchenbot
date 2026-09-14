@@ -301,8 +301,7 @@ Hier folgt Class content
 }
 
 .log-container {
-  background-color: #1c1d23;
-  color: #d4d4d4;
+  color: var(--txt-color);
   text-align: left;
   font-family: 'Consolas', 'Courier New', monospace;
   padding: 25px;
