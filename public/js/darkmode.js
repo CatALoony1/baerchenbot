@@ -6,9 +6,11 @@ const darkmodeBtn = document.getElementById('darkmode-btn-id');
 //Text des Buttons ändern
 function updateBtnText() {
   if (document.documentElement.classList.contains('darkmode')) {
-    darkmodeBtn.innerHTML = '&#9728;';
-  } else {
+    darkmodeBtn.title = 'Lightmode aktivieren';
     darkmodeBtn.innerHTML = '&#127769;';
+  } else {
+    darkmodeBtn.innerHTML = '&#9728;';
+    darkmodeBtn.title = 'Darkmode aktivieren';
   }
 }
 
