@@ -53,9 +53,12 @@
           <p>Rollenauswahl Text: <%= selMenObj.description %></p>
         </div>
         <div class="rl-sel-rlmen-list-div">
-          <% selMenObj.roleNames.forEach((rolename) => { %>
-          <p><%= rolename %></p>
-          <% }); %>
+          <p>Rollen:</p>
+          <ul>
+            <% selMenObj.roleNames.forEach((rolename) => { %>
+            <li><%= rolename %></li>
+            <% }); %>
+          </ul>
         </div>
       </div>
     </details>
