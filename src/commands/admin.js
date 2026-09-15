@@ -83,11 +83,6 @@ module.exports = {
         } catch (error) {
           console.log(error);
         }
-        try {
-          await message.delete();
-        } catch (error) {
-          console.log(error);
-        }
         await interaction.editReply('Nachricht gelöscht');
       }
     } catch (error) {
