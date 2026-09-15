@@ -4,18 +4,19 @@ const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
 const { ChannelType } = require('discord.js');
 const { refreshServerConfCache } = require('../../utils/data/cache');
-const ALLOWED_CHANNELS = new Set([
-  'allgemein',
-  'bye',
-  'log',
-  'bump',
-  'quiz',
-  'admin',
-  'spiele',
-  'vccreation',
-  'afk',
-]);
 
+const channelTypeMapping = {
+  allgemein: 'ALLGEMEIN_ID',
+  selfroles: 'SELFROLES_ID',
+  bye: 'BYE_ID',
+  log: 'LOG_ID',
+  bump: 'BUMP_ID',
+  quiz: 'QUIZ_ID',
+  admin: 'ADMIN_C_ID',
+  spiele: 'SPIELE_ID',
+  vccreation: 'VCCREATION_ID',
+  afk: 'AFK_ID',
+};
 router.get('/', async (req, res) => {
   try {
     const client = req.discordClient;
@@ -30,7 +31,7 @@ router.get('/', async (req, res) => {
     }
     let textChannels = [];
     let voiceChannels = [];
-    let defaultValues = [];
+    let defaultValues = {};
     const selectedServerId = req.query.serverId || servers[0]?.id;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
@@ -78,13 +79,13 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    returnres.render('channelselction', {
+    return res.render('channelselection', {
       guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       alleTextChannels: [],
       alleVoiceChannels: [],
-      defaultValues: [],
+      defaultValues: {},
       uses: idUses,
       error: error.message,
     });
@@ -94,74 +95,37 @@ router.get('/', async (req, res) => {
 router.post('/change-channel-:chosenobj', async (req, res) => {
   try {
     const chosenObj = req.params.chosenobj;
+    const searchString = channelTypeMapping[chosenObj];
 
-    if (!ALLOWED_CHANNELS.has(chosenObj)) {
+    if (!searchString) {
       return res.status(400).send('Ungültiger Kanal-Typ');
     }
+
     const guildId = req.body.guildId;
-    let channelId;
-    let searchString;
-    switch (chosenObj) {
-      case 'allgemein':
-        channelId = req.body.allgemein;
-        searchString = 'ALLGEMEIN_ID';
-        break;
-      case 'bye':
-        channelId = req.body.bye;
-        searchString = 'BYE_ID';
-        break;
-      case 'log':
-        channelId = req.body.log;
-        searchString = 'LOG_ID';
-        break;
-      case 'bump':
-        channelId = req.body.bump;
-        searchString = 'BUMP_ID';
-        break;
-      case 'quiz':
-        channelId = req.body.quiz;
-        searchString = 'QUIZ_ID';
-        break;
-      case 'admin':
-        channelId = req.body.admin;
-        searchString = 'ADMIN_C_ID';
-        break;
-      case 'spiele':
-        channelId = req.body.spiele;
-        searchString = 'SPIELE_ID';
-        break;
-      case 'vccreation':
-        channelId = req.body.vccreation;
-        searchString = 'VCCREATION_ID';
-        break;
-      case 'afk':
-        channelId = req.body.afk;
-        searchString = 'AFK_ID';
-        break;
-      default:
-        break;
-    }
+    const channelId = req.body[chosenObj];
     const targetUrl = guildId
       ? `/channelselection?serverId=${guildId}`
       : '/channelselection';
-    if (!channelId && !searchString) {
+    if (!channelId) {
       return res.redirect(targetUrl);
     }
-    const srvCfg = await ServerConfig.findOne({
+    let srvCfg = await ServerConfig.findOne({
       guildId: guildId,
       variableName: searchString,
     });
-    if (srvCfg && srvCfg.objectId != channelId) {
+
+    if (srvCfg) {
       srvCfg.objectId = channelId;
       await srvCfg.save();
     } else {
-      const newSrvCfg = new ServerConfig({
+      srvCfg = new ServerConfig({
         guildId: guildId,
         variableName: searchString,
         objectId: channelId,
       });
-      await newSrvCfg.save();
+      await srvCfg.save();
     }
+
     console.log(
       `ServerConfig updated for guild ${guildId}: ${searchString} set to ${channelId}`,
     );
@@ -169,13 +133,13 @@ router.post('/change-channel-:chosenobj', async (req, res) => {
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
-    return res.render('channelselction', {
+    return res.render('channelselection', {
       guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
       alleTextChannels: [],
       alleVoiceChannels: [],
-      defaultValues: [],
+      defaultValues: {},
       uses: idUses,
       error: error.message,
     });

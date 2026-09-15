@@ -17,6 +17,8 @@ const idUses = {
     'Mitglieder Rolle welche Nutzern nach dem Bestätigend der Regeln zugewiesen wird.',
   MIDMEMBER_ROLE_ID:
     'Rolle für langzeit Mitglieder um weitere rechte freizuschalten.',
+  SELFROLES_ID:
+    'Channel in welchem die Selfrole Auswahl-Menüs geschickt werden.',
 };
 
 module.exports = idUses;
