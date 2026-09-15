@@ -30,20 +30,55 @@
       </select>
     </form>
     <button id="rl-sel-addBtn" class="rol-sel-add-btn">Hinzufügen</button>
+    <% allSelMenObj.forEach(function(selMenObj) {  %>
+    <hr>
+    <details>
+      <summary><%= selMenObj.name %></summary>
+      <div class="rl-sel-rlmen-ctnt-div">
+        <div class="rl-sel-rlmen-btn-div">
+          <form class="rl-sel-rlmen-upd-form" action="/role-select/update" method="POST">
+            <input type="hidden" name="selMenName" value="<%= selMenObj.name %>" />
+            <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
+            <label for="rl-sel-rlmen-upd-btn">Daten/Rollen ändern:</label>
+            <button type="submit" class="rl-sel-rlmen-upd-btn">Update</button>
+          </form>
+          <form class="rl-sel-rlmen-upd-form" action="/role-select/send" method="POST">
+            <input type="hidden" name="selMenName" value="<%= selMenObj.name %>" />
+            <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
+            <label for="rl-sel-rlmen-snd-btn">Rollenauswahl auf Discord senden/updaten:</label>
+            <button type="submit" class="rl-sel-rlmen-snd-btn">Senden</button>
+          </form>
+        </div>
+        <div class="rl-sel-rlmen-desc-div">
+          <p><%= selMenObj.description %></p>
+        </div>
+        <div class="rl-sel-rlmen-list-div">
+          <% selMenObj.roleNames.forEach((rolename) => { %>
+          <p><%= rolename %></p>
+          <br />
+          <% }); %>
+        </div>
+      </div>
+    </details>
+    <% }); %>
     <div id="rl-sel-popUpModal" class="rl-sel-popup-div">
       <div class="rl-sel-popup-ctnt-div">
         <h2>Füge eine Selfroles Auswahl hinzu</h2>
-        <form action="/role-select/add" method="GET" class="rol-sel-add-btn-form">
+        <form action="/role-select/add" method="POST" class="rol-sel-add-btn-form">
           <label for="selName">Name/Bezeichnung des Selfroles Auswahl</label>
           <input type="text" id="selName" name="selName" required />
           <span id="error-msg" style="color: red; display: none;">Dieser Name existiert bereits!</span>
+          <br />
+          <label for="selDesc">Text welcher in der Nachricht der Selfrole Auswahl steht</label>
+          <input type="text" id="selDesc" name="selDesc" required />
+          <br />
           <% rollen.forEach(function(role) { %>
           <br />
-          <input id="<%= role.id %>" type="checkbox" name="<%= role.name %>_role" value="<%= role.id %>">
+          <input id="<%= role.id %>" type="checkbox" name="roles" class="rl-sel-ckbx" value="<%= role.id %>">
           <label for="<% role.id %>"><%= role.name %></label>
           <% }); %>
           <br />
-          <button type="submit" id="rl-sel-submitAddBtn" class="rol-sel-add-btn">Hinzufügen</button>
+          <button type="submit" id="rl-sel-submitAddBtn" class="rl-sel-add-btn" disabled>Hinzufügen</button>
         </form>
       </div>
     </div>
@@ -55,21 +90,25 @@
     const errorMsg = document.getElementById('error-msg');
     const addBtn = document.getElementById('rl-sel-addBtn');
     const modal = document.getElementById('rl-sel-popUpModal');
+    const checkboxes = document.querySelectorAll('.rl-sel-ckbx');
 
-    function validateName() {
+    function validateForm() {
       const inputValue = selName.value.trim().toLowerCase();
-      const exists = allSelNames.some(name => name.toLowerCase() === inputValue);
-      if (exists) {
+      const nameExists = allSelNames.some(name => name.toLowerCase() === inputValue);
+      if (nameExists) {
         errorMsg.style.display = 'block';
-        submitAddBtn.disabled = true;
       } else {
         errorMsg.style.display = 'none';
-        submitAddBtn.disabled = false;
       }
+      const checkedCount = document.querySelectorAll('.rl-sel-ckbx:checked').length;
+      const noCheckboxesChecked = checkedCount < 2;
+      submitAddBtn.disabled = nameExists || noCheckboxesChecked;
     }
 
-    selName.addEventListener('input', validateName);
-
+    checkboxes.forEach(checkbox => {
+      checkbox.addEventListener('change', validateForm);
+    });
+    selName.addEventListener('input', validateForm);
     addBtn.addEventListener('click', () => {
       modal.style.display = 'flex';
     });
@@ -78,6 +117,7 @@
         modal.style.display = 'none';
       }
     });
+    validateForm();
   </script>
 </body>
 

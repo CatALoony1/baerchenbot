@@ -5,17 +5,21 @@ const roleSelectionRolesSchema = new Schema({
     type: String,
     required: true,
   },
-  roleId: {
-    type: String,
+  roleIds: {
+    type: [String],
     required: true,
   },
-  roleEmoji: {
+  selectDescription: {
     type: String,
-    required: false,
+    required: true,
   },
   selectMenu: {
     type: String,
     required: true,
+  },
+  messageId: {
+    type: String,
+    required: false,
   },
 });
 
