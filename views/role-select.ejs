@@ -65,6 +65,7 @@
       <div class="rl-sel-popup-ctnt-div">
         <h2>Füge eine Selfroles Auswahl hinzu</h2>
         <form action="/role-select/add" method="POST" class="rol-sel-add-btn-form">
+          <input type="hidden" name="serverId" value="<%= selectedServerId %>" />
           <label for="selName">Name/Bezeichnung des Selfroles Auswahl</label>
           <input type="text" id="selName" name="selName" required />
           <span id="error-msg" style="color: red; display: none;">Dieser Name existiert bereits!</span>
