@@ -65,7 +65,7 @@ router.get('/', async (req, res) => {
 router.post('/add', async (req, res) => {
   try {
     const { selName, selDesc, roles } = req.body;
-    const selectedServerId = req.query.serverId;
+    const selectedServerId = req.body.serverId;
     if (
       !selectedServerId ||
       !selName ||
