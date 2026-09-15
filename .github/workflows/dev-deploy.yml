@@ -47,6 +47,7 @@ jobs:
             SPOONACULAR_API=${{ secrets.SPOONACULAR_API }}
             CLIENT_ID=${{ secrets.DEV_CLIENT_ID }}
             ADMIN_ID=${{ secrets.ADMIN_ID }}
+            DEV_PORT=${{ secrets.DEV_PORT }}
             EOF
 
             # 4. Docker-Image bauen
