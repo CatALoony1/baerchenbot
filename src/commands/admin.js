@@ -25,17 +25,6 @@ module.exports = {
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName('testjg')
-        .setDescription('TESTJG')
-        .addStringOption((option) =>
-          option
-            .setName('inputtestjg')
-            .setDescription('TESTJJG input')
-            .setRequired(true),
-        ),
-    )
-    .addSubcommand((subcommand) =>
-      subcommand
         .setName('printselectmenu')
         .setDescription('Erzeugt ein Rollenselect.')
         .addStringOption((option) =>
@@ -73,17 +62,6 @@ module.exports = {
         await doloescheCommand(interaction);
       } else if (subcommand === 'printselectmenu') {
         await doPrintSelectMenuCommand(interaction);
-      } else if (subcommand === 'testjg') {
-        await interaction.deferReply();
-        const input = interaction.options.get('inputtestjg').value;
-        const message = await interaction.channel.messages.fetch(input);
-        console.log(message);
-        try {
-          await message.edit('Test');
-        } catch (error) {
-          console.log(error);
-        }
-        await interaction.editReply('Nachricht gelöscht');
       }
     } catch (error) {
       console.log(error);
