@@ -77,7 +77,7 @@ router.post('/add', async (req, res) => {
     }
     const existingRoleSelection = await RoleSelectionRoles.findOne({
       guildId: selectedServerId,
-      selectMenu: selName,
+      selectMenu: selName.trim(),
     });
     if (existingRoleSelection) {
       return res.redirect(`/role-select?serverId=${selectedServerId}`);
@@ -85,7 +85,7 @@ router.post('/add', async (req, res) => {
     const newRoleSelection = new RoleSelectionRoles({
       guildId: selectedServerId,
       roleIds: roles,
-      selectMenu: selName,
+      selectMenu: selName.trim(),
       selectDescription: selDesc,
     });
     await newRoleSelection.save();

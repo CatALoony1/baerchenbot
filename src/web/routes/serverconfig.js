@@ -130,7 +130,7 @@ router.post('/message', async (req, res) => {
   try {
     const { giphyId, text, header, guildId, messageType } = req.body;
     console.log(`Adding message for guild ${guildId}: ${messageType}`);
-    await addToDb(giphyId, text, header, guildId, messageType);
+    await addToDb(giphyId, text.trim(), header.trim(), guildId, messageType);
     const targetUrl = guildId
       ? `/serverconfig?serverId=${guildId}`
       : '/serverconfig';

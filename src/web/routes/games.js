@@ -321,7 +321,7 @@ function addItemToList(
   guildId,
 ) {
   const available = req.body[`available_${itemName}`];
-  const price = req.body[`price_${itemName}`];
+  const price = req.body[`price_${itemName}`].trim();
   const boostOnly = req.body[`boost_${itemName}`];
   if (available) {
     const item = new Items({
@@ -336,28 +336,28 @@ function addItemToList(
       additionalSaves.add(
         new Config({
           key: 'BOMB_EX_MIN',
-          value: req.body['BOMB_EX_MIN'],
+          value: req.body['BOMB_EX_MIN'].trim(),
           guildId: guildId,
         }),
       );
       additionalSaves.add(
         new Config({
           key: 'BOMB_EX_MAX',
-          value: req.body['BOMB_EX_MAX'],
+          value: req.body['BOMB_EX_MAX'].trim(),
           guildId: guildId,
         }),
       );
       additionalSaves.add(
         new Config({
           key: 'BOMB_DEF_MIN',
-          value: req.body['BOMB_DEF_MIN'],
+          value: req.body['BOMB_DEF_MIN'].trim(),
           guildId: guildId,
         }),
       );
       additionalSaves.add(
         new Config({
           key: 'BOMB_DEF_MAX',
-          value: req.body['BOMB_DEF_MAX'],
+          value: req.body['BOMB_DEF_MAX'].trim(),
           guildId: guildId,
         }),
       );
@@ -365,14 +365,14 @@ function addItemToList(
       additionalSaves.add(
         new Config({
           key: 'KLAU_BANANE_MIN',
-          value: req.body['KLAU_BANANE_MIN'],
+          value: req.body['KLAU_BANANE_MIN'].trim(),
           guildId: guildId,
         }),
       );
       additionalSaves.add(
         new Config({
           key: 'KLAU_BANANE_MAX',
-          value: req.body['KLAU_BANANE_MAX'],
+          value: req.body['KLAU_BANANE_MAX'].trim(),
           guildId: guildId,
         }),
       );
@@ -416,7 +416,9 @@ async function addToDbItems(itemList, additionalSaves, guildId) {
 
 async function addToDbMoney(keyList, valList, guildId) {
   const remainingKeys = [...keyList];
-  const remainingVals = [...valList];
+  const remainingVals = valList.map((v) =>
+    typeof v === 'string' ? v.trim() : v,
+  );
 
   const cfg = await Config.find({
     guildId: guildId,

@@ -40,11 +40,11 @@ router.post('/create', async (req, res) => {
     const { name, password, serverids } = req.body;
     const existing = await WebUser.findOne({ user: name });
     if (!existing) {
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      const hashedPassword = await bcrypt.hash(password.trim(), saltRounds);
       const newUser = new WebUser({
-        user: name,
+        user: name.trim(),
         password: hashedPassword,
-        guildIds: serverids,
+        guildIds: serverids.trim(),
         initialPWD: true,
       });
       await newUser.save();

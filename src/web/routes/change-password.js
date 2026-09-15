@@ -15,13 +15,13 @@ router.get('/', (req, res) => {
 
 router.post('/change', async (req, res) => {
   const { oldpassword, password, confirm_password } = req.body;
-  if (password === confirm_password) {
-    if (oldpassword !== password) {
+  if (password.trim() === confirm_password.trim()) {
+    if (oldpassword.trim() !== password.trim()) {
       try {
         const user = await WebUser.findById(req.session.userId);
-        if (user && (await bcrypt.compare(oldpassword, user.password))) {
+        if (user && (await bcrypt.compare(oldpassword.trim(), user.password))) {
           let wasInitial = req.session.initialPWD;
-          const hashedPassword = await bcrypt.hash(password, saltRounds);
+          const hashedPassword = await bcrypt.hash(password.trim(), saltRounds);
           user.password = hashedPassword;
           if (user.initialPWD) {
             user.initialPWD = false;

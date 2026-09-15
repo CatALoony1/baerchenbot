@@ -50,12 +50,11 @@
           </form>
         </div>
         <div class="rl-sel-rlmen-desc-div">
-          <p><%= selMenObj.description %></p>
+          <p>Rollenauswahl Text: <%= selMenObj.description %></p>
         </div>
         <div class="rl-sel-rlmen-list-div">
           <% selMenObj.roleNames.forEach((rolename) => { %>
           <p><%= rolename %></p>
-          <br />
           <% }); %>
         </div>
       </div>
