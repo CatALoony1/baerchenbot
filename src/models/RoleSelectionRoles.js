@@ -21,6 +21,10 @@ const roleSelectionRolesSchema = new Schema({
     type: String,
     required: false,
   },
+  multiSelect: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 module.exports = model('RoleSelectionRoles', roleSelectionRolesSchema);

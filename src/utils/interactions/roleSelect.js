@@ -15,6 +15,7 @@ const {
 } = require('../selectMenuRoles');
 
 async function roleSelect(interaction) {
+  //TODO künftig nur varianten 2 & 3 (unterschied 2 & 4 ist ob id oder rollenname)
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
   let customId = interaction.customId;
   let variant = 0;

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const RoleSelectionRoles = require('../../models/RoleSelectionRoles');
+const { serverConfCache } = require('../../utils/data/cache');
+const printSelectMenu = require('../../utils/webFunctions/printSelectMenu');
 
 router.get('/', async (req, res) => {
   try {
@@ -55,16 +57,18 @@ router.get('/', async (req, res) => {
       allSelNames: allSelNames,
       rollen: rollen,
       allSelMenObj: allSelMenObj,
+      error: null,
     });
   } catch (error) {
     console.log(error);
-    return res.redirect('/');
+    return res.render('role-select', renderErrorTemplate(req, error.message));
   }
 });
 
 router.post('/add', async (req, res) => {
   try {
     const { selName, selDesc, roles } = req.body;
+    const isMulti = Boolean(req.body.selMulti);
     const selectedServerId = req.body.serverId;
     if (
       !selectedServerId ||
@@ -87,22 +91,72 @@ router.post('/add', async (req, res) => {
       roleIds: roles,
       selectMenu: selName.trim(),
       selectDescription: selDesc,
+      multiSelect: isMulti,
     });
     await newRoleSelection.save();
     return res.redirect(`/role-select?serverId=${selectedServerId}`);
   } catch (error) {
     console.log(error);
-    return res.redirect(`/role-select?serverId=${req.query.serverId}`);
+    return res.render('role-select', renderErrorTemplate(req, error.message));
   }
 });
 
 router.post('/send', async (req, res) => {
   try {
-    // TODO
+    const { serverId, selMenName } = req.body;
+    const client = req.discordClient;
+    const guild = client.guilds.cache.get(serverId);
+    if (!serverConfCache.get(guildId).get('SELFROLES_ID')) {
+      return res.render(
+        'role-select',
+        renderErrorTemplate(
+          req,
+          'Bitte zuerst den Selfroles Channel konfigurieren',
+        ),
+      );
+    }
+    const targetChannel =
+      guild.channels.cache.get(
+        serverConfCache.get(guildId).get('SELFROLES_ID'),
+      ) ||
+      (await guild.channels.fetch(
+        serverConfCache.get(guildId).get('SELFROLES_ID'),
+      ));
+    const selMenu = await RoleSelectionRoles.findOne({
+      guildId: serverId,
+      selectMenu: selMenName,
+    });
+    if (!selMenu) {
+      return res.render(
+        'role-select',
+        renderErrorTemplate(
+          req,
+          'Unerwarteter Fehler: SelMenu konnte nicht in DB gefunden werden',
+        ),
+      );
+    }
+    const messageContent = await printSelectMenu(selMenu, guild);
+    if (messageContent) {
+      return res.render(
+        'role-select',
+        renderErrorTemplate(
+          req,
+          'Unerwarteter Fehler: SelMenu Content konnte nicht erstellt werden',
+        ),
+      );
+    }
+    if (selMenu.messageId) {
+      const targetMessage = await targetChannel.messages.fetch(
+        selMenu.messageId,
+      );
+      await targetMessage.edit(messageContent);
+    } else {
+      await targetChannel.send(messageContent);
+    }
     return res.redirect(`/role-select?serverId=${req.query.serverId}`);
   } catch (error) {
     console.log(error);
-    return res.redirect(`/role-select?serverId=${req.query.serverId}`);
+    return res.render('role-select', renderErrorTemplate(req, error.message));
   }
 });
 
@@ -112,8 +166,65 @@ router.post('/update', async (req, res) => {
     return res.redirect(`/role-select?serverId=${req.query.serverId}`);
   } catch (error) {
     console.log(error);
-    return res.redirect(`/role-select?serverId=${req.query.serverId}`);
+    return res.render('role-select', renderErrorTemplate(req, error.message));
   }
 });
+
+router.post('/delete', async (req, res) => {
+  try {
+    const { serverId, selMenName } = req.body;
+    const selMenu = await RoleSelectionRoles.findOne({
+      guildId: serverId,
+      selectMenu: selMenName,
+    });
+    if (!selMenu) {
+      return res.render(
+        'role-select',
+        renderErrorTemplate(
+          req,
+          'Unerwarteter Fehler: SelMenu konnte nicht in DB gefunden werden',
+        ),
+      );
+    }
+    await selMenu.deleteOne();
+    if (selMenu.messageId) {
+      const client = req.discordClient;
+      const guild = client.guilds.cache.get(serverId);
+      if (serverConfCache.get(guildId).get('SELFROLES_ID')) {
+        const targetChannel =
+          guild.channels.cache.get(
+            serverConfCache.get(guildId).get('SELFROLES_ID'),
+          ) ||
+          (await guild.channels.fetch(
+            serverConfCache.get(guildId).get('SELFROLES_ID'),
+          ));
+        if (targetChannel) {
+          const targetMessage = await targetChannel.messages.fetch(
+            selMenu.messageId,
+          );
+          if (targetMessage) {
+            await targetMessage.delete();
+          }
+        }
+      }
+    }
+    return res.redirect(`/role-select?serverId=${req.query.serverId}`);
+  } catch (error) {
+    console.log(error);
+    return res.render('role-select', renderErrorTemplate(req, error.message));
+  }
+});
+
+function renderErrorTemplate(req, message) {
+  return {
+    guildIds: req.session.guildIds,
+    selectedServerId: null,
+    servers: null,
+    allSelNames: [],
+    rollen: [],
+    allSelMenObj: new Set(),
+    error: message,
+  };
+}
 
 module.exports = router;
