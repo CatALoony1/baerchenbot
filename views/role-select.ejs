@@ -130,6 +130,13 @@
     const addBtn = document.getElementById('rl-sel-addBtn');
     const modal = document.getElementById('rl-sel-popUpModal');
     const checkboxes = document.querySelectorAll('.rl-sel-ckbx');
+    const updateModal = document.getElementById('rl-sel-updatePopUpModal');
+    const updateSelName = document.getElementById('update-selName');
+    const updateSelDesc = document.getElementById('update-selDesc');
+    const updateSelMulti = document.getElementById('update-selMulti');
+    const updateCheckboxes = document.querySelectorAll('.rl-sel-ckbx');
+
+    const updateButtons = document.querySelectorAll('.rol-sel-upd-btn');
 
     function validateForm() {
       const inputValue = selName.value.trim().toLowerCase();
@@ -149,22 +156,19 @@
     });
     selName.addEventListener('input', validateForm);
     addBtn.addEventListener('click', () => {
+      console.log("add btn pressed");
       modal.style.display = 'flex';
     });
     window.addEventListener('click', (event) => {
       if (event.target === modal) {
         modal.style.display = 'none';
       }
+      if (event.target === updateModal) {
+        updateModal.style.display = 'none';
+      }
     });
     validateForm();
 
-    const updateModal = document.getElementById('rl-sel-updatePopUpModal');
-    const updateSelName = document.getElementById('update-selName');
-    const updateSelDesc = document.getElementById('update-selDesc');
-    const updateSelMulti = document.getElementById('update-selMulti');
-    const updateCheckboxes = document.querySelectorAll('.rl-sel-ckbx');
-
-    const updateButtons = document.querySelectorAll('.rol-sel-upd-btn');
     updateButtons.forEach(button => {
       button.addEventListener('click', (event) => {
         const name = event.target.getAttribute('data-name');
@@ -185,12 +189,6 @@
           updateModal.style.display = 'flex';
         }
       });
-    });
-
-    window.addEventListener('click', (event) => {
-      if (event.target === updateModal) {
-        updateModal.style.display = 'none';
-      }
     });
 
     function validateUpdateForm() {

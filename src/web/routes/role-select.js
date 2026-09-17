@@ -153,7 +153,7 @@ router.post('/send', async (req, res) => {
     } else {
       await targetChannel.send(messageContent);
     }
-    return res.redirect(`/role-select?serverId=${req.query.serverId}`);
+    return res.redirect(`/role-select?serverId=${serverId}`);
   } catch (error) {
     console.log(error);
     return res.render('role-select', renderErrorTemplate(req, error.message));
@@ -208,7 +208,7 @@ router.post('/delete', async (req, res) => {
         }
       }
     }
-    return res.redirect(`/role-select?serverId=${req.query.serverId}`);
+    return res.redirect(`/role-select?serverId=${serverId}`);
   } catch (error) {
     console.log(error);
     return res.render('role-select', renderErrorTemplate(req, error.message));
