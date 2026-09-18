@@ -50,7 +50,6 @@ router.get('/', async (req, res) => {
         allSelMenObj.add(selMenuObj);
       });
     }
-    console.log(allSelNames);
     return res.render('role-select', {
       guildIds: allowedGuilds,
       selectedServerId: selectedServerId,
