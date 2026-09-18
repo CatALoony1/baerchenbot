@@ -19,6 +19,8 @@
     </div>
     <% } %>
     <h1 class="header-rl-sel page-header">Selfroles verwalten</h1>
+    <p><%- JSON.stringify(allSelNames) %></p>
+    <p><%= allSelNames %></p>
     <form action="/role-select" method="GET">
       <label for="serverId">Wähle einen Server:</label>
       <select name="serverId" id="serverId" onchange="this.form.submit()">
@@ -125,7 +127,7 @@
   <script>
     console.log(document.body.dataset.selNames);
     const allSelNames = JSON.parse(document.body.dataset.selNames || '[]');
-    console.log(allSelNames);
+    console.log(allSelNames)
     const selName = document.getElementById('selName');
     const submitAddBtn = document.getElementById('rl-sel-submitAddBtn');
     const errorMsg = document.getElementById('error-msg');
