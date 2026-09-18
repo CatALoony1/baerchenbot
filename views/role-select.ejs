@@ -9,7 +9,7 @@
   <%- include('partials/darkmode-script') %>
 </head>
 
-<body data-selNames="<%- JSON.stringify(allSelNames) %>">
+<body data-sel-names="<%= JSON.stringify(allSelNames) %>">
   <%- include('partials/sidebar', {guildIds: guildIds}) %>
   <div class="rl-sel-main main">
     <% if (error) { %>
