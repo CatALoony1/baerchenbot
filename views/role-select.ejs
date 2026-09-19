@@ -180,9 +180,9 @@
         const selMenObj = allSelMenObj.find(obj => obj.name === name);
         if (selMenObj) {
           document.getElementById('selMenObj-name').textContent = selMenObj.name;
-          document.getElementById('selMenObj-name').value = selMenObj.name;
           updateSelDesc.value = selMenObj.description;
           updateSelMulti.checked = selMenObj.multiSelect;
+          updateSelName.value = selMenObj.name;
           updateCheckboxes.forEach(checkbox => {
             checkbox.checked = false;
           });
