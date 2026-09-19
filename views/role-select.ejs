@@ -170,6 +170,7 @@
 
     updateButtons.forEach(button => {
       button.addEventListener('click', (event) => {
+console.log('knopf gedrückt');
         const name = event.target.getAttribute('data-name');
         const selMenObj = allSelMenObj.find(obj => obj.name === name);
         if (selMenObj) {
