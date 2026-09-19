@@ -9,7 +9,7 @@
   <%- include('partials/darkmode-script') %>
 </head>
 
-<body data-sel-names="<%= JSON.stringify(allSelNames) %>">
+<body data-sel-names="<%= JSON.stringify(allSelNames) %>" data-sel-men-obj="<%= JSON.stringify(Array.from(allSelMenObj)) %>">
   <%- include('partials/sidebar', {guildIds: guildIds}) %>
   <div class="rl-sel-main main">
     <% if (error) { %>
@@ -124,7 +124,7 @@
   </div>
   <script>
     const allSelNames = JSON.parse(document.body.dataset.selNames || '[]');
-    const allSelMenObjs = <%- JSON.stringify(allSelNames) %>;
+    const allSelMenObj = JSON.parse(document.body.dataset.selMenObj || '[]');
     const selName = document.getElementById('selName');
     const submitAddBtn = document.getElementById('rl-sel-submitAddBtn');
     const errorMsg = document.getElementById('error-msg');
@@ -173,11 +173,11 @@
       button.addEventListener('click', (event) => {
         console.log('knopf gedrückt');
         const name = event.target.getAttribute('data-name');
-        const selMenObj = allSelMenObjs.find(obj => obj.name === name);
+        const selMenObj = allSelMenObj.find(obj => obj.name === name);
         if (selMenObj) {
           document.getElementById('selMenObj-name').textContent = 'Name: ' + selMenObj.name;
           updateSelDesc.value = selMenObj.description;
-          updateSelMulti.checked = selMenObj.multi;
+          updateSelMulti.checked = selMenObj.multiSelect;
           updateCheckboxes.forEach(checkbox => {
             checkbox.checked = false;
           });
