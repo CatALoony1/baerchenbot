@@ -42,6 +42,7 @@ router.get('/', async (req, res) => {
           description: menu.selectDescription,
           roleNames: [],
           multiSelect: menu.multiSelect,
+          roleIds: menu.roleIds,
         };
         menu.roleIds.forEach((roleId) => {
           if (roleMap.has(roleId)) {

@@ -171,7 +171,6 @@
 
     updateButtons.forEach(button => {
       button.addEventListener('click', (event) => {
-        console.log('knopf gedrückt');
         const name = event.target.getAttribute('data-name');
         const selMenObj = allSelMenObj.find(obj => obj.name === name);
         if (selMenObj) {
@@ -181,8 +180,8 @@
           updateCheckboxes.forEach(checkbox => {
             checkbox.checked = false;
           });
-          selMenObj.roleNames.forEach(rolename => {
-            const roleCheckbox = document.querySelector(`#update-role-${rolename}`);
+          selMenObj.roleIds.forEach(roleId => {
+            const roleCheckbox = document.querySelector(`#update-role-${roleId}`);
             if (roleCheckbox) {
               roleCheckbox.checked = true;
             }
