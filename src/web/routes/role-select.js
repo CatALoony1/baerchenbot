@@ -76,7 +76,7 @@ router.get('/', async (req, res) => {
       allSelMenObj: allSelMenObj,
       error: null,
       info: 0,
-      infoText: null,
+      infoText: infoText,
     });
   } catch (error) {
     console.log(error);
