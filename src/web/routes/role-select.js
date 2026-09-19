@@ -153,7 +153,9 @@ router.post('/send', async (req, res) => {
       );
       await targetMessage.edit(messageContent);
     } else {
-      await targetChannel.send(messageContent);
+      const message = await targetChannel.send(messageContent);
+      selMenu.messageId = message.id;
+      await selMenu.save();
     }
     return res.redirect(`/role-select?serverId=${serverId}`);
   } catch (error) {
