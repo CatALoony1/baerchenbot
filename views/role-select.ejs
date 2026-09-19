@@ -18,6 +18,11 @@
       <%= error %>
     </div>
     <% } %>
+    <% if (infoText) { %>
+    <div class="info-box">
+      <p><%= infoText %></p>
+    </div>
+    <% } %>
     <h1 class="header-rl-sel page-header">Selfroles verwalten</h1>
     <form action="/role-select" method="GET">
       <label for="serverId">Wähle einen Server:</label>
