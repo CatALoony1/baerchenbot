@@ -24,6 +24,13 @@ router.get('/', async (req, res) => {
         case '3':
           infoText = 'Die Nachricht des SelectMenus wurde in Discord gesendet.';
           break;
+        case '4':
+          infoText = 'Das SelectMenu wurde in der Datenbank geupdatet.';
+          break;
+        case '5':
+          infoText =
+            'Das SelectMenu wurde in der Datenbank und auf Discord geupdatet.';
+          break;
       }
     }
     let rollen = [];
