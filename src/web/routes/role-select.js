@@ -108,7 +108,7 @@ router.post('/send', async (req, res) => {
     const { serverId, selMenName } = req.body;
     const client = req.discordClient;
     const guild = client.guilds.cache.get(serverId);
-    if (!serverConfCache.get(guildId).get('SELFROLES_ID')) {
+    if (!serverConfCache.get(serverId).get('SELFROLES_ID')) {
       return res.render(
         'role-select',
         renderErrorTemplate(
@@ -192,13 +192,13 @@ router.post('/delete', async (req, res) => {
     if (selMenu.messageId) {
       const client = req.discordClient;
       const guild = client.guilds.cache.get(serverId);
-      if (serverConfCache.get(guildId).get('SELFROLES_ID')) {
+      if (serverConfCache.get(serverId).get('SELFROLES_ID')) {
         const targetChannel =
           guild.channels.cache.get(
-            serverConfCache.get(guildId).get('SELFROLES_ID'),
+            serverConfCache.get(serverId).get('SELFROLES_ID'),
           ) ||
           (await guild.channels.fetch(
-            serverConfCache.get(guildId).get('SELFROLES_ID'),
+            serverConfCache.get(serverId).get('SELFROLES_ID'),
           ));
         if (targetChannel) {
           const targetMessage = await targetChannel.messages.fetch(
