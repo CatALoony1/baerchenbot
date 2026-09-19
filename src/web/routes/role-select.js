@@ -195,6 +195,8 @@ router.post('/update', async (req, res) => {
   let info = 0;
   try {
     const { serverId, selName, selDesc, roles } = req.body;
+    const client = req.discordClient;
+    const guild = client.guilds.cache.get(serverId);
     const selMenu = await RoleSelectionRoles.findOne({
       guildId: serverId,
       selectMenu: selName,
