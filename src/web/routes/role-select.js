@@ -194,14 +194,10 @@ router.post('/send', async (req, res) => {
 router.post('/update', async (req, res) => {
   let info = 0;
   try {
-    const { serverId, selMenName, selDesc, roles } = req.body;
-    console.log(serverId);
-    console.log(selMenName);
-    console.log(selDesc);
-    console.log(roles);
+    const { serverId, selName, selDesc, roles } = req.body;
     const selMenu = await RoleSelectionRoles.findOne({
       guildId: serverId,
-      selectMenu: selMenName,
+      selectMenu: selName,
     });
     if (!selMenu) {
       return res.render(
