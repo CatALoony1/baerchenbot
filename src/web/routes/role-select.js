@@ -15,13 +15,13 @@ router.get('/', async (req, res) => {
     const info = req.query.info;
     if (info) {
       switch (info) {
-        case 1:
+        case '1':
           infoText = 'Die Nachricht des SelectMenus wurde in Discord gelöscht.';
           break;
-        case 2:
+        case '2':
           infoText = 'Die Nachricht des SelectMenus wurde in Discord editiert.';
           break;
-        case 3:
+        case '3':
           infoText = 'Die Nachricht des SelectMenus wurde in Discord gesendet.';
           break;
       }
