@@ -221,7 +221,7 @@ function renderErrorTemplate(req, message) {
   return {
     guildIds: req.session.guildIds,
     selectedServerId: null,
-    servers: null,
+    servers: [],
     allSelNames: [],
     rollen: [],
     allSelMenObj: new Set(),
