@@ -210,13 +210,22 @@ router.post('/update', async (req, res) => {
         ),
       );
     }
-    const messageId = selMenu.messageId;
     selMenu.selectDescription = selDesc;
     selMenu.roleIds = roles;
     selMenu.save();
     info = 4;
-    if (messageId) {
+    if (selMenu.messageId) {
       if (serverConfCache.get(serverId).get('SELFROLES_ID')) {
+        const messageContent = await printSelectMenu(selMenu, guild);
+        if (!messageContent) {
+          return res.render(
+            'role-select',
+            renderErrorTemplate(
+              req,
+              'Unerwarteter Fehler: SelMenu Content konnte nicht erstellt werden',
+            ),
+          );
+        }
         const targetChannel =
           guild.channels.cache.get(
             serverConfCache.get(serverId).get('SELFROLES_ID'),
@@ -229,7 +238,7 @@ router.post('/update', async (req, res) => {
             selMenu.messageId,
           );
           if (targetMessage) {
-            await targetMessage.delete();
+            await targetMessage.edit(messageContent);
             info = 5;
           }
         }
