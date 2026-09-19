@@ -9,7 +9,7 @@
   <%- include('partials/darkmode-script') %>
 </head>
 
-<body data-sel-names="<%= JSON.stringify(allSelNames) %>">
+<body data-sel-names="<%= JSON.stringify(allSelNames) %>" data-sel-men-obj="<%= JSON.stringify(allSelMenObj) %>">
   <%- include('partials/sidebar', {guildIds: guildIds}) %>
   <div class="rl-sel-main main">
     <% if (error) { %>
@@ -124,6 +124,7 @@
   </div>
   <script>
     const allSelNames = JSON.parse(document.body.dataset.selNames || '[]');
+    const allSelMenObj = JSON.parse(document.body.dataset.selMenObj || '[]');
     const selName = document.getElementById('selName');
     const submitAddBtn = document.getElementById('rl-sel-submitAddBtn');
     const errorMsg = document.getElementById('error-msg');
@@ -170,7 +171,7 @@
 
     updateButtons.forEach(button => {
       button.addEventListener('click', (event) => {
-console.log('knopf gedrückt');
+        console.log('knopf gedrückt');
         const name = event.target.getAttribute('data-name');
         const selMenObj = allSelMenObj.find(obj => obj.name === name);
         if (selMenObj) {
