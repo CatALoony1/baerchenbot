@@ -119,10 +119,10 @@ router.post('/send', async (req, res) => {
     }
     const targetChannel =
       guild.channels.cache.get(
-        serverConfCache.get(guildId).get('SELFROLES_ID'),
+        serverConfCache.get(serverId).get('SELFROLES_ID'),
       ) ||
       (await guild.channels.fetch(
-        serverConfCache.get(guildId).get('SELFROLES_ID'),
+        serverConfCache.get(serverId).get('SELFROLES_ID'),
       ));
     const selMenu = await RoleSelectionRoles.findOne({
       guildId: serverId,
