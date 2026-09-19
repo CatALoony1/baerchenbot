@@ -187,7 +187,45 @@ router.post('/send', async (req, res) => {
 router.post('/update', async (req, res) => {
   let info = 0;
   try {
-    // TODO
+    const { serverId, selMenName, selDesc, roles } = req.body;
+    const selMenu = await RoleSelectionRoles.findOne({
+      guildId: serverId,
+      selectMenu: selMenName,
+    });
+    if (!selMenu) {
+      return res.render(
+        'role-select',
+        renderErrorTemplate(
+          req,
+          'Unerwarteter Fehler: SelMenu konnte nicht in DB gefunden werden',
+        ),
+      );
+    }
+    const messageId = selMenu.messageId;
+    selMenu.selectDescription = selDesc;
+    selMenu.roleIds = roles;
+    selMenu.save();
+    info = 4;
+    if (messageId) {
+      if (serverConfCache.get(serverId).get('SELFROLES_ID')) {
+        const targetChannel =
+          guild.channels.cache.get(
+            serverConfCache.get(serverId).get('SELFROLES_ID'),
+          ) ||
+          (await guild.channels.fetch(
+            serverConfCache.get(serverId).get('SELFROLES_ID'),
+          ));
+        if (targetChannel) {
+          const targetMessage = await targetChannel.messages.fetch(
+            selMenu.messageId,
+          );
+          if (targetMessage) {
+            await targetMessage.delete();
+            info = 5;
+          }
+        }
+      }
+    }
     return res.redirect(
       `/role-select?serverId=${req.query.serverId}&info=${info}`,
     );
