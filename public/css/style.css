@@ -314,3 +314,8 @@ Hier folgt Class content
   overflow-y: auto;
   white-space: pre-wrap;
 }
+
+.error-box {
+  color: red;
+  font-weight: bold;
+}

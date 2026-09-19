@@ -138,7 +138,7 @@ router.post('/send', async (req, res) => {
       );
     }
     const messageContent = await printSelectMenu(selMenu, guild);
-    if (messageContent) {
+    if (!messageContent) {
       return res.render(
         'role-select',
         renderErrorTemplate(
