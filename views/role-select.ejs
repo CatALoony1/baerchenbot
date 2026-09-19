@@ -179,7 +179,8 @@
         const name = event.target.getAttribute('data-name');
         const selMenObj = allSelMenObj.find(obj => obj.name === name);
         if (selMenObj) {
-          document.getElementById('selMenObj-name').textContent = 'Name: ' + selMenObj.name;
+          document.getElementById('selMenObj-name').textContent = selMenObj.name;
+          document.getElementById('selMenObj-name').value = selMenObj.name;
           updateSelDesc.value = selMenObj.description;
           updateSelMulti.checked = selMenObj.multiSelect;
           updateCheckboxes.forEach(checkbox => {
