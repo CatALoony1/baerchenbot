@@ -244,9 +244,7 @@ router.post('/update', async (req, res) => {
         }
       }
     }
-    return res.redirect(
-      `/role-select?serverId=${req.query.serverId}&info=${info}`,
-    );
+    return res.redirect(`/role-select?serverId=${serverId}&info=${info}`);
   } catch (error) {
     console.log(error);
     return res.render('role-select', renderErrorTemplate(req, error.message));
