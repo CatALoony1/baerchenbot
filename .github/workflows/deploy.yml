@@ -37,7 +37,7 @@ jobs:
             # 'EOF' in Anführungszeichen verhindert jegliches SSH/Shell-Parsing von Sonderzeichen
             cat << 'EOF' > .env
             TOKEN=${{ secrets.TOKEN }}
-            MONGODB_URI=${{ secrets.MONGODB_URI }}
+            MONGODB_URI=${{ secrets.MONGODB_URI_PROD }}
             WEBSECRET=${{ secrets.WEBSECRET }}
             AI_API=${{ secrets.AI_API }}
             CAT_API=${{ secrets.CAT_API }}
