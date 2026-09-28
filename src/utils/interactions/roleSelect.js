@@ -26,7 +26,7 @@ async function roleSelect(interaction) {
       let replyMessage = '';
       if (rolesToAdd.length > 0) {
         await member.roles.add(rolesToAdd);
-        replyMessage += `Die Rollen ${rolesToAdd.map((id) => memberRoles.get(id).name).join(', ')} wurde dir zugewiesen.\n`;
+        replyMessage += `Die Rollen ${rolesToAdd.map((id) => member.guild.roles.cache.get(id).name).join(', ')} wurde dir zugewiesen.\n`;
       }
       if (rolesToRemove.length > 0) {
         await member.roles.remove(rolesToRemove);
@@ -52,7 +52,7 @@ async function roleSelect(interaction) {
         await member.roles.remove(rolesToRemove);
       }
       await interaction.editReply(
-        `Die Rolle ${memberRoles.get(selectedRoleId).name} wurde dir zugewiesen.`,
+        `Die Rolle ${member.guild.roles.cache.get(selectedRoleId).name} wurde dir zugewiesen.`,
       );
     }
   }
