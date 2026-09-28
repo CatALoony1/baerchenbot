@@ -11,118 +11,51 @@ async function roleSelect(interaction) {
   });
   if (selMenu) {
     const roleArray = selMenu.roleIds;
+    const member = interaction.guild.members.cache.get(interaction.member.id);
+    const memberRoles = new Map(
+      member.roles.cache.map((role) => [role.id, role]),
+    );
     if (selMenu.multiSelect) {
-      let removedRoles = [];
-      let addedRoles = [];
-      if (interaction.values.length == 0) {
-        for (let i = 0; i < roleArray.length; i++) {
-          if (
-            interaction.member.roles.cache.some(
-              (role) => role.id === roleArray[i],
-            )
-          ) {
-            const tempRole = interaction.guild.roles.cache.get(roleArray[i]);
-            await interaction.guild.members.cache
-              .get(interaction.member.id)
-              .roles.remove(tempRole);
-            console.log(
-              `Role ${tempRole.name} (${roleArray[i]}) was removed from user ${interaction.member.user.tag}`,
-            );
-            removedRoles[removedRoles.length] = tempRole.name;
-          }
-        }
-      } else {
-        for (let j = 0; j < roleArray.length; j++) {
-          if (interaction.values.includes(roleArray[j])) {
-            if (
-              !interaction.member.roles.cache.some(
-                (role) => role.id === roleArray[j],
-              )
-            ) {
-              const role = interaction.guild.roles.cache.get(roleArray[j]);
-              await interaction.guild.members.cache
-                .get(interaction.member.id)
-                .roles.add(role);
-              console.log(
-                `Role ${role.name} (${roleArray[j]}) was given to user ${interaction.member.user.tag}`,
-              );
-              addedRoles[addedRoles.length] = role.name;
-            }
-          } else if (
-            interaction.member.roles.cache.some(
-              (role) => role.id === roleArray[j],
-            )
-          ) {
-            const tempRole = interaction.guild.roles.cache.get(roleArray[j]);
-            await interaction.guild.members.cache
-              .get(interaction.member.id)
-              .roles.remove(tempRole);
-            console.log(
-              `Role ${tempRole.name} (${roleArray[j]}) was removed from user ${interaction.member.user.tag}`,
-            );
-            removedRoles[removedRoles.length] = tempRole.name;
-          }
-        }
+      const rolesToAdd = interaction.values.filter(
+        (roleId) => !memberRoles.has(roleId),
+      );
+      const rolesToRemove = roleArray.filter(
+        (roleId) =>
+          !interaction.values.includes(roleId) && memberRoles.has(roleId),
+      );
+      let replyMessage = '';
+      if (rolesToAdd.length > 0) {
+        await member.roles.add(rolesToAdd);
+        replyMessage += `Die Rollen ${rolesToAdd.map((id) => memberRoles.get(id).name).join(', ')} wurde dir zugewiesen.\n`;
       }
-      if (addedRoles.length != 0 && removedRoles.length != 0) {
-        await interaction.editReply(
-          `Die Rollen ${addedRoles} wurde dir zugewiesen.\nDie Rollen ${removedRoles} wurde entfernt.`,
-        );
-      } else if (addedRoles.length != 0) {
-        await interaction.editReply(
-          `Die Rollen ${addedRoles} wurde dir zugewiesen.`,
-        );
-      } else if (removedRoles.length != 0) {
-        await interaction.editReply(
-          `Die Rollen ${removedRoles} wurde entfernt.`,
-        );
-      } else {
-        await interaction.editReply(
-          `Du besitzt alle Rollen die du ausgewählt hast.`,
-        );
+      if (rolesToRemove.length > 0) {
+        await member.roles.remove(rolesToRemove);
+        replyMessage += `Die Rollen ${rolesToRemove.map((id) => memberRoles.get(id).name).join(', ')} wurde entfernt.`;
       }
+      if (replyMessage === '') {
+        replyMessage = 'Du besitzt bereits alle Rollen die du ausgewählt hast.';
+      }
+      await interaction.editReply(replyMessage);
     } else {
-      if (
-        interaction.member.roles.cache.some(
-          (role) => role.id === interaction.values[0],
-        )
-      ) {
-        const tempRole = interaction.guild.roles.cache.get(
-          interaction.values[0],
-        );
+      const selectedRoleId = interaction.values[0];
+      if (memberRoles.has(selectedRoleId)) {
         await interaction.editReply(
-          `Du besitzt die Rolle ${tempRole.name} bereits.`,
+          `Du besitzt die Rolle ${memberRoles.get(selectedRoleId).name} bereits.`,
         );
         return;
       }
-      for (let i = 0; i < roleArray.length; i++) {
-        if (
-          interaction.member.roles.cache.some(
-            (role) => role.id === roleArray[i],
-          )
-        ) {
-          const tempRole = interaction.guild.roles.cache.get(roleArray[i]);
-          await interaction.guild.members.cache
-            .get(interaction.member.id)
-            .roles.remove(tempRole);
-          console.log(
-            `Role ${tempRole.name} (${roleArray[i]}) was removed from user ${interaction.member.user.tag}`,
-          );
-        }
+      const rolesToRemove = roleArray.filter((roleId) =>
+        memberRoles.has(roleId),
+      );
+      await member.roles.add(selectedRoleId);
+      if (rolesToRemove.length > 0) {
+        await member.roles.remove(rolesToRemove);
       }
-      const role = await interaction.guild.roles.cache.get(
-        interaction.values[0],
-      );
-      await interaction.guild.members.cache
-        .get(interaction.member.id)
-        .roles.add(role);
-      console.log(
-        `Role ${role.name} (${interaction.values[0]}) was given to user ${interaction.member.user.tag}`,
-      );
       await interaction.editReply(
-        `Die Rolle ${role.name} wurde dir zugewiesen.`,
+        `Die Rolle ${memberRoles.get(selectedRoleId).name} wurde dir zugewiesen.`,
       );
     }
   }
 }
+
 module.exports = roleSelect;
