@@ -15,10 +15,7 @@ async function selectMenuButton(interaction) {
     const memberRoles = new Map(
       member.roles.cache.map((role) => [role.id, role]),
     );
-    const rolesToRemove = roleArray.filter(
-      (roleId) =>
-        !interaction.values.includes(roleId) && memberRoles.has(roleId),
-    );
+    const rolesToRemove = roleArray.filter((roleId) => memberRoles.has(roleId));
     if (rolesToRemove.length != 0) {
       await member.roles.remove(rolesToRemove);
       await interaction.editReply(
