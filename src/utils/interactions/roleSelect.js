@@ -60,7 +60,7 @@ async function roleSelect(interaction) {
             console.log(
               `Role ${tempRole.name} (${roleArray[j]}) was removed from user ${interaction.member.user.tag}`,
             );
-            removedRoles[removedRoles.length] = roleArray[j];
+            removedRoles[removedRoles.length] = tempRole.name;
           }
         }
       }
