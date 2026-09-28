@@ -15,46 +15,26 @@ async function roleSelect(interaction) {
     const memberRoles = new Map(
       member.roles.cache.map((role) => [role.id, role]),
     );
-    if (selMenu.multiSelect) {
-      const rolesToAdd = interaction.values.filter(
-        (roleId) => !memberRoles.has(roleId),
-      );
-      const rolesToRemove = roleArray.filter(
-        (roleId) =>
-          !interaction.values.includes(roleId) && memberRoles.has(roleId),
-      );
-      let replyMessage = '';
-      if (rolesToAdd.length > 0) {
-        await member.roles.add(rolesToAdd);
-        replyMessage += `Die Rollen ${rolesToAdd.map((id) => member.guild.roles.cache.get(id).name).join(', ')} wurde dir zugewiesen.\n`;
-      }
-      if (rolesToRemove.length > 0) {
-        await member.roles.remove(rolesToRemove);
-        replyMessage += `Die Rollen ${rolesToRemove.map((id) => memberRoles.get(id).name).join(', ')} wurde entfernt.`;
-      }
-      if (replyMessage === '') {
-        replyMessage = 'Du besitzt bereits alle Rollen die du ausgewählt hast.';
-      }
-      await interaction.editReply(replyMessage);
-    } else {
-      const selectedRoleId = interaction.values[0];
-      if (memberRoles.has(selectedRoleId)) {
-        await interaction.editReply(
-          `Du besitzt die Rolle ${memberRoles.get(selectedRoleId).name} bereits.`,
-        );
-        return;
-      }
-      const rolesToRemove = roleArray.filter((roleId) =>
-        memberRoles.has(roleId),
-      );
-      await member.roles.add(selectedRoleId);
-      if (rolesToRemove.length > 0) {
-        await member.roles.remove(rolesToRemove);
-      }
-      await interaction.editReply(
-        `Die Rolle ${member.guild.roles.cache.get(selectedRoleId).name} wurde dir zugewiesen.`,
-      );
+    const rolesToAdd = interaction.values.filter(
+      (roleId) => !memberRoles.has(roleId),
+    );
+    const rolesToRemove = roleArray.filter(
+      (roleId) =>
+        !interaction.values.includes(roleId) && memberRoles.has(roleId),
+    );
+    let replyMessage = '';
+    if (rolesToAdd.length > 0) {
+      await member.roles.add(rolesToAdd);
+      replyMessage += `Die Rolle/n ${rolesToAdd.map((id) => member.guild.roles.cache.get(id).name).join(', ')} wurde/n dir zugewiesen.\n`;
     }
+    if (rolesToRemove.length > 0) {
+      await member.roles.remove(rolesToRemove);
+      replyMessage += `Die Rolle/n ${rolesToRemove.map((id) => memberRoles.get(id).name).join(', ')} wurde/n entfernt.`;
+    }
+    if (replyMessage === '') {
+      replyMessage = 'Du besitzt bereits die Rolle/n die du ausgewählt hast.';
+    }
+    await interaction.editReply(replyMessage);
   }
 }
 
