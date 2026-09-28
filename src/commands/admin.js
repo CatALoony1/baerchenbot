@@ -4,7 +4,6 @@ const {
   PermissionFlagsBits,
 } = require('discord.js');
 const doloescheCommand = require('../utils/commands/admin/loesche');
-const doPrintSelectMenuCommand = require('../utils/commands/admin/printSelectMenu');
 
 module.exports = {
   data: new SlashCommandBuilder()
