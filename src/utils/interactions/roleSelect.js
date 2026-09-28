@@ -110,7 +110,10 @@ async function roleSelect(interaction) {
           );
         }
       }
-      const role = interaction.guild.roles.cache.get(interaction.values[0]);
+      const role = await interaction.guild.roles.cache.get(
+        interaction.values[0],
+      );
+      console.log(role);
       await interaction.guild.members.cache
         .get(interaction.member.id)
         .roles.add(role);
