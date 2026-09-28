@@ -4,9 +4,6 @@ const RoleSelectionRoles = require('../../models/RoleSelectionRoles');
 async function roleSelect(interaction) {
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
   const selName = interaction.customId.split('_')[0];
-  console.log(interaction.customId);
-  console.log(selName);
-  console.log(interaction.values);
   const guildId = interaction.guild.id;
   const selMenu = await RoleSelectionRoles.findOne({
     guildId: guildId,
@@ -14,7 +11,6 @@ async function roleSelect(interaction) {
   });
   if (selMenu) {
     const roleArray = selMenu.roleIds;
-    console.log(roleArray);
     if (selMenu.multiSelect) {
       let removedRoles = [];
       let addedRoles = [];
@@ -117,7 +113,6 @@ async function roleSelect(interaction) {
       const role = await interaction.guild.roles.cache.get(
         interaction.values[0],
       );
-      console.log(role);
       await interaction.guild.members.cache
         .get(interaction.member.id)
         .roles.add(role);
