@@ -5,28 +5,30 @@ const {
   ButtonBuilder,
 } = require('discord.js');
 
-async function getRoleNames(guild, roleIds) {
-  const roleNames = [];
+async function getRoleArray(guild, roleIds) {
+  const roleArray = [];
   for (const roleId of roleIds) {
     try {
       const role = await guild.roles.cache.get(roleId);
       if (role) {
-        roleNames.push(role.name);
+        roleArray.push({ label: role.name, value: roleId });
       } else {
-        console.warn(`Rolle mit ID ${roleId} nicht gefunden.`);
-        roleNames.push('Unbekannte Rolle');
+        console.log(`ERROR: Rolle mit ID ${roleId} nicht gefunden.`);
       }
     } catch (error) {
-      console.error(`Fehler beim Abrufen der Rolle mit ID ${roleId}:`, error);
-      roleNames.push('Fehler beim Abrufen');
+      console.log(
+        `ERROR: Fehler beim Abrufen der Rolle mit ID ${roleId}:`,
+        error,
+      );
+      roleArray.push('Fehler beim Abrufen');
     }
   }
-  return roleNames;
+  return roleArray;
 }
 
 async function printSelectMenu(selMenu, guild) {
   try {
-    const rolenames = await getRoleNames(guild, selMenu.roleIds);
+    const roles = await getRoleArray(guild, selMenu.roleIds);
     const smCustomId = `${selMenu.selectMenu}_selmen_menu`;
     const placeholder = 'Bitte auswählen';
     const content = selMenu.selectDescription;
@@ -36,17 +38,9 @@ async function printSelectMenu(selMenu, guild) {
     let max = 1;
     if (selMenu.isMulti) {
       min = 0;
-      max = rolenames.length;
+      max = roles.length;
     }
-    let roles = [];
-    let selectMenu = null;
-    for (let i = 0; i < rolenames.length; i++) {
-      roles[i] = {
-        label: rolenames[i],
-        value: rolenames[i],
-      };
-    }
-    selectMenu = new StringSelectMenuBuilder()
+    let selectMenu = new StringSelectMenuBuilder()
       .setCustomId(smCustomId)
       .setPlaceholder(placeholder)
       .setMinValues(min)

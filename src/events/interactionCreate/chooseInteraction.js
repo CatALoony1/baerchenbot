@@ -38,7 +38,7 @@ module.exports = {
         await quizAnswer(interaction);
       } else if (customId.includes('qPage')) {
         await quizLeaderboardPage(interaction, client);
-      } else if (customId.includes('remove') && !customId.includes('_')) {
+      } else if (customId.includes('selmen_remove')) {
         await selectMenuButton(interaction);
       } else if (customId.includes('shop')) {
         await shopButtons(interaction);
@@ -46,7 +46,7 @@ module.exports = {
         await spieleLeaderboardPage(interaction);
       }
     } else if (interaction.isStringSelectMenu()) {
-      if (customId.includes('select') && !customId.includes('_')) {
+      if (customId.includes('selmen_menu')) {
         await roleSelect(interaction);
       }
     }

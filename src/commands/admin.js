@@ -23,29 +23,6 @@ module.exports = {
             .setMinValue(1),
         ),
     )
-    .addSubcommand((subcommand) =>
-      subcommand
-        .setName('printselectmenu')
-        .setDescription('Erzeugt ein Rollenselect.')
-        .addStringOption((option) =>
-          option
-            .setName('selectmenu')
-            .setDescription('Das SelectMenu welches gesendet werden soll')
-            .setRequired(true)
-            .addChoices(
-              { name: 'age', value: 'age' },
-              { name: 'color', value: 'color' },
-              { name: 'dm', value: 'dm' },
-              { name: 'game', value: 'game' },
-              { name: 'ping', value: 'ping' },
-              { name: 'platform', value: 'platform' },
-              { name: 'pronoun', value: 'pronoun' },
-              { name: 'region', value: 'region' },
-              { name: 'country', value: 'country' },
-              { name: 'hogwarts', value: 'hogwarts' },
-            ),
-        ),
-    )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
     .setContexts([
       InteractionContextType.Guild,
@@ -60,8 +37,6 @@ module.exports = {
       const subcommand = interaction.options.getSubcommand();
       if (subcommand === 'loesche') {
         await doloescheCommand(interaction);
-      } else if (subcommand === 'printselectmenu') {
-        await doPrintSelectMenuCommand(interaction);
       }
     } catch (error) {
       console.log(error);
