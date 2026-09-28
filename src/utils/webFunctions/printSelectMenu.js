@@ -36,7 +36,7 @@ async function printSelectMenu(selMenu, guild) {
     const bLabel = 'Rolle(n) entfernen';
     let min = 1;
     let max = 1;
-    if (selMenu.isMulti) {
+    if (selMenu.multiSelect) {
       min = 0;
       max = roles.length;
     }
