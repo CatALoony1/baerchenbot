@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Datenbank - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <!--Skript ausführen, welches überprüft was voreingestellt ist-->
+  <%- include('partials/darkmode-script') %>
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="chnl-sel-main main">
+    <h1 class="header-init-setup page-header">Initiale Einstellungen</h1>
+    <% if (error) { %>
+    <div class="error-box">
+      <strong>Fehler:</strong>
+      <%= error %>
+    </div>
+    <% } %>
+    <% if (admin) { %>
+    <form action="/initial-setup" method="GET">
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId" onchange="this.form.submit()">
+        <option value="" disabled hidden <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
+        <% servers.forEach(function(server, index) { %>
+        <% 
+        const isSelected = selectedServerId 
+          ? server.id === selectedServerId 
+          : index === 0; 
+      %>
+        <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>>
+          <%= server.name %>
+        </option>
+        <% }); %>
+      </select>
+    </form>
+    <% } %>
+
+    <br />
+    <hr />
+    <br />
+
+    <% if (selectedServerId && alleTextChannels.length > 0 && alleVoiceChannels.length > 0) { %>
+    <h2>Gefundene Einträge:</h2>
+    <table border="1" cellpadding="5">
+      <thead>
+        <tr>
+          <th>Funktion</th>
+          <th>Variable</th>
+          <th>Kanal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% const channelTypes = [
+          { name: 'ALLGEMEIN_ID', variable: 'allgemein', channels: alleTextChannels },
+          { name: 'SELFROLES_ID', variable: 'selfroles', channels: alleTextChannels },
+          { name: 'BYE_ID', variable: 'bye', channels: alleTextChannels },
+          { name: 'LOG_ID', variable: 'log', channels: alleTextChannels },
+          { name: 'BUMP_ID', variable: 'bump', channels: alleTextChannels },
+          { name: 'QUIZ_ID', variable: 'quiz', channels: alleTextChannels },
+          { name: 'ADMIN_C_ID', variable: 'admin', channels: alleTextChannels },
+          { name: 'SPIELE_ID', variable: 'spiele', channels: alleTextChannels },
+          { name: 'VCCREATION_ID', variable: 'vccreation', channels: alleVoiceChannels },
+          { name: 'AFK_ID', variable: 'afk', channels: alleVoiceChannels },
+        ]; %>
+
+        <% channelTypes.forEach(function(channelType) { %>
+        <tr>
+          <td><%= uses[channelType.name] %></td>
+          <td><%= channelType.variable.toUpperCase() %>_ID</td>
+          <td>
+            <form action="/channelselection/change-channel-<%= channelType.variable %>" method="POST">
+              <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+              <select name="<%= channelType.variable %>" onchange="this.form.submit()">
+                <option value="" disabled <%= !defaultValues[channelType.name] ? 'selected' : '' %> hidden>
+                  -- Bitte Channel auswählen --
+                </option>
+                <% channelType.channels.forEach(function(channel) { %>
+                <option value="<%= channel.id %>" <%= defaultValues[channelType.name] && channel.id === defaultValues[channelType.name] ? 'selected' : '' %>>
+                  <%= channel.name %>
+                </option>
+                <% }); %>
+              </select>
+            </form>
+          </td>
+        </tr>
+        <% }); %>
+      </tbody>
+    </table>
+    <% } %>
+  </div>
+</body>
+
+</html>
