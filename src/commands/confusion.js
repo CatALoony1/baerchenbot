@@ -23,10 +23,9 @@ module.exports = {
     const randomNumber = getRandom(1, 4);
     if (randomNumber === 1) {
       const timeoutDuration = getRandom(1, 5);
-      await interaction.member.timeout(
-        timeoutDuration * 60 * 1000,
-        'Hat sich selbst verwirrt.',
-      );
+      await interaction.member
+        .timeout(timeoutDuration * 60 * 1000, 'Hat sich selbst verwirrt.')
+        .catch(console.log);
       await reply.reply(
         `<@${interaction.user.id}> hat sich vor Verwirrung selbst verletzt und wurde für ${timeoutDuration} Minuten stummgeschalten.`,
       );
