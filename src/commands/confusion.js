@@ -23,12 +23,20 @@ module.exports = {
     const randomNumber = getRandom(1, 4);
     if (randomNumber === 1) {
       const timeoutDuration = getRandom(1, 5);
-      await interaction.member
-        .timeout(timeoutDuration * 60 * 1000, 'Hat sich selbst verwirrt.')
-        .catch(console.log);
-      await reply.reply(
-        `<@${interaction.user.id}> hat sich vor Verwirrung selbst verletzt und wurde für ${timeoutDuration} Minuten stummgeschalten.`,
-      );
+      try {
+        await interaction.member.timeout(
+          timeoutDuration * 60 * 1000,
+          'Hat sich selbst verwirrt.',
+        );
+        await reply.reply(
+          `<@${interaction.user.id}> hat sich vor Verwirrung selbst verletzt und wurde für ${timeoutDuration} Minuten stummgeschalten.`,
+        );
+      } catch (error) {
+        console.log('fehlende Berechtigung zum timeouten');
+        await reply.reply(
+          `<@${interaction.user.id}> ist zu mächtig um verwirrt zu werden.`,
+        );
+      }
     } else {
       await reply.reply(`Baum`);
     }
