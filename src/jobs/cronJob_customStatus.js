@@ -39,43 +39,7 @@ let status = [
       type: ActivityType.Competing
     }], status: 'dnd'
   }, 
-  
-    {
-    activities: [
-      {
-        name: 'alleine',
-        type: ActivityType.Playing,
-      },
-    ],
-    status: 'online',
-  },
-  {
-    activities: [
-      {
-        name: 'dir',
-        type: ActivityType.Listening,
-      },
-    ],
-    status: 'idle',
-  },
-  {
-    activities: [
-      {
-        name: 'in die Ferne',
-        type: ActivityType.Watching,
-      },
-    ],
-    status: 'online',
-  },
-  {
-    activities: [
-      {
-        name: 'mit deinen Gefühlen',
-        type: ActivityType.Playing,
-      },
-    ],
-    status: 'online',
-  },
+
   */
   {
     activities: [
