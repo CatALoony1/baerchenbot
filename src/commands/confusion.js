@@ -17,8 +17,27 @@ module.exports = {
       `SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`,
     );
     await interaction.deferReply();
-    await interaction.editReply(
+    const reply = await interaction.editReply(
       `<@${interaction.user.id}> hat Verwirrung eingesetzt!`,
     );
+    const randomNumber = getRandom(1, 4);
+    if (randomNumber === 1) {
+      const timeoutDuration = getRandom(1, 5);
+      await interaction.member.timeout(
+        timeoutDuration * 60 * 1000,
+        'Hat sich selbst verwirrt.',
+      );
+      await reply.reply(
+        `<@${interaction.user.id}> hat sich vor Verwirrung selbst verletzt und wurde für ${timeoutDuration} Minuten stummgeschalten.`,
+      );
+    } else {
+      await reply.reply(`Baum`);
+    }
   },
 };
+
+function getRandom(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
