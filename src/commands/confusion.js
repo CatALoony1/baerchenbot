@@ -1,16 +1,10 @@
-const {
-  SlashCommandBuilder, //zum erzeugen eines befehls
-  InteractionContextType, //zum festlegen, wo der Befehl erlaubt ist
-} = require('discord.js');
+const { SlashCommandBuilder, InteractionContextType } = require('discord.js');
 
 module.exports = {
-  //erzeugen des Befehls
   data: new SlashCommandBuilder()
-    .setName('confusion') //setzen des Namens (Dateiname und Befehl-Name parallöl halten)
+    .setName('confusion')
     .setDescription('Setzt Verwirrung ein.')
-    .setContexts([
-      InteractionContextType.Guild, //Befehl auf Server erlaubt
-    ]),
+    .setContexts([InteractionContextType.Guild]),
 
   run: async ({ interaction }) => {
     console.log(
