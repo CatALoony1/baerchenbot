@@ -31,7 +31,7 @@ module.exports = {
         const randomMember = allUsers.random();
         if (randomMember.user.bot) {
           const secondReply = await reply.reply(
-            `Du hast versucht, <@${randomMember.user.id}> zu verwirren. Friedlyfire ist nicht aktiv.\n Aus Rache setzt <@${randomMember.user.id}> Spiegelcape ein.`,
+            `Du hast versucht, <@${randomMember.user.id}> zu verwirren. Friedlyfire ist nicht aktiv.\nAus Rache setzt <@${randomMember.user.id}> Spiegelcape ein.`,
           );
           await timeoutUser(
             interaction.member,
