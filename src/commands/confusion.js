@@ -10,12 +10,16 @@ module.exports = {
     console.log(
       `SlashCommand ${interaction.commandName} was executed by user ${interaction.member.user.tag}`,
     );
+    console.log(await interaction.guild.members.fetch());
+    console.log('/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n/n');
+    console.log(await interaction.guild.members.list());
+
     await interaction.deferReply();
     const reply = await interaction.editReply(
       `<@${interaction.user.id}> hat Verwirrung eingesetzt!`,
     );
     const randomNumber = getRandom(1, 4);
-    if (randomNumber === 1) {
+    if (randomNumber !== 1) {
       const timeoutDuration = getRandom(1, 5);
       try {
         await interaction.member.timeout(
@@ -32,7 +36,12 @@ module.exports = {
         );
       }
     } else {
-      await reply.reply(`Baum`);
+      const missedAttack = 3 === getRandom(1, 10);
+      if (missedAttack) {
+        await reply.reply(`Verwirrung schlug fehl!`);
+      } else {
+        //   const allUsers = interaction.guild.members.
+      }
     }
   },
 };
