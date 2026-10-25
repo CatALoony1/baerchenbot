@@ -19,7 +19,7 @@ module.exports = {
       await timeoutUser(
         interaction.member,
         reply,
-        `<@${interaction.user.id}> hat sich vor Verwirrung selbst verletzt und wurde für ${timeoutDuration} Minuten stummgeschalten.`,
+        `<@${interaction.user.id}> hat sich vor Verwirrung selbst verletzt und wurde für !timeoutDuration! Minuten stummgeschalten.`,
         `<@${interaction.user.id}> ist zu mächtig um verwirrt zu werden.`,
       );
     } else {
@@ -36,15 +36,15 @@ module.exports = {
           await timeoutUser(
             interaction.member,
             secondReply,
-            `Durch den Einsatz von Spiegelcape wurde <@${interaction.user.id}> verwirrt und hat sich selbst verletzt und wurde für ${timeoutDuration} Minuten stummgeschalten.`,
+            `Durch den Einsatz von Spiegelcape wurde <@${interaction.user.id}> verwirrt und hat sich selbst verletzt und wurde für !timeoutDuration! Minuten stummgeschalten.`,
             `<@${interaction.user.id}> ist immun gegen Spiegelcape.`,
           );
         } else {
           await timeoutUser(
             randomMember,
             reply,
-            `<@${interaction.user.id}> hat sich vor Verwirrung selbst verletzt und wurde für ${timeoutDuration} Minuten stummgeschalten.`,
-            `<@${interaction.user.id}> ist zu mächtig um verwirrt zu werden.`,
+            `<@${randomMember.user.id}> wurde von der Verwirrung getroffen und hat sich selbst verletzt und wurde für !timeoutDuration! Minuten stummgeschalten.`,
+            `Ich traue mich nicht <@${randomMember.user.id}> zu verletzen.`,
           );
         }
       }
@@ -59,7 +59,7 @@ async function timeoutUser(member, reply, replyText, adminTimeoutText) {
       timeoutDuration * 60 * 1000,
       'Hat sich selbst verwirrt.',
     );
-    await reply.reply(replyText);
+    await reply.reply(replyText.replace('!timeoutDuration!', timeoutDuration));
   } catch (error) {
     console.log('fehlende Berechtigung zum timeouten');
     await reply.reply(adminTimeoutText);
