@@ -28,7 +28,7 @@ function startJob(client) {
               const targetChannel = await client.channels.fetch(
                 serverConfCache.get(member.guild.id).get('ALLGEMEIN_ID'),
               );
-              let xpToGive = 5 * getRandomXp(1, 5);
+              let xpToGive = 5;
               await giveXP(member, xpToGive, targetChannel, false);
             }
           });
