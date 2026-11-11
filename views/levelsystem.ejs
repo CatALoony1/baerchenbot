@@ -64,8 +64,8 @@
       <input type="number" id="lvlRole" name="lvlRole" min="1" required value="<%= lvlsys.lvlRole || 5 %>" />
       <br /><br /><br />
       <label for="numName">Numerierte Level Rolle? Bsp.: Rang 1, Rang 2, Rang 3 o. 1. Nudel, 2. Nudel, 3. Nudel...</label>
-      <br />
       <input type="radio" id="numName" name="lvlRoles" value="numName" <%= !lvlsys.lvlRoles ? 'checked' : '' %>>
+      <br />
       <label for="customName">Komplett individuelle Rollennamen?</label>
       <input type="radio" id="customName" name="lvlRoles" value="customName" <%= lvlsys.lvlRoles ? 'checked' : '' %>>
       <br />
