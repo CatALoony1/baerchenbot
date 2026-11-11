@@ -2,12 +2,6 @@ const { serverConfCache } = require('../utils/data/cache');
 const cron = require('node-cron');
 const giveXP = require('../utils/giveXP');
 
-function getRandomXp(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
 let voiceXpJob = null;
 
 function startJob(client) {
