@@ -8,7 +8,17 @@ router.get('/', async (req, res) => {
       id: guild.id,
       name: guild.name,
     }));
-    const lvlsys = null;
+    const lvlsys = {
+      lvlUpTxt: '',
+      xpMessage: 0,
+      xpVoice: 0,
+      lvlSys: false,
+      xpLvlUp: 1,
+      lvlRole: 5,
+      lvlRoles: false,
+      numNamePrefix: '',
+      customRoleNames: '',
+    };
     const allowedGuilds = req.session.guildIds;
     if (allowedGuilds !== 'all') {
       const allowedIds = allowedGuilds.split(',').map((id) => id.trim());
@@ -35,7 +45,17 @@ router.get('/', async (req, res) => {
       servers: null,
       selectedServerId: null,
       error: error.message,
-      lvlsys: null,
+      lvlsys: {
+        lvlUpTxt: '',
+        xpMessage: 0,
+        xpVoice: 0,
+        lvlSys: false,
+        xpLvlUp: 1,
+        lvlRole: 5,
+        lvlRoles: false,
+        numNamePrefix: '',
+        customRoleNames: '',
+      },
     });
   }
 });

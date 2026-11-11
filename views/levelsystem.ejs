@@ -57,10 +57,10 @@
       <input type="radio" id="steigend" name="lvlSys" value="steigend" <%= !lvlsys.lvlSys ? 'checked' : '' %>>
       <br />
       <label for="xpLvlUp">XP pro Levelup benötigt.</label>
-      <input type="number" id="xpLvlUp" name="xpLvlUp" min="1" required value="<%= xlvlsys.pLvlUp || 1 %>" />
+      <input type="number" id="xpLvlUp" name="xpLvlUp" min="1" required value="<%= lvlsys.xpLvlUp || 1 %>" />
       <br />
       <label for="lvlRole">Alle wieviel Level eine Rolle?</label>
-      <input type="number" id="lvlRole" name="lvlRole" min="1" required value="<%= lvlsys.lvlRole || 1 %>" />
+      <input type="number" id="lvlRole" name="lvlRole" min="1" required value="<%= lvlsys.lvlRole || 5 %>" />
       <br />
       <label for="numName">Numerierte Level Rolle? Bsp.: Rang 1, Rang 2, Rang 3 o. 1. Nudel, 2. Nudel, 3. Nudel...</label>
       <input type="radio" id="numName" name="lvlRoles" value="numName" <%= !lvlsys.lvlRoles ? 'checked' : '' %>>
