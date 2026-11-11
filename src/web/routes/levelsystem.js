@@ -8,6 +8,7 @@ router.get('/', async (req, res) => {
       id: guild.id,
       name: guild.name,
     }));
+    const lvlsys = null;
     const allowedGuilds = req.session.guildIds;
     if (allowedGuilds !== 'all') {
       const allowedIds = allowedGuilds.split(',').map((id) => id.trim());
@@ -34,7 +35,7 @@ router.get('/', async (req, res) => {
       servers: null,
       selectedServerId: null,
       error: error.message,
-      lvlsys: lvlsys,
+      lvlsys: null,
     });
   }
 });
