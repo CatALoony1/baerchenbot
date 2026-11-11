@@ -17,7 +17,7 @@ async function giveUserXp(message) {
   if (cooldowns.has(message.author.id)) {
     return;
   }
-  const xpToGive = getRandomXp(5, 15);
+  const xpToGive = 5;
   await giveXP(message.member, xpToGive, message.channel, true);
   cooldowns.add(message.author.id);
   setTimeout(() => {

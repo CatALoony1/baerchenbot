@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Levelsystem verwalten</title>
+  <link rel="stylesheet" href="/css/style.css" />
+  <!--Skript ausführen, welches überprüft was voreingestellt ist-->
+  <%- include('partials/darkmode-script') %>
+  <script src="https://unpkg.com/@giphy/js-fetch-api/dist/giphy-js-fetch-api.bundle.js"></script>
+  <script src="https://unpkg.com/@giphy/js-components/dist/giphy-js-components.bundle.js"></script>
+</head>
+
+<body>
+  <%- include('partials/sidebar', {guildIds: guildIds}) %>
+  <div class="lvl-main main">
+    <% if (error) { %>
+    <div class="error-box">
+      <strong>Fehler:</strong>
+      <%= error %>
+    </div>
+    <% } %>
+    <h1 class="header-lvl page-header">Levelsystem verwalten</h1>
+    <form action="/levelsystem" method="GET">
+      <label for="serverId">Wähle einen Server:</label>
+      <select name="serverId" id="serverId" onchange="this.form.submit()">
+        <option value="" disabled <%= !selectedServerId ? 'selected' : '' %>>-- Bitte wählen --</option>
+        <% servers.forEach(function(server, index) { %>
+        <% 
+        const isSelected = selectedServerId 
+          ? server.id === selectedServerId 
+          : index === 0; 
+      %>
+        <option value="<%= server.id %>" <%= isSelected ? 'selected' : '' %>><%= server.name %></option>
+        <% }); %>
+      </select>
+    </form>
+    <p>Zum deaktivieren einfach XP für Nachrichten und Voice auf 0 stellen.</p>
+    <form action="/levelsystem/save" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <br />
+      <label for="text">Levelup-Nachricht:</label>
+      <textarea id="lvlupText" name="text" rows="5" cols="90" required><% lvlsys.lvlUpTxt || '' %></textarea>
+      <br /><br /><br />
+      <label for="xpMessage">XP pro geschriebener Nachricht</label>
+      <input type="number" id="xpMessage" name="xpMessage" min="0" required value="<%= lvlsys.xpMessage || 0 %>" />
+      <br />
+      <label for="xpVoice">XP pro Minute im Voice mit anderen.</label>
+      <input type="number" id="xpVoice" name="xpVoice" min="0" required value="<%= lvlsys.xpVoice || 0 %>" />
+      <br />
+      <p>Gleichbleibendes System Bsp: für lvl 1 = 100xp, für lvl 2 = 100xp, für lvl 3 = 100xp</p>
+      <p>Steigendes System Bsp: für lvl 1 = 100xp, für lvl 2 = 200xp, für lvl 3 = 300xp</p>
+      <!--If lvlSys is false, steigend is checked, if true, gleichbleibend is checked.-->
+      <label for="gleichbleibend">Gleichbleibendes System</label>
+      <input type="radio" id="gleichbleibend" name="lvlSys" value="gleichbleibend" <%= lvlsys.lvlSys ? 'checked' : '' %>>
+      <label for="steigend">Steigendes System</label>
+      <input type="radio" id="steigend" name="lvlSys" value="steigend" <%= !lvlsys.lvlSys ? 'checked' : '' %>>
+      <br />
+      <label for="xpLvlUp">XP pro Levelup benötigt.</label>
+      <input type="number" id="xpLvlUp" name="xpLvlUp" min="1" required value="<%= xlvlsys.pLvlUp || 1 %>" />
+      <br />
+      <label for="lvlRole">Alle wieviel Level eine Rolle?</label>
+      <input type="number" id="lvlRole" name="lvlRole" min="1" required value="<%= lvlsys.lvlRole || 1 %>" />
+      <br />
+      <label for="numName">Numerierte Level Rolle? Bsp.: Rang 1, Rang 2, Rang 3 o. 1. Nudel, 2. Nudel, 3. Nudel...</label>
+      <input type="radio" id="numName" name="lvlRoles" value="numName" <%= !lvlsys.lvlRoles ? 'checked' : '' %>>
+      <label for="customName">Komplett individuelle Rollennamen?</label>
+      <input type="radio" id="customName" name="lvlRoles" value="customName" <%= lvlsys.lvlRoles ? 'checked' : '' %>>
+      <br />
+      <div id="roleNames"></div>
+      <button type="submit">Speichern</button>
+    </form>
+  </div>
+  <script>
+    document.getElementById('numName').addEventListener('change', updateRoleNames);
+    document.getElementById('customName').addEventListener('change', updateRoleNames);
+    const roleNames = document.getElementById('roleNames');
+
+    function updateRoleNames() {
+      roleNames.innerHTML = '';
+      if (document.getElementById('numName').checked) {
+        roleNames.innerHTML = `
+          <label for="numNamePrefix">Rollenname mit Platzhalter [lvl] oder [role] eingeben.\n Level entspricht dem Level und Role der nummerierung der Rolle (Rollen alle 5 Level, wäre hier bei der ersten Rolle entweder eine 5 [lvl] oder 1 [role]).</label>
+          <input type="text" id="numNamePrefix" name="numNamePrefix" required value="<% lvlsys.numNamePrefix || '' %>" />
+        `;
+      } else if (document.getElementById('customName').checked) {
+        roleNames.innerHTML = `
+          <label for="customRoleNames">Kommasepariert die Rollennamen eintragen. Es wird die Reihenfolge der Eintragung verwendet.</label>
+          <textarea id="customRoleNames" name="customRoleNames" rows="5" cols="90" required><% lvlsys.customRoleNames || '' %></textarea>
+        `;
+      }
+    }
+
+    updateRoleNames();
+  </script>
+</body>
+
+</html>
