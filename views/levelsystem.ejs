@@ -40,14 +40,15 @@
       <input type="hidden" name="guildId" value="<%= selectedServerId %>">
       <br />
       <label for="text">Levelup-Nachricht:</label>
+      <br />
       <textarea id="lvlupText" name="text" rows="5" cols="90" required><% lvlsys.lvlUpTxt || '' %></textarea>
-      <br /><br /><br />
+      <br /><br />
       <label for="xpMessage">XP pro geschriebener Nachricht</label>
       <input type="number" id="xpMessage" name="xpMessage" min="0" required value="<%= lvlsys.xpMessage || 0 %>" />
       <br />
       <label for="xpVoice">XP pro Minute im Voice mit anderen.</label>
       <input type="number" id="xpVoice" name="xpVoice" min="0" required value="<%= lvlsys.xpVoice || 0 %>" />
-      <br />
+      <br /><br /><br />
       <p>Gleichbleibendes System Bsp: für lvl 1 = 100xp, für lvl 2 = 100xp, für lvl 3 = 100xp</p>
       <p>Steigendes System Bsp: für lvl 1 = 100xp, für lvl 2 = 200xp, für lvl 3 = 300xp</p>
       <!--If lvlSys is false, steigend is checked, if true, gleichbleibend is checked.-->
@@ -58,11 +59,12 @@
       <br />
       <label for="xpLvlUp">XP pro Levelup benötigt.</label>
       <input type="number" id="xpLvlUp" name="xpLvlUp" min="1" required value="<%= lvlsys.xpLvlUp || 1 %>" />
-      <br />
+      <br /><br />
       <label for="lvlRole">Alle wieviel Level eine Rolle?</label>
       <input type="number" id="lvlRole" name="lvlRole" min="1" required value="<%= lvlsys.lvlRole || 5 %>" />
-      <br />
+      <br /><br /><br />
       <label for="numName">Numerierte Level Rolle? Bsp.: Rang 1, Rang 2, Rang 3 o. 1. Nudel, 2. Nudel, 3. Nudel...</label>
+      <br />
       <input type="radio" id="numName" name="lvlRoles" value="numName" <%= !lvlsys.lvlRoles ? 'checked' : '' %>>
       <label for="customName">Komplett individuelle Rollennamen?</label>
       <input type="radio" id="customName" name="lvlRoles" value="customName" <%= lvlsys.lvlRoles ? 'checked' : '' %>>
