@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
         //
       }
     }
-    return res.render('serverconfig', {
+    return res.render('levelsystem', {
       guildIds: req.session.guildIds,
       servers: servers,
       selectedServerId: selectedServerId,
@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    return res.render('serverconfig', {
+    return res.render('levelsystem', {
       guildIds: req.session.guildIds,
       servers: null,
       selectedServerId: null,
