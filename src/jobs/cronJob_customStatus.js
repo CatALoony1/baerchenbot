@@ -44,7 +44,7 @@ let status = [
   {
     activities: [
       {
-        name: 'Erhöht die Preise',
+        name: 'erhöht die Preise',
         type: ActivityType.Custom,
       },
     ],
@@ -53,7 +53,7 @@ let status = [
   {
     activities: [
       {
-        name: 'Wartet auf das Essen',
+        name: 'wartet auf das Essen',
         type: ActivityType.Custom,
       },
     ],
@@ -62,7 +62,70 @@ let status = [
   {
     activities: [
       {
-        name: 'Schläft...',
+        name: 'schläft...',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'idle',
+  },
+  {
+    activities: [
+      {
+        name: 'erobert die Weltherrschaft',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'online',
+  },
+  {
+    activities: [
+      {
+        name: 'sieht Jonas beim Arbeiten zu',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'idle',
+  },
+  {
+    activities: [
+      {
+        name: 'schaut zu viel Anime',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'online',
+  },
+  {
+    activities: [
+      {
+        name: 'macht ein Kaffeepäuschen',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'dnd',
+  },
+  {
+    activities: [
+      {
+        name: 'buddelt ein Loch',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'online',
+  },
+  {
+    activities: [
+      {
+        name: 'auf der Suche nach Honig',
+        type: ActivityType.Custom,
+      },
+    ],
+    status: 'online',
+  },
+  {
+    activities: [
+      {
+        name: 'zählt Schäfchen',
         type: ActivityType.Custom,
       },
     ],
