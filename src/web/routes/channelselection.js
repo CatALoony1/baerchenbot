@@ -16,6 +16,7 @@ const channelTypeMapping = {
   spiele: 'SPIELE_ID',
   vccreation: 'VCCREATION_ID',
   afk: 'AFK_ID',
+  vorstellung: 'VORSTELLUNG_ID',
 };
 router.get('/', async (req, res) => {
   try {

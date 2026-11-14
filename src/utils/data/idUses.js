@@ -19,6 +19,7 @@ const idUses = {
     'Rolle für langzeit Mitglieder um weitere rechte freizuschalten.',
   SELFROLES_ID:
     'Channel in welchem die Selfrole Auswahl-Menüs geschickt werden.',
+  VORSTELLUNG_ID: 'Channel in welchem sich neue Mitglieder vorstellen können.',
 };
 
 module.exports = idUses;
