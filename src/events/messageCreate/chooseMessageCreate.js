@@ -4,6 +4,7 @@ const bumpDone = require('../../utils/messageC/bumpDone');
 const giveUserXp = require('../../utils/messageC/giveUserXp');
 const hangman = require('../../utils/messageC/hangman');
 const { serverConfCache } = require('../../utils/data/cache');
+const vorstellungcheck = require('../../utils/messageC/vorstellungcheck.js');
 
 module.exports = {
   run: async (message, client) => {
@@ -14,7 +15,14 @@ module.exports = {
     if (message.author.id === 'TODOJG_BUMP_MENTION') {
       await bumpDone(message);
     } else if (!message.author.bot) {
-      if (message.content.includes('TODOJG_KI_MENTION')) {
+      if (
+        serverConfCache.get(message.guild.id) &&
+        serverConfCache.get(message.guild.id).get('VORSTELLUNG_ID') &&
+        message.channel.id ===
+          serverConfCache.get(message.guild.id).get('VORSTELLUNG_ID')
+      ) {
+        gueltig = await vorstellungcheck(message);
+      } else if (message.content.includes('TODOJG_KI_MENTION')) {
         await aiMention(message);
       } else if (
         message.content.includes(client.user.id) &&
