@@ -24,6 +24,7 @@ router.get('/', async (req, res) => {
     let rollen = [];
     let defaultRole = [];
     let gifTextList = new Map();
+    let ruleSecret = '';
     const selectedServerId = req.query.serverId || servers[0]?.id;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
