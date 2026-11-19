@@ -65,6 +65,7 @@ router.get('/', async (req, res) => {
       error: null,
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: gifTextList,
+      ruleSecret: ruleSecret,
     });
   } catch (error) {
     console.log(error);
@@ -78,6 +79,7 @@ router.get('/', async (req, res) => {
       error: error.message,
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
+      ruleSecret: '',
     });
   }
 });
@@ -122,6 +124,7 @@ router.post('/change-member-role', async (req, res) => {
       error: error.message,
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
+      ruleSecret: '',
     });
   }
 });
@@ -147,6 +150,7 @@ router.post('/message', async (req, res) => {
       error: error.message,
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
+      ruleSecret: '',
     });
   }
 });
