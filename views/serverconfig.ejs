@@ -129,6 +129,13 @@
     </table>
     <% } %>
     <br />
+    <form action="/serverconfig/set-rule-secret" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <label for="ruleSecret">Lösungswort zur Regelbestätigung:</label>
+      <input type="text" id="ruleSecret" name="ruleSecret" maxlength="15" required value="<%= ruleSecret || '' %>" />
+      <button type="submit">Speichern</button>
+    </form>
+    <br />
     <hr />
     <br />
     <p>Den Text am besten in Discord schreiben und hier per Copy&Paste einfügen, damit Pings funktionieren.</p>

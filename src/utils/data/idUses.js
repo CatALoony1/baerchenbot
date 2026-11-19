@@ -20,6 +20,7 @@ const idUses = {
   SELFROLES_ID:
     'Channel in welchem die Selfrole Auswahl-Menüs geschickt werden.',
   VORSTELLUNG_ID: 'Channel in welchem sich neue Mitglieder vorstellen können.',
+  REGELN_ID: 'Channel in welchem die Regeln des Servers stehen.',
 };
 
 module.exports = idUses;
