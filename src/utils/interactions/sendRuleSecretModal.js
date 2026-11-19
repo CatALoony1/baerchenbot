@@ -8,7 +8,7 @@ const {
 async function sendRuleSecretModal(interaction) {
   try {
     const modal = new ModalBuilder()
-      .setTitle('Lösungswort eingeben.')
+      .setTitle('Lösungswort eingeben')
       .setCustomId(`RuleSecretModal`);
     const textInput = new TextInputBuilder()
       .setCustomId('RuleSecretText')
