@@ -4,6 +4,7 @@ const ServerConfig = require('../../models/ServerConfig');
 const idUses = require('../../utils/data/idUses');
 const { ChannelType } = require('discord.js');
 const { refreshServerConfCache } = require('../../utils/data/cache');
+const sendRuleSecretButton = require('../../utils/webFunctions/sendRuleSecretButton');
 
 const channelTypeMapping = {
   allgemein: 'ALLGEMEIN_ID',
@@ -131,6 +132,9 @@ router.post('/change-channel-:chosenobj', async (req, res) => {
     console.log(
       `ServerConfig updated for guild ${guildId}: ${searchString} set to ${channelId}`,
     );
+    if (searchString === 'REGELN_ID') {
+      await sendRuleSecretButton(channelId, req.discordClient, guildId);
+    }
     await refreshServerConfCache(guildId);
     return res.redirect(targetUrl);
   } catch (error) {
