@@ -8,6 +8,7 @@ const {
   refreshServerConfCache,
   refreshConfCache,
 } = require('../../utils/data/cache');
+const sendRuleSecretButton = require('../../utils/webFunctions/sendRuleSecretButton');
 
 router.get('/', async (req, res) => {
   try {
@@ -52,6 +53,9 @@ router.get('/', async (req, res) => {
           const [type, kind] = key.split('_');
           if (kind === 'GIF' || kind === 'TXT' || kind === 'HEADER') {
             gifTextList = addToList(type, value, gifTextList, kind);
+          }
+          if (key === 'RULE_SECRET') {
+            ruleSecret = value;
           }
         }
       }
@@ -135,6 +139,58 @@ router.post('/message', async (req, res) => {
     const { giphyId, text, header, guildId, messageType } = req.body;
     console.log(`Adding message for guild ${guildId}: ${messageType}`);
     await addToDb(giphyId, text.trim(), header.trim(), guildId, messageType);
+    const targetUrl = guildId
+      ? `/serverconfig?serverId=${guildId}`
+      : '/serverconfig';
+    return res.redirect(targetUrl);
+  } catch (error) {
+    console.log(error);
+    return res.render('serverconfig', {
+      guildIds: req.session.guildIds,
+      servers: null,
+      selectedServerId: null,
+      alleRollen: [],
+      defaultRole: '',
+      uses: idUses,
+      error: error.message,
+      giphyApiKey: process.env.GIPHY_API,
+      gifTextList: new Map(),
+      ruleSecret: '',
+    });
+  }
+});
+
+router.post('/set-rule-secret', async (req, res) => {
+  try {
+    const { ruleSecret, guildId } = req.body;
+    console.log(`Setting rule secret ${ruleSecret} for guild ${guildId}`);
+    const cfg = await Config.findOne({
+      guildId: guildId,
+      key: 'RULE_SECRET',
+    });
+    if (cfg) {
+      cfg.value = ruleSecret;
+      await cfg.save();
+    } else {
+      const newCfg = new Config({
+        guildId: guildId,
+        key: 'RULE_SECRET',
+        value: ruleSecret,
+      });
+      await newCfg.save();
+    }
+    const serverConf = await ServerConfig.findOne({
+      guildId: guildId,
+      variableName: 'REGELN_ID',
+    });
+    if (serverConf && serverConf.objectId.length > 10) {
+      await sendRuleSecretButton(
+        serverConf.objectId,
+        req.discordClient,
+        guildId,
+      );
+    }
+    await refreshConfCache(guildId);
     const targetUrl = guildId
       ? `/serverconfig?serverId=${guildId}`
       : '/serverconfig';

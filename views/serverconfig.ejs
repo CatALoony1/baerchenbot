@@ -129,6 +129,7 @@
     </table>
     <% } %>
     <br />
+    <p>Der Kanal für Regeln muss ausgewählt sein. (Auf der Seite von "Kanäle auswählen")</p>
     <form action="/serverconfig/set-rule-secret" method="POST">
       <input type="hidden" name="guildId" value="<%= selectedServerId %>">
       <label for="ruleSecret">Lösungswort zur Regelbestätigung:</label>
