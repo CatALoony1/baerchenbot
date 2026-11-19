@@ -9,6 +9,7 @@ const selectMenuButton = require('../../utils/interactions/selectMenuButton');
 const shopButtons = require('../../utils/interactions/shopButtons');
 const spieleLeaderboardPage = require('../../utils/interactions/spieleLeaderboardPage');
 const useItems = require('../../utils/interactions/useItems');
+const sendRuleSecretModal = require('../../utils/interactions/sendRuleSecretModal');
 
 module.exports = {
   run: async (interaction, client) => {
@@ -44,6 +45,8 @@ module.exports = {
         await shopButtons(interaction);
       } else if (customId.includes('spieleLeader')) {
         await spieleLeaderboardPage(interaction);
+      } else if (customId.includes('RuleSecretButton')) {
+        await sendRuleSecretModal(interaction);
       }
     } else if (interaction.isStringSelectMenu()) {
       if (customId.includes('selmen_menu')) {
