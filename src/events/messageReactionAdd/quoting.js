@@ -39,7 +39,7 @@ module.exports = {
                 .get(fetchedReaction.message.guild.id)
                 .get('QUOTE_ID'),
             ));
-          const image = await createQuote({
+          /*const image = await createQuote({
             avatarURL: fetchedReaction.message.author.displayAvatarURL({
               extension: 'png',
               size: 512,
@@ -53,7 +53,7 @@ module.exports = {
 
           await targetChannel.send({
             files: [attachment],
-          });
+          });*/
         }
       }
     } catch (error) {
