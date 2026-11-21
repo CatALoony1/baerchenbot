@@ -4,7 +4,7 @@ const WIDTH = 640;
 const HEIGHT = 360;
 
 async function createQuote({ avatarURL, quote, author }) {
-  /*cnst canvas = createCanvas(WIDTH, HEIGHT);
+  const canvas = createCanvas(WIDTH, HEIGHT);
   const ctx = canvas.getContext('2d');
 
   // Komplett schwarzer Hintergrund
@@ -92,8 +92,7 @@ async function createQuote({ avatarURL, quote, author }) {
     ctx.fillText(`- ${author}`, textX + textWidth / 2, y);
   }
 
-  return canvas.toBuffer('image/png');*/
-  return null;
+  return canvas.toBuffer('image/png');
 }
 
 module.exports = { createQuote };
