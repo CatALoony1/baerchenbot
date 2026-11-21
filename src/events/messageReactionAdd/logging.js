@@ -13,8 +13,9 @@ const {
 module.exports = {
   run: async (reaction, user, details) => {
     try {
-      console.log(reaction);
-      console.log(reaction.message.reactions);
+      console.log(reaction.count);
+      console.log(reaction.emoji);
+      console.log(reaction.countDetails);
     } catch (error) {
       console.log(error);
     }
