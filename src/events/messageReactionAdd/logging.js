@@ -13,11 +13,8 @@ const {
 module.exports = {
   run: async (reaction, user, details) => {
     try {
-      console.log(reaction.message.reactions);
-      const message = await reaction.message.channel.messages.fetch(
-        reaction.message.id,
-      );
-      console.log(message.reactions);
+      const fetchedReaction = await reaction.fetch();
+      console.log(fetchedReaction);
     } catch (error) {
       console.log(error);
     }
