@@ -19,7 +19,7 @@ module.exports = {
       );
       console.log(message.reactions);
     } catch (error) {
-      console.log(error);-
+      console.log(error);
     }
   },
 };
