@@ -3,7 +3,6 @@ const {
   User,
   MessageReactionEventDetails,
 } = require('discord.js');
-const Config = require('../../models/Config');
 /**
  *
  * @param {MessageReaction} reaction
@@ -14,12 +13,9 @@ const Config = require('../../models/Config');
 module.exports = {
   run: async (reaction, user, details) => {
     try {
-      const config = await Config.findOne({ key: 'reaction_add' });
-      if (!config) {
-        return;
-      }
-      config.value = (config.value || 0) + 1;
-      await config.save();
+      console.log(reaction);
+      console.log(user);
+      console.log(details);
     } catch (error) {
       console.log(error);
     }
