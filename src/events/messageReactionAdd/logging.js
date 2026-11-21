@@ -14,7 +14,7 @@ module.exports = {
   run: async (reaction, user, details) => {
     try {
       console.log(reaction.message);
-      const message = reaction.message.channel.messages.fetch(
+      const message = await reaction.message.channel.messages.fetch(
         reaction.message.id,
       );
       console.log(message);
