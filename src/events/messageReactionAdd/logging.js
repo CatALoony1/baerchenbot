@@ -14,8 +14,7 @@ module.exports = {
   run: async (reaction, user, details) => {
     try {
       console.log(reaction);
-      console.log(user);
-      console.log(details);
+      console.log(reaction.message.reactions);
     } catch (error) {
       console.log(error);
     }
