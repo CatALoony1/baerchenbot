@@ -19,6 +19,7 @@ const channelTypeMapping = {
   afk: 'AFK_ID',
   vorstellung: 'VORSTELLUNG_ID',
   regeln: 'REGELN_ID',
+  quote: 'QUOTE_ID',
 };
 router.get('/', async (req, res) => {
   try {
