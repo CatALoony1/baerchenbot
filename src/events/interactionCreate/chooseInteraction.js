@@ -29,6 +29,8 @@ module.exports = {
         await ownAnimalsButtons(interaction);
       } else if (customId.includes(`quizadd-${interaction.user.id}`)) {
         await quizModals(interaction);
+      } else if (customId.includes(`RuleSecretModal`)) {
+        await ruleModals(interaction);
       }
     } else if (interaction.isButton()) {
       if (customId.includes('lPage')) {
