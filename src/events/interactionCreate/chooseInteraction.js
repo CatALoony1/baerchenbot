@@ -10,6 +10,7 @@ const shopButtons = require('../../utils/interactions/shopButtons');
 const spieleLeaderboardPage = require('../../utils/interactions/spieleLeaderboardPage');
 const useItems = require('../../utils/interactions/useItems');
 const sendRuleSecretModal = require('../../utils/interactions/sendRuleSecretModal');
+const ruleModals = require('../../utils/interactions/ruleModals');
 
 module.exports = {
   run: async (interaction, client) => {
