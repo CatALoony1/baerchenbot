@@ -2,8 +2,10 @@ const {
   MessageReaction,
   User,
   MessageReactionEventDetails,
+  AttachmentBuilder,
 } = require('discord.js');
 const { serverConfCache } = require('../../utils/data/cache');
+const { createQuote } = require('../../utils/quoteGenerator');
 /**
  *
  * @param {MessageReaction} reaction
