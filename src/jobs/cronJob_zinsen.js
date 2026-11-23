@@ -28,9 +28,6 @@ function startJob(client) {
           let zinsen = Math.floor(
             (bankkonto.currentMoney * bankkonto.zinsProzent) / 100,
           );
-          if (member.roles.cache.some((role) => role.name === 'Bumper')) {
-            zinsen = Math.ceil(zinsen * 1.15);
-          }
           if (
             member.roles.cache.some((role) => role.name === 'Server Booster')
           ) {

@@ -1,6 +1,5 @@
 const Bump = require('../../models/Bump');
 const Level = require('../../models/Level');
-require('dotenv').config();
 const { Message, EmbedBuilder } = require('discord.js');
 const { confCache } = require('../data/cache');
 
@@ -27,12 +26,6 @@ async function bumpDone(message) {
       level.bumps += 1;
       level.save();
       const member = await message.guild.members.fetch(userid);
-      if (!member.roles.cache.some((role) => role.name === 'Bumper')) {
-        const role = message.guild.roles.cache.find(
-          (role) => role.name === 'Bumper',
-        );
-        await member.roles.add(role);
-      }
       const embed = new EmbedBuilder()
         .setTitle('Dankeschön für deine Untersützung!❤️')
         .setDescription(

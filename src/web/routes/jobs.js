@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const jobMap = {
   cronJob_bumpReminder: require('../../jobs/cronJob_bumpReminder'),
-  cronJob_checkBumperRole: require('../../jobs/cronJob_checkBumperRole'),
   cronJob_checkInactive: require('../../jobs/cronJob_checkInactive'),
   cronJob_customStatus: require('../../jobs/cronJob_customStatus'),
   cronJob_geburtstag: require('../../jobs/cronJob_geburtstag'),

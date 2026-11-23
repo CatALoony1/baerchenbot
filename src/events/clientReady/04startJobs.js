@@ -1,5 +1,4 @@
 const bumpReminderJob = require('../../jobs/cronJob_bumpReminder');
-const checkBumperRoleJob = require('../../jobs/cronJob_checkBumperRole');
 const checkInactiveJob = require('../../jobs/cronJob_checkInactive');
 const customStatusJob = require('../../jobs/cronJob_customStatus');
 const geburtstagJob = require('../../jobs/cronJob_geburtstag');
@@ -39,7 +38,6 @@ module.exports = {
       const jobsActive = await Config.findOne({ key: 'jobsActive' });
       if (jobsActive && jobsActive.value == 'J') {
         bumpReminderJob.startJob(client);
-        checkBumperRoleJob.startJob(client);
         checkInactiveJob.startJob(client);
         customStatusJob.startJob(client);
         geburtstagJob.startJob(client);
