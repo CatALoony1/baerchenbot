@@ -21,12 +21,18 @@ async function doGeburtstagCommand(interaction) {
     try {
       const level = await Level.findOne(query);
       if (level) {
-        level.geburtstag = geburtstag;
-        await level.save().catch((e) => {
-          console.log(`Error saving updated geburtstag ${e}`);
-          return;
-        });
-        await interaction.editReply(`Geburtstag erfolgreich eingetragen.`);
+        if (!level.geburtstag) {
+          level.geburtstag = geburtstag;
+          await level.save().catch((e) => {
+            console.log(`Error saving updated geburtstag ${e}`);
+            return;
+          });
+          await interaction.editReply(`Geburtstag erfolgreich eingetragen.`);
+        } else {
+          await interaction.editReply(
+            `Du hast deinen Geburtstag bereits eingetragen. Dein Geburtstag ist der ${geburtstag}. Möchtest du das ändern, wende dich bitte an die Admins o. Moderatoren.`,
+          );
+        }
       } else {
         await interaction.editReply(
           `Du bist noch nicht in der DB, chatte mal bisschen.`,
