@@ -2,166 +2,228 @@ const Level = require('../models/Level');
 const { EmbedBuilder } = require('discord.js');
 const calculateLevelXp = require('../utils/calculateLevelXp');
 const giveMoney = require('../utils/giveMoney');
-const { serverConfCache } = require('./data/cache');
-const Config = require('../models/Config');
+const { serverConfCache, confCache } = require('./data/cache');
 
-const roles = new Map([
-  [1, '1387045161019899914'],
-  [5, '1387045216426524743'],
-  [10, '1387045823652696166'],
-  [15, '1387046027156262954'],
-  [20, '1387046067857653790'],
-  [25, '1387046124497539123'],
-  [30, '1387046221176246352'],
-  [35, '1387046270069243934'],
-  [40, '1387046368358563871'],
-  [45, '1387046418916573204'],
-  [50, '1387046461631365150'],
-]);
-
-async function giveXP(member, xpToGive, channel, message) {
+async function giveXP(member, channel, message) {
   const query = {
     userId: member.user.id,
     guildId: member.guild.id,
   };
   try {
-    const level = await Level.findOne(query);
-    let confQuery = {
-      guildId: member.guild.id,
-      key: 'xpMultiplier',
-    };
-    let conf = await Config.findOne(confQuery);
-    let multiplier = 1;
-    if (conf) {
-      multiplier = Number(conf.value);
-    }
-    let xpAmount = xpToGive * multiplier;
-    if (level) {
-      if (member.roles.cache.some((role) => role.name === 'Bumper')) {
-        xpAmount = Math.ceil(xpAmount * 1.1);
-      }
-      if (member.roles.cache.some((role) => role.name === 'Server Booster')) {
-        xpAmount = Math.ceil(xpAmount * 1.15);
-      }
-      if (message) {
-        level.messagexp += xpAmount;
-        level.messages += 1;
+    let xpAmount = 0;
+    if (confCache.get(member.guild.id)) {
+      if (message && confCache.get(member.guild.id).get('LVL_XP_MSG')) {
+        xpAmount = Number(confCache.get(member.guild.id).get('LVL_XP_MSG'));
+      } else if (!message && confCache.get(member.guild.id).get('LVL_XP_VC')) {
+        xpAmount = Number(confCache.get(member.guild.id).get('LVL_XP_VC')) * 5;
       } else {
-        level.voicexp += xpAmount;
-        level.voicetime += 5;
+        return 0;
       }
-      console.log(`user ${member.user.tag} received ${xpAmount} XP`);
-      level.xp += xpAmount;
-      level.allxp += xpAmount;
-      level.thismonth += xpAmount;
-      level.lastMessage = Date.now();
-      let money = 0;
-      if (level.xp >= calculateLevelXp(level.level)) {
-        do {
-          level.xp = level.xp - calculateLevelXp(level.level);
-          level.level += 1;
-          console.log(`user ${member.user.tag} reached level ${level.level}`);
-          let description = `🎉 Glückwunsch ${member}! Du hast **Level ${level.level}** erreicht!`;
-
-          if (roles.has(level.level)) {
-            let newRole = roles.get(level.level);
-            for (const value of roles.values()) {
-              if (member.roles.cache.has(value)) {
-                let tempRole = member.guild.roles.cache.get(value);
-                await member.guild.members.cache
-                  .get(member.user.id)
-                  .roles.remove(tempRole);
-                console.log(
-                  `Role ${value} was removed from user ${member.user.tag}`,
-                );
-              }
+      const level = await Level.findOne(query);
+      const multiplier = confCache.get(member.guild.id).get('xpMultiplier')
+        ? Number(confCache.get(member.guild.id).get('xpMultiplier'))
+        : 1;
+      xpAmount = xpAmount * multiplier;
+      if (level) {
+        if (message) {
+          level.messagexp += xpAmount;
+          level.messages += 1;
+        } else {
+          level.voicexp += xpAmount;
+          level.voicetime += 5;
+        }
+        console.log(`user ${member.user.tag} received ${xpAmount} XP`);
+        level.xp += xpAmount;
+        level.allxp += xpAmount;
+        level.thismonth += xpAmount;
+        level.lastMessage = Date.now();
+        let money = 0;
+        const levelXp = calculateLevelXp(level.level, member.guild.id);
+        if (levelXp !== 0 && level.xp >= levelXp) {
+          do {
+            level.xp =
+              level.xp - calculateLevelXp(level.level, member.guild.id);
+            level.level += 1;
+            console.log(`user ${member.user.tag} reached level ${level.level}`);
+            let description =
+              confCache.get(member.guild.id).get('LVL_UP_TEXT') || null;
+            if (description) {
+              description = description
+                .replaceAll('[lvl]', level.level)
+                .replaceAll('[userPing]', `<@${member.user.id}>`)
+                .replaceAll('[userName]', member.user.displayName);
             }
-            let role = member.guild.roles.cache.get(newRole);
-            await member.guild.members.cache
-              .get(member.user.id)
-              .roles.add(role);
-            description = `🎉 Glückwunsch ${member}! Du hast **Level ${level.level}** erreicht und bist somit zum ${role.name} aufgestiegen!`;
-            console.log(
-              `Role ${role.name} was given to user ${member.user.tag}`,
-            );
-            if (level.level === 1) {
+            if (
+              confCache.get(member.guild.id).get('LVL_ROLE') &&
+              level.level > 0 &&
+              level.level %
+                Number(confCache.get(member.guild.id).get('LVL_ROLE')) ===
+                0 &&
+              confCache.get(member.guild.id).get('LVL_ROLES')
+            ) {
+              const roleNum = Math.floor(
+                level.level /
+                  Number(confCache.get(member.guild.id).get('LVL_ROLE')),
+              );
+              const lvlRolesSys =
+                confCache.get(member.guild.id).get('LVL_ROLES') == 'J';
+              let newRole = null;
+              let oldRole = null;
               if (
-                serverConfCache.get(member.guild.id) &&
-                serverConfCache
-                  .get(member.guild.id)
-                  .get('MITGLIED_ROLE_ID') &&
-                serverConfCache.get(member.guild.id).get('NEWMEMBER_ROLE_ID')
+                lvlRolesSys &&
+                confCache.get(member.guild.id).get('LVL_CUS_NAME')
               ) {
-                let memberRole = member.guild.roles.cache.get(
-                  serverConfCache
-                    .get(member.guild.id)
-                    .get('MITGLIED_ROLE_ID'),
+                const tempRoles = confCache
+                  .get(member.guild.id)
+                  .get('LVL_CUS_NAME')
+                  .split(',');
+                if (tempRoles.length >= roleNum) {
+                  newRole = tempRoles[roleNum - 1];
+                  oldRole = tempRoles[roleNum - 2];
+                }
+              } else if (
+                !lvlRolesSys &&
+                confCache.get(member.guild.id).get('LVL_NUM_NAME')
+              ) {
+                newRole = confCache
+                  .get(member.guild.id)
+                  .get('LVL_NUM_NAME')
+                  .replaceAll('[lvl]', level.level)
+                  .replaceAll('[role]', roleNum);
+                oldRole = confCache
+                  .get(member.guild.id)
+                  .get('LVL_NUM_NAME')
+                  .replaceAll(
+                    '[lvl]',
+                    level.level -
+                      Number(confCache.get(member.guild.id).get('LVL_ROLE')),
+                  )
+                  .replaceAll('[role]', roleNum - 1);
+              }
+              if (newRole) {
+                if (oldRole) {
+                  const oldRoleObj = member.guild.roles.cache.find(
+                    (r) => r.name === oldRole,
+                  );
+                  if (oldRoleObj && member.roles.cache.has(oldRoleObj.id)) {
+                    await member.roles.remove(oldRoleObj);
+                    console.log(
+                      `Role ${oldRoleObj.id}: ${oldRoleObj.name} was removed from user ${member.user.tag}`,
+                    );
+                  }
+                }
+                let role = member.guild.roles.cache.find(
+                  (r) => r.name === newRole,
                 );
-                await member.guild.members.cache
-                  .get(member.user.id)
-                  .roles.add(memberRole);
+                if (!role) {
+                  role = await member.guild.roles.create({
+                    name: newRole,
+                    reason: 'Neue Levelrolle',
+                  });
+                }
+                await member.roles.add(role);
+                description =
+                  confCache.get(member.guild.id).get('LVL_UP_TEXT_ROLE') ||
+                  null;
+                if (description) {
+                  description = description
+                    .replaceAll('[lvl]', level.level)
+                    .replaceAll('[userPing]', `<@${member.user.id}>`)
+                    .replaceAll('[userName]', member.user.displayName)
+                    .replaceAll('[role]', role.name);
+                }
                 console.log(
-                  `Role Mitglied was given to user ${member.user.tag}`,
-                );
-                let newMemberRole = member.guild.roles.cache.get(
-                  serverConfCache
-                    .get(member.guild.id)
-                    .get('NEWMEMBER_ROLE_ID'),
-                );
-                await member.guild.members.cache
-                  .get(member.user.id)
-                  .roles.remove(newMemberRole);
-                console.log(
-                  `Role NewMember was removed from user ${member.user.tag}`,
+                  `Role ${role.name} was given to user ${member.user.tag}`,
                 );
               }
-              money += 10000;
+              if (level.level === 1) {
+                if (
+                  serverConfCache.get(member.guild.id) &&
+                  serverConfCache.get(member.guild.id).get('MITGLIED_ROLE_ID')
+                ) {
+                  let memberRole = member.guild.roles.cache.get(
+                    serverConfCache
+                      .get(member.guild.id)
+                      .get('MITGLIED_ROLE_ID'),
+                  );
+                  await member.guild.members.cache
+                    .get(member.user.id)
+                    .roles.add(memberRole);
+                  console.log(
+                    `Role Mitglied was given to user ${member.user.tag}`,
+                  );
+                }
+                if (confCache.get(member.guild.id).get('MONEY_LEVELUP')) {
+                  money += Number(
+                    confCache.get(member.guild.id).get('MONEY_LEVELUP'),
+                  );
+                }
+              }
+            } else {
+              if (
+                confCache.get(member.guild.id).get('MONEY_MESSAGE') &&
+                message
+              ) {
+                money += Number(
+                  confCache.get(member.guild.id).get('MONEY_MESSAGE'),
+                );
+              } else if (
+                confCache.get(member.guild.id).get('MONEY_VOICE') &&
+                !message
+              ) {
+                money += Number(
+                  confCache.get(member.guild.id).get('MONEY_VOICE') * 5,
+                );
+              }
             }
-          } else {
-            money += 2000;
-          }
-          const embed = new EmbedBuilder()
-            .setTitle('Glückwunsch!')
-            .setDescription(description)
-            .setThumbnail(
-              member.user.displayAvatarURL({ format: 'png', dynamic: true }),
-            )
-            .setColor(0x0033cc);
-          channel.send({ embeds: [embed] });
-        } while (level.xp >= calculateLevelXp(level.level));
-      }
-      await level.save().catch((e) => {
-        console.log(`Error saving updated level ${e}`);
-        return;
-      });
-      if (money > 0) {
-        await giveMoney(member, money);
-      }
-    } else {
-      console.log(`user ${member.user.tag} received ${xpAmount} XP`);
-      console.log(`new user ${member.user.tag} added to database`);
-      const newLevel = new Level({
-        userId: member.user.id,
-        guildId: member.guild.id,
-        xp: xpAmount,
-        allxp: xpAmount,
-        messages: 0,
-        lastMessage: Date.now(),
-        userName: member.user.tag,
-        messagexp: 0,
-        voicexp: 0,
-        voicetime: 0,
-        thismonth: xpAmount,
-        bumps: 0,
-      });
-      if (message) {
-        newLevel.messagexp += xpAmount;
-        newLevel.messages += 1;
+            if (description) {
+              const embed = new EmbedBuilder()
+                .setTitle('Glückwunsch!')
+                .setDescription(description)
+                .setThumbnail(
+                  member.user.displayAvatarURL({
+                    format: 'png',
+                    dynamic: true,
+                  }),
+                )
+                .setColor(0x0033cc);
+              channel.send({ embeds: [embed] });
+            }
+          } while (level.xp >= calculateLevelXp(level.level, member.guild.id));
+        }
+        await level.save().catch((e) => {
+          console.log(`Error saving updated level ${e}`);
+          return;
+        });
+        if (money > 0) {
+          await giveMoney(member, money);
+        }
       } else {
-        newLevel.voicexp += xpAmount;
-        newLevel.voicetime += 5;
+        console.log(`user ${member.user.tag} received ${xpAmount} XP`);
+        console.log(`new user ${member.user.tag} added to database`);
+        const newLevel = new Level({
+          userId: member.user.id,
+          guildId: member.guild.id,
+          xp: xpAmount,
+          allxp: xpAmount,
+          messages: 0,
+          lastMessage: Date.now(),
+          userName: member.user.tag,
+          messagexp: 0,
+          voicexp: 0,
+          voicetime: 0,
+          thismonth: xpAmount,
+          bumps: 0,
+        });
+        if (message) {
+          newLevel.messagexp += xpAmount;
+          newLevel.messages += 1;
+        } else {
+          newLevel.voicexp += xpAmount;
+          newLevel.voicetime += 5;
+        }
+        await newLevel.save();
       }
-      await newLevel.save();
     }
     return xpAmount;
   } catch (error) {

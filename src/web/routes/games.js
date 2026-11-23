@@ -96,18 +96,31 @@ router.get('/', async (req, res) => {
 
 router.post('/money', async (req, res) => {
   try {
-    const { moneyName, moneyMessage, moneyLevelup, moneyBirthday, guildId } =
-      req.body;
+    const {
+      moneyName,
+      moneyMessage,
+      moneyVoice,
+      moneyLevelup,
+      moneyBirthday,
+      guildId,
+    } = req.body;
     console.log(
-      `/money call with guildId: ${guildId}, moneyName: ${moneyName}, moneyMessage: ${moneyMessage}, moneyLevelup: ${moneyLevelup}, moneyBirthday: ${moneyBirthday}`,
+      `/money call with guildId: ${guildId}, moneyName: ${moneyName}, moneyMessage: ${moneyMessage}, moneyVoice: ${moneyVoice}, moneyLevelup: ${moneyLevelup}, moneyBirthday: ${moneyBirthday}`,
     );
     const keyList = [
       'MONEY_NAME',
       'MONEY_LEVELUP',
       'MONEY_MESSAGE',
+      'MONEY_VOICE',
       'MONEY_BIRTHDAY',
     ];
-    const valList = [moneyName, moneyLevelup, moneyMessage, moneyBirthday];
+    const valList = [
+      moneyName,
+      moneyLevelup,
+      moneyMessage,
+      moneyVoice,
+      moneyBirthday,
+    ];
     await addToDbMoney(keyList, valList, guildId);
     const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
     return res.redirect(targetUrl);

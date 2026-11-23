@@ -36,12 +36,18 @@
       </select>
     </form>
     <p>Zum deaktivieren einfach XP für Nachrichten und Voice auf 0 stellen.</p>
+    <p>WICHTIG: Alle Änderungen Betreffen die Zukunft, es werden keine Level geändert o. Rollen entzogen!</p>
+    <p>Sollten die Rollennamen geändert werden, sollten die bisherigen Rollen bestensfalls umbenannt o. entfernt werden.\nDerBot macht dies nicht automatisch!</p>
     <form action="/levelsystem/save" method="POST">
       <input type="hidden" name="guildId" value="<%= selectedServerId %>">
       <br />
+      <p>Platzhalter: [lvl], [userPing], [userName] (case-sensitive)</p>
       <label for="text">Levelup-Nachricht:</label>
       <br />
       <textarea id="lvlupText" name="text" rows="5" cols="90" required><% lvlsys.lvlUpTxt || '' %></textarea>
+      <br /><br />
+      <label for="text">Levelup-Nachricht(wenn eine neue Rolle vergeben wird, Platzhalter [role]):</label>
+      <textarea id="lvlupTextRole" name="textRole" rows="5" cols="90" required><% lvlsys.lvlUpTxtRole || '' %></textarea>
       <br /><br />
       <label for="xpMessage">XP pro geschriebener Nachricht</label>
       <input type="number" id="xpMessage" name="xpMessage" min="0" required value="<%= lvlsys.xpMessage || 0 %>" />
@@ -51,7 +57,6 @@
       <br /><br /><br />
       <p>Gleichbleibendes System Bsp: für lvl 1 = 100xp, für lvl 2 = 100xp, für lvl 3 = 100xp</p>
       <p>Steigendes System Bsp: für lvl 1 = 100xp, für lvl 2 = 200xp, für lvl 3 = 300xp</p>
-      <!--If lvlSys is false, steigend is checked, if true, gleichbleibend is checked.-->
       <label for="gleichbleibend">Gleichbleibendes System</label>
       <input type="radio" id="gleichbleibend" name="lvlSys" value="gleichbleibend" <%= lvlsys.lvlSys ? 'checked' : '' %>>
       <label for="steigend">Steigendes System</label>
@@ -83,12 +88,12 @@
       if (document.getElementById('numName').checked) {
         roleNames.innerHTML = `
           <label for="numNamePrefix">Rollenname mit Platzhalter [lvl] oder [role] eingeben.\n Level entspricht dem Level und Role der nummerierung der Rolle (Rollen alle 5 Level, wäre hier bei der ersten Rolle entweder eine 5 [lvl] oder 1 [role]).</label>
-          <input type="text" id="numNamePrefix" name="numNamePrefix" required value="<% lvlsys.numNamePrefix || '' %>" />
+          <input type="text" id="numNamePrefix" name="roleName" required maxlength="20"  value="<% lvlsys.numNamePrefix || '' %>" />
         `;
       } else if (document.getElementById('customName').checked) {
         roleNames.innerHTML = `
           <label for="customRoleNames">Kommasepariert die Rollennamen eintragen. Es wird die Reihenfolge der Eintragung verwendet.</label>
-          <textarea id="customRoleNames" name="customRoleNames" rows="5" cols="90" required><% lvlsys.customRoleNames || '' %></textarea>
+          <textarea id="customRoleNames" name="roleName" rows="5" cols="90" required><% lvlsys.customRoleNames || '' %></textarea>
         `;
       }
     }

@@ -98,7 +98,7 @@ module.exports = {
     messageEdited.addFields({ name: 'Level:', value: `${fetchedLevel.level}` });
     messageEdited.addFields({
       name: 'XP zum nächsten Level:',
-      value: `${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level)}`,
+      value: `${fetchedLevel.xp}/${calculateLevelXp(fetchedLevel.level, interaction.guild.id)}`,
     });
     messageEdited.addFields({
       name: 'Gesamte XP:',

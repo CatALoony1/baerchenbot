@@ -94,7 +94,7 @@ module.exports = {
       .setRank(currentRank)
       .setLevel(fetchedLevel.level)
       .setCurrentXP(fetchedLevel.xp)
-      .setRequiredXP(calculateLevelXp(fetchedLevel.level))
+      .setRequiredXP(calculateLevelXp(fetchedLevel.level, interaction.guild.id))
       .setStatus(status)
       .setDisplayName(targetUserObj.user.displayName)
       .setOverlay(80)

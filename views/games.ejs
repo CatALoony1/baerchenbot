@@ -47,6 +47,9 @@
         <h3>Menge Währung pro geschriebener Nachricht:</h3>
         <input type="number" id="moneyMessage" name="moneyMessage" min="0" required value="<%= Number(moneyConfMap.get('MONEY_MESSAGE')) || 0 %>" />
         <br />
+        <h3>Menge Währung pro Minute im Voice mit anderen:</h3>
+        <input type="number" id="moneyVoice" name="moneyVoice" min="0" required value="<%= Number(moneyConfMap.get('MONEY_VOICE')) || 0 %>" />
+        <br />
         <h3>Menge Währung pro Level UP (XP):</h3>
         <input type="number" id="moneyLevelup" name="moneyLevelup" min="0" required value="<%= Number(moneyConfMap.get('MONEY_LEVELUP')) || 0 %>" />
         <br />
