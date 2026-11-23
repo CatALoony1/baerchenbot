@@ -1,6 +1,7 @@
 const GameUser = require('../models/GameUser.js');
 const Bankkonten = require('../models/Bankkonten.js');
 const Inventar = require('../models/Inventar.js');
+const { confCache, serverConfCache } = require('./data/cache');
 
 async function giveMoney(member, money, quizadded = false, daily = false) {
   const query = {
@@ -21,11 +22,26 @@ async function giveMoney(member, money, quizadded = false, daily = false) {
           money = money + user.quizadded * 10;
         }
       }
-      if (member.roles.cache.some((role) => role.name === 'Bumper')) {
-        money = Math.ceil(money * 1.15);
-      }
-      if (member.roles.cache.some((role) => role.name === 'Server Booster')) {
-        money = Math.ceil(money * 1.15);
+      if (
+        confCache.get(member.guild.id) &&
+        serverConfCache.get(member.guild.id) &&
+        confCache.get(member.guild.id).get('MONEY_BOOSTER_PERC') &&
+        Number(confCache.get(member.guild.id).get('MONEY_BOOSTER_PERC')) > 0 &&
+        serverConfCache.get(member.guild.id).get('BOOSTER_ROLE_ID') &&
+        member.roles.cache.some(
+          (role) =>
+            role.id ===
+            serverConfCache.get(member.guild.id).get('BOOSTER_ROLE_ID'),
+        )
+      ) {
+        money = Math.ceil(
+          money *
+            ((100 +
+              Number(
+                confCache.get(member.guild.id).get('MONEY_BOOSTER_PERC'),
+              )) /
+              100),
+        );
       }
       if (daily) {
         user.daily = new Date();

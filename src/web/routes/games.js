@@ -51,12 +51,8 @@ router.get('/', async (req, res) => {
               (item) => item.name === key,
             );
             let price = 0;
-            let boostonly = false;
             if (itemInAvailable) {
               price = availableItems.find((item) => item.name === key).preis;
-              boostonly = availableItems.find(
-                (item) => item.name === key,
-              ).boostOnly;
             }
             return [
               key,
@@ -64,7 +60,6 @@ router.get('/', async (req, res) => {
                 description: value,
                 available: itemInAvailable,
                 price: price,
-                boostonly: boostonly,
               },
             ];
           }),
@@ -338,13 +333,11 @@ function addItemToList(
 ) {
   const available = req.body[`available_${itemName}`];
   const price = req.body[`price_${itemName}`].trim();
-  const boostOnly = req.body[`boost_${itemName}`];
   if (available) {
     const item = new Items({
       name: itemName,
       beschreibung: itemMap.get(itemName),
       preis: price,
-      boostOnly: boostOnly,
       guildId: guildId,
     });
     itemList.add(item);

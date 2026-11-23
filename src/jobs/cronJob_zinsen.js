@@ -1,6 +1,7 @@
 const cron = require('node-cron');
 const GameUser = require('../models/GameUser.js');
 const Bankkonten = require('../models/Bankkonten.js');
+const { serverConfCache, confCache } = require('../utils/data/cache');
 
 let checkInactiveJob = null;
 
@@ -29,9 +30,26 @@ function startJob(client) {
             (bankkonto.currentMoney * bankkonto.zinsProzent) / 100,
           );
           if (
-            member.roles.cache.some((role) => role.name === 'Server Booster')
+            confCache.get(member.guild.id) &&
+            serverConfCache.get(member.guild.id) &&
+            confCache.get(member.guild.id).get('MONEY_BOOSTER_PERC') &&
+            Number(confCache.get(member.guild.id).get('MONEY_BOOSTER_PERC')) >
+              0 &&
+            serverConfCache.get(member.guild.id).get('BOOSTER_ROLE_ID') &&
+            member.roles.cache.some(
+              (role) =>
+                role.id ===
+                serverConfCache.get(member.guild.id).get('BOOSTER_ROLE_ID'),
+            )
           ) {
-            zinsen = Math.ceil(zinsen * 1.15);
+            zinsen = Math.ceil(
+              zinsen *
+                ((100 +
+                  Number(
+                    confCache.get(member.guild.id).get('MONEY_BOOSTER_PERC'),
+                  )) /
+                  100),
+            );
           }
           bankkonto.currentMoney += zinsen;
           bankkonto.moneyGain += zinsen;

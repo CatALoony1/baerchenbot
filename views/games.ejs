@@ -183,8 +183,6 @@
                 <% } %>
                 <label for="item-price-<%= itemName %>">Preis des Items:</label>
                 <input id="item-price-<%= itemName %>" type="number" class="games-item-input" name="price_<%= itemName %>" value="<%= item.price || 0 %>">
-                <label for="ckbx-boost-<%= itemName %>">Nur für Booster?</label>
-                <input id="ckbx-boost-<%= itemName %>" type="checkbox" class="games-item-ckbx" name="boost_<%= itemName %>" <%= item.boostonly ? 'checked' : '' %>>
               </td>
               <td>
                 <button type="submit" class="games-item-sv-one" name="singleSave" value="<%= itemName %>">Speichern</button>

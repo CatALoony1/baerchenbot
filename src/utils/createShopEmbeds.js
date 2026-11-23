@@ -2,17 +2,9 @@ const { EmbedBuilder } = require('discord.js');
 const Items = require('../models/Items');
 const { confCache } = require('../utils/data/cache');
 
-async function createLeaderboardEmbeds(page, interaction) {
-  const booster = interaction.member.roles.cache.some(
-    (role) => role.name === 'Server Booster',
-  )
-    ? true
-    : false;
+async function createShopEmbeds(page, interaction) {
   let allItems = await Items.find({ guildId: interaction.guild.id });
   let price = allItems[page].preis;
-  if (!booster && allItems[page].boostOnly) {
-    price = price * 10;
-  }
   const embed = new EmbedBuilder()
     .setTitle(`Shop - ${page + 1}/${allItems.length}`)
     .setDescription(
@@ -22,4 +14,4 @@ async function createLeaderboardEmbeds(page, interaction) {
   return embed;
 }
 
-module.exports = createLeaderboardEmbeds;
+module.exports = createShopEmbeds;

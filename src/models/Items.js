@@ -12,10 +12,6 @@ const itemsSchema = new Schema({
     type: Number,
     required: true,
   },
-  boostOnly: {
-    type: Boolean,
-    default: false,
-  },
   guildId: {
     type: String,
     required: true,
