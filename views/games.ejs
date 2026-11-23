@@ -56,6 +56,9 @@
         <h3>Menge Währung am Geburtstag:</h3>
         <input type="number" id="moneyBirthday" name="moneyBirthday" min="0" required value="<%= Number(moneyConfMap.get('MONEY_BIRTHDAY')) || 0 %>" />
         <br />
+        <h3>Bonus für Booster in Prozent (10% -> 10 währung ohne Booster => 11 mit Booster):</h3>
+        <input type="number" id="moneyBoosterPerc" name="moneyBoosterPerc" min="0" required value="<%= Number(moneyConfMap.get('MONEY_BOOSTER_PERC')) || 0 %>" />
+        <br />
         <button type="submit">Speichern</button>
       </form>
     </details>
