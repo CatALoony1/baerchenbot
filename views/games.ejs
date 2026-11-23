@@ -104,6 +104,9 @@
         <h3>Maximale Gewinnchance in Prozent:</h3>
         <input type="number" id="radMaxPerc" name="radMaxPerc" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_MAX_PERC')) || 0 %>" />
         <br />
+        <h3>Wie hoch soll der Einsatz sein:</h3>
+        <input type="number" id="radEinsatz" name="radEinsatz" min="0" required value="<%= Number(moneyConfMap.get('MONEY_RAD_EINSATZ')) || 0 %>" />
+        <br />
         <button type="submit">Speichern</button>
       </form>
     </details>

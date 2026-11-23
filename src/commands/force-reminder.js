@@ -5,7 +5,6 @@ const {
   MessageFlags,
 } = require('discord.js');
 const Bump = require('../models/Bump');
-require('dotenv').config();
 
 module.exports = {
   data: new SlashCommandBuilder()

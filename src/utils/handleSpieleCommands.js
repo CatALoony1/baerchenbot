@@ -160,15 +160,15 @@ async function handleGamestats(interaction) {
   messageEdited.setTitle(`Deine Stats:`);
   messageEdited.addFields({ name: 'Rang:', value: `${currentRank}` });
   messageEdited.addFields({
-    name: `Aktuelle ${confCache.get(interaction.guild.id).get('MONEY_NAME')}:`,
+    name: `Aktuelle ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}:`,
     value: `${user.bankkonto.currentMoney}`,
   });
   messageEdited.addFields({
-    name: `Erhaltene ${confCache.get(interaction.guild.id).get('MONEY_NAME')}:`,
+    name: `Erhaltene ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}:`,
     value: `${user.bankkonto.moneyGain}`,
   });
   messageEdited.addFields({
-    name: `Verlorene/Ausgegebene ${confCache.get(interaction.guild.id).get('MONEY_NAME')}:`,
+    name: `Verlorene/Ausgegebene ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}:`,
     value: `${user.bankkonto.moneyLost}`,
   });
   messageEdited.addFields({

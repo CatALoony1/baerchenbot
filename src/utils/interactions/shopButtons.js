@@ -5,7 +5,6 @@ require('../../models/Bankkonten');
 require('../../models/Inventar');
 const Items = require('../../models/Items');
 const removeMoney = require('../removeMoney');
-require('dotenv').config();
 const { confCache } = require('../data/cache');
 
 async function shopButtons(interaction) {
@@ -82,7 +81,7 @@ async function shopButtons(interaction) {
       }
       if (user.bankkonto.currentMoney < price) {
         await interaction.reply({
-          content: `Du hast nicht genug ${confCache.get(interaction.guild.id).get('MONEY_NAME')} auf deinem Bankkonto!`,
+          content: `Du hast nicht genug ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} auf deinem Bankkonto!`,
           flags: MessageFlags.Ephemeral,
         });
         return;

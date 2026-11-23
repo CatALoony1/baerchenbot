@@ -1,6 +1,5 @@
 const Discord = require('discord.js');
 const cron = require('node-cron');
-require('dotenv').config();
 const Bump = require('../models/Bump');
 const getGifById = require('../utils/getGifById');
 

@@ -1,6 +1,7 @@
 const Discord = require('discord.js');
 const Question = require('../../models/QuizQuestion');
 const giveMoney = require('../giveMoney');
+const { confCache } = require('../data/cache');
 
 async function quizModals(interaction) {
   await interaction.deferReply({ flags: Discord.MessageFlags.Ephemeral });
@@ -22,8 +23,16 @@ async function quizModals(interaction) {
   });
   await newQuestion.save();
   const targetUserObj = await interaction.guild.members.fetch(mentionedUserId);
-  const moneyToGive = 2000;
-  await giveMoney(targetUserObj, moneyToGive, true);
+  if (
+    confCache.get(interaction.guild.id) &&
+    confCache.get(interaction.guild.id).get('MONEY_QUIZ_ADD') &&
+    Number(confCache.get(interaction.guild.id).get('MONEY_QUIZ_ADD')) > 0
+  ) {
+    const moneyToGive = Number(
+      confCache.get(interaction.guild.id).get('MONEY_QUIZ_ADD'),
+    );
+    await giveMoney(targetUserObj, moneyToGive, true);
+  }
   interaction.editReply('Frage eingetragen!');
 }
 

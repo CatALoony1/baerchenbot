@@ -115,13 +115,15 @@ function startJob(client) {
                       guildId: guild.id,
                     }).populate('bankkonto');
                     if (usedOnGameUser && usedOnGameUser.bankkonto) {
+                      const eintreibeAmount =
+                        usedOnGameUser.bankkonto.currentMoney * 0.01;
                       await removeMoney(
                         usedOnObj,
                         usedOnGameUser.bankkonto.currentMoney * 0.01,
                       );
-                      await giveMoney(userObj, 1000);
+                      await giveMoney(userObj, eintreibeAmount);
                       await targetChannel.send(
-                        `Von <@${activeItem.usedOn}> wurden 1000 ${confCache.get(guild.id).get('MONEY_NAME')} Schulden an <@${activeItem.user}> übergeben.`,
+                        `Von <@${activeItem.usedOn}> wurden ${eintreibeAmount} ${confCache.get(guild.id).get('MONEY_NAME')} Schulden an <@${activeItem.user}> übergeben.`,
                       );
                     } else {
                       await targetChannel.send(

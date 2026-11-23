@@ -1,4 +1,4 @@
-const { serverConfCache } = require('../utils/data/cache');
+const { serverConfCache, confCache } = require('../utils/data/cache');
 const cron = require('node-cron');
 const Level = require('../models/Level');
 const giveMoney = require('../utils/giveMoney');
@@ -68,14 +68,21 @@ async function jobFunction(client) {
             await targetChannel.send(
               `Herzlichen Glückwunsch an <@${level.userId}>! Heute ist dein Geburtstag und du bist jetzt ${age} Jahre alt! 🎉`,
             );
-            giveMoney(guild.members.cache.get(level.userId), 50000).catch(
-              (error) => {
+            if (
+              confCache.get(guild.id) &&
+              confCache.get(guild.id).get(MONEY_BIRTHDAY) &&
+              Number(confCache.get(guild.id).get(MONEY_BIRTHDAY)) > 0
+            ) {
+              giveMoney(
+                guild.members.cache.get(level.userId),
+                Number(confCache.get(guild.id).get(MONEY_BIRTHDAY)),
+              ).catch((error) => {
                 console.log(
                   `Error giving money to user ${level.userId}:`,
                   error,
                 );
-              },
-            );
+              });
+            }
           }
         }
       }

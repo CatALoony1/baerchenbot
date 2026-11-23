@@ -2,6 +2,7 @@ const { MessageFlags } = require('discord.js');
 const Questions = require('../../models/QuizQuestion');
 const QuizStats = require('../../models/QuizStats');
 const giveMoney = require('../giveMoney');
+const { confCache } = require('../data/cache');
 
 function isYesterday(date) {
   const today = new Date();
@@ -46,17 +47,37 @@ async function quizAnswer(interaction) {
         guildId: interaction.guild.id,
       });
       if (rw === 'right') {
+        let moneyToGive = 0;
+        if (
+          confCache.get(interaction.guild.id) &&
+          confCache.get(interaction.guild.id).get('MONEY_QUIZ_RIGHT') &&
+          Number(confCache.get(interaction.guild.id).get('MONEY_QUIZ_RIGHT')) >
+            0
+        ) {
+          moneyToGive = Number(
+            confCache.get(interaction.guild.id).get('MONEY_QUIZ_RIGHT'),
+          );
+        }
         if (fetchedStats) {
           fetchedStats.right += 1;
-          let xpToGive = 2000;
-          xpToGive = Math.ceil(
-            xpToGive * (1 + (fetchedStats.series * 10) / 100),
-          );
-          await giveMoney(interaction.member, xpToGive);
           if (isYesterday(fetchedStats.lastParticipation)) {
             fetchedStats.series += 1;
           } else {
             fetchedStats.series = 1;
+          }
+          if (moneyToGive > 0) {
+            moneyToGive = Math.ceil(
+              moneyToGive *
+                (1 +
+                  ((fetchedStats.series - 1) *
+                    (Number(
+                      confCache
+                        .get(interaction.guild.id)
+                        .get('MONEY_QUIZ_STREAK_PERC'),
+                    ) || 0)) /
+                    100),
+            );
+            await giveMoney(interaction.member, moneyToGive);
           }
           fetchedStats.lastParticipation = Date.now();
           await fetchedStats.save();
@@ -68,9 +89,9 @@ async function quizAnswer(interaction) {
             series: 1,
             lastParticipation: Date.now(),
           });
-          let xpToGive = 2000;
-          xpToGive = Math.ceil(xpToGive * 1.1);
-          await giveMoney(interaction.member, xpToGive);
+          if (moneyToGive > 0) {
+            await giveMoney(interaction.member, moneyToGive);
+          }
           await newStats.save();
         }
         await interaction.editReply(

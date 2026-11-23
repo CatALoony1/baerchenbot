@@ -10,7 +10,7 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
 
   if (fetchedGameUsers.length === 0) {
     console.log(
-      `ERROR: Niemand auf dem Server hat ${confCache.get(interaction.guild.id).get('MONEY_NAME')}!`,
+      `ERROR: Niemand auf dem Server hat ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}!`,
     );
     return;
   }
@@ -49,9 +49,9 @@ async function createSpieleLeaderboardEmbeds(page, interaction) {
     );
     let value;
     if (i === max - 1 || i === fetchedGameUsers.length - 1) {
-      value = `${confCache.get(interaction.guild.id).get('MONEY_NAME')}: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}`;
+      value = `${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}`;
     } else {
-      value = `${confCache.get(interaction.guild.id).get('MONEY_NAME')}: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}\n--------------------------------------`;
+      value = `${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}: ${fetchedGameUsers[i].bankkonto.currentMoney}\n Gewinn: ${fetchedGameUsers[i].bankkonto.moneyGain} Verlust: ${fetchedGameUsers[i].bankkonto.moneyLost}\n--------------------------------------`;
     }
     embed.addFields({
       name: `#${i + 1}  ${userObj.user.username}`,

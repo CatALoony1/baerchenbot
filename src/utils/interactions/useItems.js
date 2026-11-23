@@ -337,12 +337,12 @@ async function useItems(interaction, client) {
           const selectMenu = new UserSelectMenuBuilder()
             .setCustomId('useItem_BlattläuseKlauBanane_select')
             .setPlaceholder(
-              `Wähle einen Nutzer aus, dessen ${confCache.get(interaction.guild.id).get('MONEY_NAME')} du klauen möchtest.`,
+              `Wähle einen Nutzer aus, dessen ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} du klauen möchtest.`,
             )
             .setMinValues(1)
             .setMaxValues(1);
           firstRow = new ActionRowBuilder().addComponents(selectMenu);
-          content = `Wähle einen Nutzer aus, dessen ${confCache.get(interaction.guild.id).get('MONEY_NAME')} du klauen möchtest.`;
+          content = `Wähle einen Nutzer aus, dessen ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} du klauen möchtest.`;
           break;
         }
         case 'Schuldschein': {
@@ -1184,7 +1184,7 @@ async function useItemBombe(interaction) {
         beweiseButton,
       );
       await interaction.update({
-        content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach ${confCache.get(interaction.guild.id).get('MONEY_NAME')} durchsuchen oder Beweise sichern möchtest.`,
+        content: `Die Bombe wurde erfolgreich entschärft! Du kannst nun entscheiden, ob du sie nach ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} durchsuchen oder Beweise sichern möchtest.`,
         components: [row],
       });
       activeItem.extras = 'defused';
@@ -1202,7 +1202,7 @@ async function useItemBombe(interaction) {
         return;
       }
       await interaction.update({
-        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** ${confCache.get(interaction.guild.id).get('MONEY_NAME')} sind verpufft!`,
+        content: `Bei <@${interaction.user.id}> ist eine Bombe explodiert! **${amount}** ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} sind verpufft!`,
         files: [gifUrl],
         components: [],
       });
@@ -1226,7 +1226,7 @@ async function useItemBombe(interaction) {
     );
     await giveMoney(interaction.member, amount);
     await interaction.update({
-      content: `Du hast die Bombe durchsucht und **${amount}** ${confCache.get(interaction.guild.id).get('MONEY_NAME')} gefunden!`,
+      content: `Du hast die Bombe durchsucht und **${amount}** ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} gefunden!`,
       components: [],
       files: [],
     });
@@ -1278,7 +1278,7 @@ async function useItemBlattläuseKlauBanane(interaction) {
     user.inventar.items.splice(itemId, 1);
   } else {
     await interaction.update({
-      content: `Du hast keine ${confCache.get(interaction.guild.id).get('MONEY_NAME')} Klau Banane in deinem Inventar!`,
+      content: `Du hast keine ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} Klau Banane in deinem Inventar!`,
       components: [],
       flags: MessageFlags.Ephemeral,
     });
@@ -1298,7 +1298,7 @@ async function useItemBlattläuseKlauBanane(interaction) {
     flags: MessageFlags.Ephemeral,
   });
   await channel.send({
-    content: `<@${interaction.user.id}> warf eine Klau-Banane auf <@${targetUserId}> und klaute **${amout}** ${confCache.get(interaction.guild.id).get('MONEY_NAME')}!`,
+    content: `<@${interaction.user.id}> warf eine Klau-Banane auf <@${targetUserId}> und klaute **${amout}** ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}!`,
   });
 }
 

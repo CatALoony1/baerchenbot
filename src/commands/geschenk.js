@@ -59,7 +59,7 @@ module.exports = {
       }
       if (interaction.user.id === targetUserId) {
         interaction.editReply(
-          `Du kannst dir selbst keine ${confCache.get(interaction.guild.id).get('MONEY_NAME')} schenken!`,
+          `Du kannst dir selbst keine ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} schenken!`,
         );
         return;
       }
@@ -70,7 +70,7 @@ module.exports = {
       }).populate('bankkonto');
       if (!user || !user.bankkonto || user.bankkonto.currentMoney < geldMenge) {
         interaction.editReply(
-          `Du hast nicht genug ${confCache.get(interaction.guild.id).get('MONEY_NAME')}, um ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} zu verschenken!`,
+          `Du hast nicht genug ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}, um ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} zu verschenken!`,
         );
         return;
       }
@@ -80,11 +80,11 @@ module.exports = {
       await giveMoney(targetUserObj, geldMenge);
       if (reason !== '') {
         await interaction.editReply(
-          `${targetUserObj} du hast ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`,
+          `${targetUserObj} du hast ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} von ${interaction.member} erhalten!\nAngehängte Nachricht:\n${reason}`,
         );
       } else {
         await interaction.editReply(
-          `${targetUserObj} du hast ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME')} von ${interaction.member} erhalten!`,
+          `${targetUserObj} du hast ${geldMenge} ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'} von ${interaction.member} erhalten!`,
         );
       }
     } catch (error) {

@@ -1,6 +1,5 @@
 const cron = require('node-cron');
 const Level = require('../models/Level');
-require('dotenv').config();
 
 let monthlyXpJob = null;
 

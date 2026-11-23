@@ -11,17 +11,6 @@ async function giveMoney(member, money, quizadded = false, daily = false) {
   try {
     const user = await GameUser.findOne(query).populate('bankkonto');
     if (user) {
-      if (quizadded) {
-        if (user.quizadded > 0 && user.quizadded <= 10) {
-          money = money + user.quizadded * 100;
-        } else if (user.quizadded > 10 && user.quizadded <= 30) {
-          money = money + user.quizadded * 50;
-        } else if (user.quizadded > 30 && user.quizadded <= 100) {
-          money = money + user.quizadded * 20;
-        } else if (user.quizadded > 100) {
-          money = money + user.quizadded * 10;
-        }
-      }
       if (
         confCache.get(member.guild.id) &&
         serverConfCache.get(member.guild.id) &&

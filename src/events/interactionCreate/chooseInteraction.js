@@ -11,6 +11,7 @@ const spieleLeaderboardPage = require('../../utils/interactions/spieleLeaderboar
 const useItems = require('../../utils/interactions/useItems');
 const sendRuleSecretModal = require('../../utils/interactions/sendRuleSecretModal');
 const ruleModals = require('../../utils/interactions/ruleModals');
+const gluecksrad = require('../../utils/interactions/gluecksrad');
 
 module.exports = {
   run: async (interaction, client) => {
@@ -50,6 +51,8 @@ module.exports = {
         await spieleLeaderboardPage(interaction);
       } else if (customId.includes('RuleSecretButton')) {
         await sendRuleSecretModal(interaction);
+      } else if (customId.includes('gluecksradBtn')) {
+        await gluecksrad(interaction);
       }
     } else if (interaction.isStringSelectMenu()) {
       if (customId.includes('selmen_menu')) {

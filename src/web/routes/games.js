@@ -1,5 +1,4 @@
 const express = require('express');
-require('dotenv').config();
 const router = express.Router();
 const Config = require('../../models/Config');
 const Items = require('../../models/Items');
@@ -192,12 +191,17 @@ router.post('/hangman', async (req, res) => {
 
 router.post('/rad', async (req, res) => {
   try {
-    const { radPool, radPerc, radMaxPerc, guildId } = req.body;
+    const { radPool, radPerc, radMaxPerc, radEinsatz, guildId } = req.body;
     console.log(
-      `/rad call with guildId: ${guildId}, radPool: ${radPool}, radMaxPerc: ${radMaxPerc}, radPerc: ${radPerc}`,
+      `/rad call with guildId: ${guildId}, radPool: ${radPool}, radMaxPerc: ${radMaxPerc}, radPerc: ${radPerc}, radEinsatz: ${radEinsatz}`,
     );
-    const keyList = ['MONEY_RAD_POOL', 'MONEY_RAD_PERC', 'MONEY_RAD_MAX_PERC'];
-    const valList = [radPool, radPerc, radMaxPerc];
+    const keyList = [
+      'MONEY_RAD_POOL',
+      'MONEY_RAD_PERC',
+      'MONEY_RAD_MAX_PERC',
+      'MONEY_RAD_EINSATZ',
+    ];
+    const valList = [radPool, radPerc, radMaxPerc, radEinsatz];
     await addToDbMoney(keyList, valList, guildId);
     const targetUrl = guildId ? `/games?serverId=${guildId}` : '/games';
     return res.redirect(targetUrl);

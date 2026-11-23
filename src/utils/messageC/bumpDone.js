@@ -29,7 +29,7 @@ async function bumpDone(message) {
       const embed = new EmbedBuilder()
         .setTitle('Dankeschön für deine Untersützung!❤️')
         .setDescription(
-          `Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung und 15% auf jegliche ${confCache.get(interaction.guild.id).get('MONEY_NAME')}!`,
+          `Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung und 15% auf jegliche ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}!`,
         )
         .setThumbnail(
           member.user.displayAvatarURL({ format: 'png', dynamic: true }),

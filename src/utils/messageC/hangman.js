@@ -1,8 +1,8 @@
 const Hangman = require('../../models/Hangman');
-require('dotenv').config();
 const { Message, EmbedBuilder, AttachmentBuilder } = require('discord.js');
 const path = require('node:path');
 const giveMoney = require('../giveMoney');
+const { confCache } = require('../data/cache');
 
 function maskiereWort(wort, gerateneBuchstaben) {
   const woerter = wort.split(' ');
@@ -120,7 +120,16 @@ async function hangman(message) {
         )
         .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
       await referencedMessage.edit({ embeds: [embed], files: [file] });
-      giveMoney(message.member, 500);
+      if (
+        confCache.get(message.guild.id) &&
+        confCache.get(message.guild.id).get('MONEY_HANGMAN_SOLVE') &&
+        Number(confCache.get(message.guild.id).get('MONEY_HANGMAN_SOLVE')) > 0
+      ) {
+        giveMoney(
+          message.member,
+          Number(confCache.get(message.guild.id).get('MONEY_HANGMAN_SOLVE')),
+        );
+      }
       await hangman.save();
     } else {
       const allLettersFound = hangman.word
@@ -144,7 +153,16 @@ async function hangman(message) {
           )
           .setThumbnail(`attachment://hangman${hangman.fehler}.png`);
         await referencedMessage.edit({ embeds: [embed], files: [file] });
-        giveMoney(message.member, 500);
+        if (
+          confCache.get(message.guild.id) &&
+          confCache.get(message.guild.id).get('MONEY_HANGMAN_SOLVE') &&
+          Number(confCache.get(message.guild.id).get('MONEY_HANGMAN_SOLVE')) > 0
+        ) {
+          giveMoney(
+            message.member,
+            Number(confCache.get(message.guild.id).get('MONEY_HANGMAN_SOLVE')),
+          );
+        }
         await hangman.save();
       } else {
         const leerzeichen = maskiereWort(hangman.word, hangman.buchstaben);
