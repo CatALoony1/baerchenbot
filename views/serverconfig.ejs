@@ -133,14 +133,14 @@
               <input type="hidden" name="guildId" value="<%= selectedServerId %>">
               <input type="hidden" name="variableName" value="BOOSTER_ROLE_ID">
               <select name="newMemberRole" onchange="this.form.submit()">
-                <% const hasSelectedValueAnother = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[3]; %>
+                <% const hasSelectedValueAnotherDrei = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[3]; %>
 
-                <option value="" disabled <%= !hasSelectedValueAnother ? 'selected' : '' %> hidden>
+                <option value="" disabled <%= !hasSelectedValueAnotherDrei ? 'selected' : '' %> hidden>
                   -- Bitte Rolle auswählen --
                 </option>
 
                 <% alleRollen.forEach(function(role) { %>
-                <option value="<%= role.id %>" <%= hasSelectedValueAnother && role.id === defaultRole[3] ? 'selected' : '' %>>
+                <option value="<%= role.id %>" <%= hasSelectedValueAnotherDrei && role.id === defaultRole[3] ? 'selected' : '' %>>
                   <%= role.name %>
                 </option>
                 <% }); %>
