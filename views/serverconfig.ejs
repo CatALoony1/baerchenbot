@@ -125,6 +125,29 @@
             </form>
           </td>
         </tr>
+        <tr>
+          <td><%= uses.BOOSTER_ROLE_ID %></td>
+          <td>BOOSTER_ROLE_ID</td>
+          <td>
+            <form action="/serverconfig/change-member-role" method="POST">
+              <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+              <input type="hidden" name="variableName" value="BOOSTER_ROLE_ID">
+              <select name="newMemberRole" onchange="this.form.submit()">
+                <% const hasSelectedValueAnother = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[3]; %>
+
+                <option value="" disabled <%= !hasSelectedValueAnother ? 'selected' : '' %> hidden>
+                  -- Bitte Rolle auswählen --
+                </option>
+
+                <% alleRollen.forEach(function(role) { %>
+                <option value="<%= role.id %>" <%= hasSelectedValueAnother && role.id === defaultRole[3] ? 'selected' : '' %>>
+                  <%= role.name %>
+                </option>
+                <% }); %>
+              </select>
+            </form>
+          </td>
+        </tr>
       </tbody>
     </table>
     <% } %>
