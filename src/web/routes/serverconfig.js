@@ -26,6 +26,14 @@ router.get('/', async (req, res) => {
     let defaultRole = [];
     let gifTextList = new Map();
     let ruleSecret = '';
+    const inactive = {
+      inacton: false,
+      inacttime: 0,
+      lurkon: false,
+      lurktime: 0,
+      deleteon: false,
+      deletetime: 0,
+    };
     const selectedServerId = req.query.serverId || servers[0]?.id;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
@@ -55,9 +63,20 @@ router.get('/', async (req, res) => {
           const [type, kind] = key.split('_');
           if (kind === 'GIF' || kind === 'TXT' || kind === 'HEADER') {
             gifTextList = addToList(type, value, gifTextList, kind);
-          }
-          if (key === 'RULE_SECRET') {
+          } else if (key === 'RULE_SECRET') {
             ruleSecret = value;
+          } else if (key == 'INACTIVE_ON') {
+            inactive.inacton = value === 'J';
+          } else if (key == 'INACTIVE_LURK_ON') {
+            inactive.lurkon = value === 'J';
+          } else if (key == 'INACTIVE_DEL_ON') {
+            inactive.deleteon = value === 'J';
+          } else if (key == 'INACTIVE_TIME') {
+            inactive.inacttime = Number(value);
+          } else if (key == 'INACTIVE_LURK_TIME') {
+            inactive.lurktime = Number(value);
+          } else if (key == 'INACTIVE_DEL_TIME') {
+            inactive.deletetime = Number(value);
           }
         }
       }
@@ -73,6 +92,7 @@ router.get('/', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: gifTextList,
       ruleSecret: ruleSecret,
+      inactive: inactive,
     });
   } catch (error) {
     console.log(error);
@@ -87,6 +107,14 @@ router.get('/', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
       ruleSecret: '',
+      inactive: {
+        inacton: false,
+        inacttime: 0,
+        lurkon: false,
+        lurktime: 0,
+        deleteon: false,
+        deletetime: 0,
+      },
     });
   }
 });
@@ -132,6 +160,14 @@ router.post('/change-member-role', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
       ruleSecret: '',
+      inactive: {
+        inacton: false,
+        inacttime: 0,
+        lurkon: false,
+        lurktime: 0,
+        deleteon: false,
+        deletetime: 0,
+      },
     });
   }
 });
@@ -158,6 +194,80 @@ router.post('/message', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
       ruleSecret: '',
+      inactive: {
+        inacton: false,
+        inacttime: 0,
+        lurkon: false,
+        lurktime: 0,
+        deleteon: false,
+        deletetime: 0,
+      },
+    });
+  }
+});
+
+router.post('/inactivity', async (req, res) => {
+  try {
+    const {
+      inactactive,
+      inacttime,
+      lurkactive,
+      lurktime,
+      deleteactive,
+      deletetime,
+      guildId,
+    } = req.body;
+    console.log(`Adding interactivity setup for guild ${guildId}`);
+    const entries = [
+      { key: 'INACTIVE_ON', value: inactactive },
+      { key: 'INACTIVE_LURK_ON', value: lurkactive },
+      { key: 'INACTIVE_DEL_ON', value: deleteactive },
+      { key: 'INACTIVE_TIME', value: inacttime },
+      { key: 'INACTIVE_LURK_TIME', value: lurktime },
+      { key: 'INACTIVE_DEL_TIME', value: deletetime },
+    ];
+    const operations = entries
+      .filter(({ value }) => value !== undefined)
+      .map(({ key, value }) => ({
+        updateOne: {
+          filter: { guildId, key },
+          update: {
+            $set: {
+              value: value === null ? null : String(value),
+            },
+          },
+          upsert: true,
+        },
+      }));
+    if (operations.length > 0) {
+      await Config.bulkWrite(operations);
+    }
+    await refreshConfCache(guildId);
+    const targetUrl = guildId
+      ? `/serverconfig?serverId=${guildId}`
+      : '/serverconfig';
+    return res.redirect(targetUrl);
+  } catch (error) {
+    console.log(error);
+    return res.render('serverconfig', {
+      guildIds: req.session.guildIds,
+      servers: null,
+      selectedServerId: null,
+      alleRollen: [],
+      defaultRole: '',
+      uses: idUses,
+      error: error.message,
+      giphyApiKey: process.env.GIPHY_API,
+      gifTextList: new Map(),
+      ruleSecret: '',
+      inactive: {
+        inacton: false,
+        inacttime: 0,
+        lurkon: false,
+        lurktime: 0,
+        deleteon: false,
+        deletetime: 0,
+      },
     });
   }
 });
@@ -210,6 +320,14 @@ router.post('/set-rule-secret', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: new Map(),
       ruleSecret: '',
+      inactive: {
+        inacton: false,
+        inacttime: 0,
+        lurkon: false,
+        lurktime: 0,
+        deleteon: false,
+        deletetime: 0,
+      },
     });
   }
 });

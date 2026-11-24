@@ -17,6 +17,7 @@ const idUses = {
     'Mitglieder Rolle welche Nutzern nach dem Bestätigend der Regeln zugewiesen wird.',
   MIDMEMBER_ROLE_ID:
     'Rolle für langzeit Mitglieder um weitere rechte freizuschalten.',
+  BOOSTER_ROLE_ID: 'Rolle für Server Booster.',
   SELFROLES_ID:
     'Channel in welchem die Selfrole Auswahl-Menüs geschickt werden.',
   VORSTELLUNG_ID: 'Channel in welchem sich neue Mitglieder vorstellen können.',

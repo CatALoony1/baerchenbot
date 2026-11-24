@@ -303,6 +303,40 @@
         <button type="submit">Speichern</button>
       </form>
     </details>
+    <hr>
+    <details>
+      <summary>Inaktivitätsprüfung konfigurieren</summary>
+      <form action="/serverconfig/inactivity" method="POST">
+        <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+        <p>Benachrichtigung bei beigetretenen Usern, die seit X Tagen keine Nachricht geschrieben haben/im Voice waren?</p>
+        <label for="inacton">Ja</label>
+        <input type="radio" id="inacton" name="inactactive" value="J" <%= inactive.inacton ? 'checked' : '' %>>
+        <label for="inactoff">Nein</label>
+        <input type="radio" id="inactoff" name="inactactive" value="N" <%= !inactive.inacton ? 'checked' : '' %>>
+        <label for="inacttime">Nach wie vielen Tagen soll benachrichtigt werden?</label>
+        <input type="number" id="inacttime" name="inacttime" min="0" value="<%= inactive.inacttime || 0 %>" required %>">
+        <br />
+        <br />
+        <p>Benachrichtigung bei beigetretenen Usern, die nie eine Nachricht geschrieben haben? (Wichtig! Ist dies aktiv, werden nach der angegebenen Zeit die Spielwähung und Quiz-Stats gelöscht)</p>
+        <label for="lurkon">Ja</label>
+        <input type="radio" id="lurkon" name="lurkactive" value="J" <%= inactive.lurkon ? 'checked' : '' %>>
+        <label for="lurkoff">Nein</label>
+        <input type="radio" id="lurkoff" name="lurkactive" value="N" <%= !inactive.lurkon ? 'checked' : '' %>>
+        <label for="lurktime">Nach wie vielen Tagen soll benachrichtigt werden?</label>
+        <input type="number" id="lurktime" name="lurktime" min="0" value="<%= inactive.lurktime || 0 %>" required %>">
+        <button type="submit">Speichern</button>
+        <br />
+        <br />
+        <p>Wenn User verlassen, sollen nach Y Tagen die Daten (Level, Spielwährung) gelöscht werden?</p>
+        <label for="deleteon">Ja</label>
+        <input type="radio" id="deleteon" name="deleteactive" value="J" <%= inactive.deleteon ? 'checked' : '' %>>
+        <label for="deleteoff">Nein</label>
+        <input type="radio" id="deleteoff" name="deleteactive" value="N" <%= !inactive.deleteon ? 'checked' : '' %>>
+        <label for="deletetime">Nach wie vielen Tagen sollen die Daten (Level, Spielwährung) gelöscht werden?</label>
+        <input type="number" id="deletetime" name="deletetime" min="0" value="<%= inactive.deletetime || 0 %>" required %>">
+        <button type="submit">Speichern</button>
+      </form>
+    </details>
     <div id="giphyModal-outer" class="giphy-modal-outer-div">
       <div id="giphyModal" class="giphy-modal-div">
         <div class="giphy-header">
