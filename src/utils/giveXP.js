@@ -78,8 +78,8 @@ async function giveXP(member, channel, message) {
                   .get('LVL_CUS_NAME')
                   .split(',');
                 if (tempRoles.length >= roleNum) {
-                  newRole = tempRoles[roleNum - 1];
-                  oldRole = tempRoles[roleNum - 2];
+                  newRole = tempRoles[roleNum - 1].trim();
+                  oldRole = tempRoles[roleNum - 2].trim();
                 }
               } else if (
                 !lvlRolesSys &&
@@ -89,7 +89,8 @@ async function giveXP(member, channel, message) {
                   .get(member.guild.id)
                   .get('LVL_NUM_NAME')
                   .replaceAll('[lvl]', level.level)
-                  .replaceAll('[role]', roleNum);
+                  .replaceAll('[role]', roleNum)
+                  .trim();
                 oldRole = confCache
                   .get(member.guild.id)
                   .get('LVL_NUM_NAME')
@@ -98,7 +99,8 @@ async function giveXP(member, channel, message) {
                     level.level -
                       Number(confCache.get(member.guild.id).get('LVL_ROLE')),
                   )
-                  .replaceAll('[role]', roleNum - 1);
+                  .replaceAll('[role]', roleNum - 1)
+                  .trim();
               }
               if (newRole) {
                 if (oldRole) {
