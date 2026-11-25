@@ -2,14 +2,12 @@ const { confCache } = require('./data/cache');
 
 function calculateLevelXp(level, guildId) {
   if (
-    confCache.get(member.guild.id) &&
-    confCache.get(member.guild.id).get('LVL_XP_LVLUP') &&
-    confCache.get(member.guild.id).get('LVL_SYS')
+    confCache.get(guildId) &&
+    confCache.get(guildId).get('LVL_XP_LVLUP') &&
+    confCache.get(guildId).get('LVL_SYS')
   ) {
-    const lvlSys = confCache.get(member.guild.id).get('LVL_SYS') == 'J';
-    const xpPerLevel = Number(
-      confCache.get(member.guild.id).get('LVL_XP_LVLUP'),
-    );
+    const lvlSys = confCache.get(guildId).get('LVL_SYS') == 'J';
+    const xpPerLevel = Number(confCache.get(guildId).get('LVL_XP_LVLUP'));
     if (lvlSys) {
       return xpPerLevel;
     } else {
