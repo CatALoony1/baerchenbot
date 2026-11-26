@@ -184,7 +184,7 @@
           <% }); %>
         </select>
         <h3>Willkommensnachricht-Titel:</h3>
-        <input type="text" id="welcomeHeader" name="header" required value="<%= gifTextList.get('WELCOME')?.header || '' %>" />
+        <input type="text" id="welcomeHeader" name="header" value="<%= gifTextList.get('WELCOME')?.header || '' %>" />
         <br />
         <h3>Willkommensnachricht-Beschreibung:</h3>
         <textarea id="welcomeText" name="text" rows="5" cols="90"><% if (gifTextList.get("WELCOME")) { %><%= gifTextList.get("WELCOME").text %><% } %></textarea>
@@ -210,17 +210,9 @@
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
         <input type="hidden" name="messageType" value="BYE">
         <input type="hidden" name="giphyId" id="byeGifId" value="<%= (gifTextList.get('BYE') && gifTextList.get('BYE').gif) ? gifTextList.get('BYE').gif : '' %>">
-        <h3>Rolle Pingen</h3>
-        <select name="ping">
-          <option value="" <%= !pingselection.bye ? 'selected' : '' %>></option>
-          <% alleRollen.forEach(function(role) { %>
-          <option value="<%= role.id %>" <%= pingselection.bye && role.id === pingselection.bye ? 'selected' : '' %>>
-            <%= role.name %>
-          </option>
-          <% }); %>
-        </select>
+        <input type="hidden" name="ping" value="">
         <h3>Verabschiedungsnachricht-Titel:</h3>
-        <input type="text" id="byeHeader" name="header" required value="<%= gifTextList.get('BYE')?.header || '' %>" />
+        <input type="text" id="byeHeader" name="header" value="<%= gifTextList.get('BYE')?.header || '' %>" />
         <br />
         <h3>Verabschiedungsnachricht-Beschreibung:</h3>
         <textarea id="byeText" name="text" rows="5" cols="90"><% if (gifTextList.get("BYE")) { %><%= gifTextList.get("BYE").text %><% } %></textarea>
@@ -256,7 +248,7 @@
           <% }); %>
         </select>
         <h3>Boostnachricht-Titel:</h3>
-        <input type="text" id="boostHeader" name="header" required value="<%= gifTextList.get('BOOST')?.header || '' %>" />
+        <input type="text" id="boostHeader" name="header" value="<%= gifTextList.get('BOOST')?.header || '' %>" />
         <br />
         <h3>Boostnachricht-Beschreibung:</h3>
         <textarea id="boostText" name="text" rows="5" cols="90"><% if (gifTextList.get("BOOST")) { %><%= gifTextList.get("BOOST").text %><% } %></textarea>
@@ -292,7 +284,7 @@
           <% }); %>
         </select>
         <h3>Bump-Erinnerungs-Titel:</h3>
-        <input type="text" id="bumpRemHeader" name="header" required value="<%= gifTextList.get('BUMPREM')?.header || '' %>" />
+        <input type="text" id="bumpRemHeader" name="header" value="<%= gifTextList.get('BUMPREM')?.header || '' %>" />
         <br />
         <h3>Bump-Erinnerungs-Nachricht-Beschreibung:</h3>
         <textarea id="bumpRemText" name="text" rows="5" cols="90"><% if (gifTextList.get("BUMPREM")) { %><%= gifTextList.get("BUMPREM").text %><% } %></textarea>
@@ -319,7 +311,7 @@
         <input type="hidden" name="giphyId" id="bumpThxGifId" value="<%= (gifTextList.get('BUMPTHX') && gifTextList.get('BUMPTHX').gif) ? gifTextList.get('BUMPTHX').gif : '' %>">
         <input type="hidden" name="ping" value="">
         <h3>Bump-Dankes-Titel:</h3>
-        <input type="text" id="bumpThxHeader" name="header" required value="<%= gifTextList.get('BUMPTHX')?.header || '' %>" />
+        <input type="text" id="bumpThxHeader" name="header" value="<%= gifTextList.get('BUMPTHX')?.header || '' %>" />
         <br />
         <h3>Bump-Dankes-Nachricht-Beschreibung:</h3>
         <textarea id="bumpThxText" name="text" rows="5" cols="90"><% if (gifTextList.get("BUMPTHX")) { %><%= gifTextList.get("BUMPTHX").text %><% } %></textarea>
@@ -356,7 +348,7 @@
         </select>
         <p>Weitere Platzhalter [oldAge] [newAge] [birthDate]</p>
         <h3>Geburtstagsnachricht-Titel:</h3>
-        <input type="text" id="birthHeader" name="header" required value="<%= gifTextList.get('BIRTH')?.header || '' %>" />
+        <input type="text" id="birthHeader" name="header" value="<%= gifTextList.get('BIRTH')?.header || '' %>" />
         <br />
         <h3>Geburtstagsnachricht-Beschreibung:</h3>
         <textarea id="birthText" name="text" rows="5" cols="90"><% if (gifTextList.get("BIRTH")) { %><%= gifTextList.get("BIRTH").text %><% } %></textarea>
@@ -385,7 +377,7 @@
         <input type="hidden" name="ping" value="">
         <p>Weitere Platzhalter [oldYear] [newYear]</p>
         <h3>Neujahrsnachricht-Titel:</h3>
-        <input type="text" id="yearHeader" name="header" required value="<%= gifTextList.get('YEAR')?.header || '' %>" />
+        <input type="text" id="yearHeader" name="header" value="<%= gifTextList.get('YEAR')?.header || '' %>" />
         <br />
         <h3>Neujahrsnachricht-Beschreibung:</h3>
         <textarea id="yearText" name="text" rows="5" cols="90"><% if (gifTextList.get("YEAR")) { %><%= gifTextList.get("YEAR").text %><% } %></textarea>

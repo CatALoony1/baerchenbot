@@ -1,6 +1,7 @@
-const { MessageFlags } = require('discord.js');
+const { MessageFlags, EmbedBuilder } = require('discord.js');
 const Config = require('../../models/Config');
-const { serverConfCache } = require('../../utils/data/cache');
+const { serverConfCache, confCache } = require('../../utils/data/cache');
+const getGifById = require('../getGifById');
 
 async function ruleModals(interaction) {
   try {
@@ -30,6 +31,7 @@ async function ruleModals(interaction) {
       await interaction.editReply(
         'Richtiges Lösungswort! Du hast nun Zugriff auf den Server.',
       );
+      await sendWelcomeMessage(interaction.member);
     } else {
       await interaction.editReply(
         'Falsches Lösungswort! Bitte überprüfe die Regeln und versuche es erneut.',
@@ -37,6 +39,83 @@ async function ruleModals(interaction) {
     }
   } catch (err) {
     console.log(err);
+  }
+}
+
+async function sendWelcomeMessage(guildMember) {
+  try {
+    if (
+      serverConfCache.get(guildMember.guild.id) &&
+      serverConfCache.get(guildMember.guild.id).get('WELCOME_ID') &&
+      ((confCache.get(guildMember.guild.id).get('WELCOME_HEADER') &&
+        confCache.get(guildMember.guild.id).get('WELCOME_HEADER').length > 0) ||
+        (confCache.get(guildMember.guild.id).get('WELCOME_GIF') &&
+          confCache.get(guildMember.guild.id).get('WELCOME_GIF').length > 0) ||
+        (confCache.get(guildMember.guild.id).get('WELCOME_TXT') &&
+          confCache.get(guildMember.guild.id).get('WELCOME_TXT').length > 0))
+    ) {
+      const targetChannel =
+        guildMember.guild.channels.cache.get(
+          serverConfCache.get(guildMember.guild.id).get('WELCOME_ID'),
+        ) ||
+        (await guildMember.guild.channels.fetch(
+          serverConfCache.get(guildMember.guild.id).get('WELCOME_ID'),
+        ));
+      if (!targetChannel) {
+        console.log('Fehler, Willkommenschannel gibts nicht');
+        return;
+      }
+      let gifUrl = null;
+      if (
+        confCache.get(guildMember.guild.id).get('WELCOME_GIF') &&
+        confCache.get(guildMember.guild.id).get('WELCOME_GIF').trim().length > 0
+      ) {
+        const gifUrl = await getGifById(
+          confCache.get(guildMember.guild.id).get('WELCOME_GIF'),
+        );
+        if (!gifUrl.includes('http')) {
+          console.log('ERROR Welcome gif');
+          console.log(gifUrl);
+          gifUrl = null;
+        }
+      }
+      let txt = confCache.get(guildMember.guild.id).get('WELCOME_TXT');
+      let header = confCache.get(guildMember.guild.id).get('WELCOME_HEADER');
+      let ping = confCache.get(guildMember.guild.id).get('WELCOME_PING');
+      if (txt && !header && !gif && !ping) {
+        await targetChannel.send(
+          txt.replaceAll('[userPing]', `<@${guildMember.id}>`),
+        );
+      } else {
+        const welcome = new EmbedBuilder().setColor(0x0033cc).setAuthor({
+          name: guildMember.user.username,
+          iconURL: guildMember.user.displayAvatarURL({ size: 256 }),
+        });
+        if (header && header.trim().length > 0) {
+          welcome.setTitle(
+            header.replaceAll('[userPing]', `<@${guildMember.id}>`),
+          );
+        }
+        if (txt && txt.trim().length > 0) {
+          welcome.setDescription(
+            txt.replaceAll('[userPing]', `<@${guildMember.id}>`),
+          );
+        }
+        if (gifUrl) {
+          welcome.setImage(gifUrl);
+        }
+        let content = `<@${guildMember.id}>`;
+        if (ping && ping.length > 0) {
+          content = `<@&${ping}> ${content}`;
+        }
+        await targetChannel.send({
+          content: content,
+          embeds: [welcome],
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 

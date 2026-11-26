@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require('discord.js');
 const getGifById = require('../../utils/getGifById');
-const { serverConfCache } = require('../../utils/data/cache');
+const { serverConfCache, confCache } = require('../../utils/data/cache');
 
 /**
  *
@@ -14,7 +14,13 @@ module.exports = {
     try {
       if (
         serverConfCache.get(guildMember.guild.id) &&
-        serverConfCache.get(guildMember.guild.id).get('BYE_ID')
+        serverConfCache.get(guildMember.guild.id).get('BYE_ID') &&
+        ((confCache.get(guildMember.guild.id).get('BYE_HEADER') &&
+          confCache.get(guildMember.guild.id).get('BYE_HEADER').length > 0) ||
+          (confCache.get(guildMember.guild.id).get('BYE_GIF') &&
+            confCache.get(guildMember.guild.id).get('BYE_GIF').length > 0) ||
+          (confCache.get(guildMember.guild.id).get('BYE_TXT') &&
+            confCache.get(guildMember.guild.id).get('BYE_TXT').length > 0))
       ) {
         const targetChannel =
           guildMember.guild.channels.cache.get(
@@ -27,22 +33,48 @@ module.exports = {
           console.log('Fehler, Verlassenschannel gibts nicht');
           return;
         }
-        const gifUrl = await getGifById('QMtW7K5i1M9SGZVh5t'); //Luna 15308096
-        if (!gifUrl.includes('http')) {
-          console.log('ERROR Leave gif');
-          return;
+        let gifUrl = null;
+        if (
+          confCache.get(guildMember.guild.id).get('BYE_GIF') &&
+          confCache.get(guildMember.guild.id).get('BYE_GIF').trim().length > 0
+        ) {
+          const gifUrl = await getGifById(
+            confCache.get(guildMember.guild.id).get('BYE_GIF'),
+          );
+          if (!gifUrl.includes('http')) {
+            console.log('ERROR Welcome gif');
+            console.log(gifUrl);
+            gifUrl = null;
+          }
         }
-        const leave = new EmbedBuilder()
-          .setColor(0x0033cc)
-          .setAuthor({
+        let txt = confCache.get(guildMember.guild.id).get('BYE_TXT');
+        let header = confCache.get(guildMember.guild.id).get('BYE_HEADER');
+        if (txt && !header && !gif) {
+          await targetChannel.send(
+            txt.replaceAll('[userPing]', `<@${guildMember.id}>`),
+          );
+        } else {
+          const bye = new EmbedBuilder().setColor(0x0033cc).setAuthor({
             name: guildMember.user.username,
             iconURL: guildMember.user.displayAvatarURL({ size: 256 }),
-          })
-          .setDescription(
-            `Schade, dass <@${guildMember.id}> uns verlassen hat. 🥺 Wir wünschen <@${guildMember.id}> alles Gute für den weiteren Weg.`,
-          )
-          .setImage(gifUrl);
-        await targetChannel.send({ embeds: [leave] });
+          });
+          if (header && header.trim().length > 0) {
+            bye.setTitle(
+              header.replaceAll('[userPing]', `<@${guildMember.id}>`),
+            );
+          }
+          if (txt && txt.trim().length > 0) {
+            bye.setDescription(
+              txt.replaceAll('[userPing]', `<@${guildMember.id}>`),
+            );
+          }
+          if (gifUrl) {
+            bye.setImage(gifUrl);
+          }
+          await targetChannel.send({
+            embeds: [bye],
+          });
+        }
       }
     } catch (error) {
       console.log(error);
