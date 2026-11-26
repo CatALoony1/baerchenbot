@@ -34,7 +34,15 @@ router.get('/', async (req, res) => {
       deleteon: false,
       deletetime: 0,
     };
-    const selectedServerId = req.query.serverId || servers[0]?.id;
+    if (!req.session.selGuild && !req.query.serverId) {
+      req.session.selGuild = servers[0]?.id;
+    } else if (
+      req.query.serverId &&
+      req.session.selGuild != req.query.serverId
+    ) {
+      req.session.selGuild = req.query.serverId;
+    }
+    const selectedServerId = req.session.selGuild;
     if (selectedServerId) {
       const selectedGuild = client.guilds.cache.get(selectedServerId);
       if (selectedGuild) {

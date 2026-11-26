@@ -34,7 +34,15 @@ router.get('/', async (req, res) => {
       }
     }
     let rollen = [];
-    const selectedServerId = req.query.serverId || servers[0]?.id;
+    if (!req.session.selGuild && !req.query.serverId) {
+      req.session.selGuild = servers[0]?.id;
+    } else if (
+      req.query.serverId &&
+      req.session.selGuild != req.query.serverId
+    ) {
+      req.session.selGuild = req.query.serverId;
+    }
+    const selectedServerId = req.session.selGuild;
     const allowedGuilds = req.session.guildIds;
     if (allowedGuilds !== 'all') {
       const allowedIds = allowedGuilds.split(',').map((id) => id.trim());
