@@ -198,6 +198,7 @@ function splitLongToken(token, ctx, maxWidth) {
 /**
  * Bricht den Text automatisch um.
  */
+
 function wrapSegments(segments, ctx, fontSize, maxWidth) {
   const originalTokens = createTokens(segments, ctx, fontSize);
 
@@ -206,11 +207,42 @@ function wrapSegments(segments, ctx, fontSize, maxWidth) {
   );
 
   const lines = [];
-
   let currentLine = [];
   let currentWidth = 0;
 
+  function pushLine() {
+    lines.push(currentLine);
+    currentLine = [];
+    currentWidth = 0;
+  }
+
   for (const token of tokens) {
+    // Expliziter Zeilenumbruch
+    if (token.type === 'text' && /[\r\n]/.test(token.value)) {
+      // Text vor dem Umbruch übernehmen
+      const parts = token.value.split(/\r\n|\r|\n/);
+
+      for (let i = 0; i < parts.length; i++) {
+        if (parts[i]) {
+          const width = ctx.measureText(parts[i]).width;
+
+          currentLine.push({
+            type: 'text',
+            value: parts[i],
+            width,
+          });
+
+          currentWidth += width;
+        }
+
+        if (i < parts.length - 1) {
+          pushLine();
+        }
+      }
+
+      continue;
+    }
+
     const isWhitespace = token.type === 'text' && /^\s+$/u.test(token.value);
 
     if (isWhitespace && currentLine.length === 0) {
@@ -218,10 +250,7 @@ function wrapSegments(segments, ctx, fontSize, maxWidth) {
     }
 
     if (currentWidth + token.width > maxWidth && currentLine.length > 0) {
-      lines.push(currentLine);
-
-      currentLine = [];
-      currentWidth = 0;
+      pushLine();
 
       if (isWhitespace) {
         continue;
@@ -233,7 +262,7 @@ function wrapSegments(segments, ctx, fontSize, maxWidth) {
   }
 
   if (currentLine.length > 0) {
-    lines.push(currentLine);
+    pushLine();
   }
 
   return lines;
@@ -402,8 +431,6 @@ async function createQuote({ quoteNumber, avatarURL, quote, author = '' }) {
       y += authorFontSize * 1.2;
     }
   }
-
-  // Quote-Nummer aus MongoDB holen
 
   // Quote-Nummer unten rechts
   ctx.font = '14px Arial';

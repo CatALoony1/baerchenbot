@@ -52,8 +52,8 @@ module.exports = {
             await newCounter.save();
             quoteNumber = 1;
           } else {
-            quoteNumber = counter.counter;
             counter.counter += 1;
+            quoteNumber = counter.counter;
             await counter.save();
           }
           const image = await createQuote({
