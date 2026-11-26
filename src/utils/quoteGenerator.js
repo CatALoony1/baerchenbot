@@ -126,6 +126,7 @@ async function parseSegments(text) {
 /**
  * Erstellt einzelne Text- und Emoji-Tokens.
  */
+
 function createTokens(segments, ctx, fontSize) {
   const tokens = [];
 
@@ -141,14 +142,24 @@ function createTokens(segments, ctx, fontSize) {
       continue;
     }
 
-    const parts = segment.value.match(/\s+|[^\s]+/gu) || [];
+    // Explizite Zeilenumbrüche erkennen
+    const chunks = segment.value.split(/(\r\n|\r|\n)/);
 
-    for (const part of parts) {
-      tokens.push({
-        type: 'text',
-        value: part,
-        width: ctx.measureText(part).width,
-      });
+    for (const chunk of chunks) {
+      if (/^(\r\n|\r|\n)$/.test(chunk)) {
+        tokens.push({ type: 'break' });
+        continue;
+      }
+
+      const parts = chunk.match(/\s+|[^\s]+/gu) || [];
+
+      for (const part of parts) {
+        tokens.push({
+          type: 'text',
+          value: part,
+          width: ctx.measureText(part).width,
+        });
+      }
     }
   }
 
@@ -209,6 +220,7 @@ function wrapSegments(segments, ctx, fontSize, maxWidth) {
   const lines = [];
   let currentLine = [];
   let currentWidth = 0;
+  let lastWasBreak = false;
 
   function pushLine() {
     lines.push(currentLine);
@@ -217,31 +229,14 @@ function wrapSegments(segments, ctx, fontSize, maxWidth) {
   }
 
   for (const token of tokens) {
-    // Expliziter Zeilenumbruch
-    if (token.type === 'text' && /[\r\n]/.test(token.value)) {
-      // Text vor dem Umbruch übernehmen
-      const parts = token.value.split(/\r\n|\r|\n/);
-
-      for (let i = 0; i < parts.length; i++) {
-        if (parts[i]) {
-          const width = ctx.measureText(parts[i]).width;
-
-          currentLine.push({
-            type: 'text',
-            value: parts[i],
-            width,
-          });
-
-          currentWidth += width;
-        }
-
-        if (i < parts.length - 1) {
-          pushLine();
-        }
-      }
-
+    // Manueller Zeilenumbruch
+    if (token.type === 'break') {
+      pushLine();
+      lastWasBreak = true;
       continue;
     }
+
+    lastWasBreak = false;
 
     const isWhitespace = token.type === 'text' && /^\s+$/u.test(token.value);
 
@@ -249,6 +244,7 @@ function wrapSegments(segments, ctx, fontSize, maxWidth) {
       continue;
     }
 
+    // Automatischer Zeilenumbruch
     if (currentWidth + token.width > maxWidth && currentLine.length > 0) {
       pushLine();
 
@@ -261,7 +257,7 @@ function wrapSegments(segments, ctx, fontSize, maxWidth) {
     currentWidth += token.width;
   }
 
-  if (currentLine.length > 0) {
+  if (currentLine.length > 0 || lastWasBreak) {
     pushLine();
   }
 
