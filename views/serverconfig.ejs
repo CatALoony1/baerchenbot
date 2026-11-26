@@ -305,6 +305,62 @@
     </details>
     <hr>
     <details>
+      <summary>Geburtstagsnachricht konfigurieren</summary>
+      <form action="/serverconfig/message" method="POST">
+        <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+        <input type="hidden" name="messageType" value="BIRTH">
+        <input type="hidden" name="giphyId" id="birthGifId" value="<%= (gifTextList.get('BIRTH') && gifTextList.get('BIRTH').gif) ? gifTextList.get('BIRTH').gif : '' %>">
+        <p>Weitere Platzhalter [oldAge] [newAge] [birthDate]</p>
+        <h3>Geburtstagsnachricht-Titel:</h3>
+        <input type="text" id="birthHeader" name="header" required value="<%= gifTextList.get('BIRTH')?.header || '' %>" />
+        <br />
+        <h3>Geburtstagsnachricht-Beschreibung:</h3>
+        <textarea id="birthText" name="text" rows="5" cols="90"><% if (gifTextList.get("BIRTH")) { %><%= gifTextList.get("BIRTH").text %><% } %></textarea>
+        <br /><br /><br />
+
+        <div id="birthGifPreview">
+          <% if (gifTextList.get("BIRTH") && gifTextList.get("BIRTH").gif !== '') { %>
+          <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('BIRTH').gif %>/giphy.gif">
+          <% } %>
+        </div>
+
+        <button type="button" onclick="openGiphyModal('birthGifId', 'birthGifPreview')">
+          GIF auswählen / ändern
+        </button>
+        <button type="button" onclick="clearGif('birthGifId', 'birthGifPreview')">Gif entfernen</button>
+        <button type="submit">Speichern</button>
+      </form>
+    </details>
+    <hr>
+    <details>
+      <summary>Neujahrsnachricht konfigurieren</summary>
+      <form action="/serverconfig/message" method="POST">
+        <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+        <input type="hidden" name="messageType" value="YEAR">
+        <input type="hidden" name="giphyId" id="yearGifId" value="<%= (gifTextList.get('YEAR') && gifTextList.get('YEAR').gif) ? gifTextList.get('YEAR').gif : '' %>">
+        <p>Weitere Platzhalter [oldYear] [newYear]</p>
+        <h3>Neujahrsnachricht-Titel:</h3>
+        <input type="text" id="yearHeader" name="header" required value="<%= gifTextList.get('YEAR')?.header || '' %>" />
+        <br />
+        <h3>Neujahrsnachricht-Beschreibung:</h3>
+        <textarea id="yearText" name="text" rows="5" cols="90"><% if (gifTextList.get("YEAR")) { %><%= gifTextList.get("YEAR").text %><% } %></textarea>
+        <br /><br /><br />
+
+        <div id="yearGifPreview">
+          <% if (gifTextList.get("YEAR") && gifTextList.get("YEAR").gif !== '') { %>
+          <img class="selected-gif-preview" src="https://media.giphy.com/media/<%= gifTextList.get('YEAR').gif %>/giphy.gif">
+          <% } %>
+        </div>
+
+        <button type="button" onclick="openGiphyModal('yearGifId', 'yearGifPreview')">
+          GIF auswählen / ändern
+        </button>
+        <button type="button" onclick="clearGif('yearGifId', 'yearGifPreview')">Gif entfernen</button>
+        <button type="submit">Speichern</button>
+      </form>
+    </details>
+    <hr>
+    <details>
       <summary>Inaktivitätsprüfung konfigurieren</summary>
       <form action="/serverconfig/inactivity" method="POST">
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
