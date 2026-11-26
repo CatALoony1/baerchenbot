@@ -92,6 +92,18 @@ router.get('/', async (req, res) => {
             inactive.lurktime = Number(value);
           } else if (key == 'INACTIVE_DEL_TIME') {
             inactive.deletetime = Number(value);
+          } else if (kind === 'PING') {
+            if (type === 'BYE') {
+              pingselection.bye = value;
+            } else if (type === 'WELCOME') {
+              pingselection.welcome = value;
+            } else if (type === 'BOOST') {
+              pingselection.boost = value;
+            } else if (type === 'BUMP') {
+              pingselection.bump = value;
+            } else if (type === 'BIRTH') {
+              pingselection.birth = value;
+            }
           }
         }
       }
@@ -152,9 +164,16 @@ router.post('/change-member-role', async (req, res) => {
 
 router.post('/message', async (req, res) => {
   try {
-    const { giphyId, text, header, guildId, messageType } = req.body;
+    const { giphyId, text, header, ping, guildId, messageType } = req.body;
     console.log(`Adding message for guild ${guildId}: ${messageType}`);
-    await addToDb(giphyId, text.trim(), header.trim(), guildId, messageType);
+    await addToDb(
+      giphyId,
+      text.trim(),
+      header.trim(),
+      ping,
+      guildId,
+      messageType,
+    );
     const targetUrl = guildId
       ? `/serverconfig?serverId=${guildId}`
       : '/serverconfig';
@@ -253,7 +272,7 @@ router.post('/set-rule-secret', async (req, res) => {
   }
 });
 
-async function addToDb(giphyId, text, header, guildId, identifier) {
+async function addToDb(giphyId, text, header, ping, guildId, identifier) {
   const gifId = giphyId || '';
   const txt = text || '';
   const cfg = await Config.find({
@@ -263,6 +282,7 @@ async function addToDb(giphyId, text, header, guildId, identifier) {
   let txtAdded = false;
   let gifAdded = false;
   let headerAdded = false;
+  let pingAdded = false;
   if (cfg) {
     for (const conf of cfg) {
       if (conf.key === `${identifier}_TXT`) {
@@ -277,6 +297,10 @@ async function addToDb(giphyId, text, header, guildId, identifier) {
         conf.value = header;
         await conf.save();
         headerAdded = true;
+      } else if (conf.key === `${identifier}_PING`) {
+        conf.value = ping;
+        await conf.save();
+        pingAdded = true;
       }
     }
   }
@@ -303,6 +327,14 @@ async function addToDb(giphyId, text, header, guildId, identifier) {
       value: header,
     });
     await newHeaderCfg.save();
+  }
+  if (ping != '' && !pingAdded) {
+    const newPingCfg = new Config({
+      guildId: guildId,
+      key: `${identifier}_PING`,
+      value: ping,
+    });
+    await newPingCfg.save();
   }
   await refreshConfCache(guildId);
 }
