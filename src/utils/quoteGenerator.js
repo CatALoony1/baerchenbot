@@ -59,66 +59,107 @@ function decodeHtml(text) {
 /**
  * Extrahiert Text und farbige Emoji-Bilder.
  */
-async function parseSegments(text) {
-  // PNG statt SVG verwenden!
-  const html = twemoji.parse(String(text), {
-    folder: '72x72',
-    ext: '.png',
-  });
 
+async function parseSegments(text) {
+  const input = String(text);
   const segments = [];
-  const imageRegex = /<img\b[^>]*>/gi;
+
+  const customEmojiRegex = /<(a?):([a-zA-Z0-9_]+):(\d+)>/g;
+
+  async function addText(value) {
+    if (!value) return;
+
+    const html = twemoji.parse(value, {
+      folder: '72x72',
+      ext: '.png',
+    });
+
+    const imageRegex = /<img\b[^>]*>/gi;
+    let lastIndex = 0;
+    let match;
+
+    while ((match = imageRegex.exec(html)) !== null) {
+      const before = html.slice(lastIndex, match.index);
+
+      if (before) {
+        segments.push({
+          type: 'text',
+          value: decodeHtml(before),
+        });
+      }
+
+      const tag = match[0];
+      const srcMatch = tag.match(/\bsrc="([^"]+)"/i);
+      const altMatch = tag.match(/\balt="([^"]*)"/i);
+
+      if (srcMatch) {
+        const alt = altMatch ? decodeHtml(altMatch[1]) : '';
+
+        try {
+          const image = await loadEmoji(srcMatch[1]);
+
+          segments.push({
+            type: 'emoji',
+            value: alt,
+            image,
+          });
+        } catch {
+          segments.push({
+            type: 'text',
+            value: alt,
+          });
+        }
+      }
+
+      lastIndex = imageRegex.lastIndex;
+    }
+
+    const remaining = html.slice(lastIndex);
+
+    if (remaining) {
+      segments.push({
+        type: 'text',
+        value: decodeHtml(remaining),
+      });
+    }
+  }
 
   let lastIndex = 0;
   let match;
 
-  while ((match = imageRegex.exec(html)) !== null) {
-    const before = html.slice(lastIndex, match.index);
+  while ((match = customEmojiRegex.exec(input)) !== null) {
+    // Normalen Text und Unicode-Emojis verarbeiten
+    await addText(input.slice(lastIndex, match.index));
 
-    if (before) {
+    const animated = match[1] === 'a';
+    const emojiId = match[3];
+
+    const extension = animated ? 'gif' : 'png';
+
+    const url = `https://cdn.discordapp.com/emojis/${emojiId}.${extension}`;
+
+    try {
+      const image = await loadEmoji(url);
+
+      segments.push({
+        type: 'emoji',
+        value: match[2],
+        image,
+      });
+    } catch (error) {
+      console.error('Discord-Emote konnte nicht geladen werden:', url);
+
       segments.push({
         type: 'text',
-        value: decodeHtml(before),
+        value: match[0],
       });
     }
 
-    const tag = match[0];
-
-    const srcMatch = tag.match(/\bsrc="([^"]+)"/i);
-    const altMatch = tag.match(/\balt="([^"]*)"/i);
-
-    if (srcMatch) {
-      const alt = altMatch ? decodeHtml(altMatch[1]) : '';
-
-      try {
-        const image = await loadEmoji(srcMatch[1]);
-
-        segments.push({
-          type: 'emoji',
-          value: alt,
-          image,
-        });
-      } catch (error) {
-        // Falls das Bild nicht geladen werden kann,
-        // wird das Emoji als Text dargestellt.
-        segments.push({
-          type: 'text',
-          value: alt,
-        });
-      }
-    }
-
-    lastIndex = imageRegex.lastIndex;
+    lastIndex = customEmojiRegex.lastIndex;
   }
 
-  const remaining = html.slice(lastIndex);
-
-  if (remaining) {
-    segments.push({
-      type: 'text',
-      value: decodeHtml(remaining),
-    });
-  }
+  // Restlichen Text verarbeiten
+  await addText(input.slice(lastIndex));
 
   return segments;
 }
