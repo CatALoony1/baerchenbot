@@ -6,6 +6,7 @@ const {
 } = require('discord.js');
 const { serverConfCache } = require('../../utils/data/cache');
 const { createQuote } = require('../../utils/quoteGenerator');
+const QuoteCounter = require('../../models/QuoteCounter');
 /**
  *
  * @param {MessageReaction} reaction
@@ -39,7 +40,24 @@ module.exports = {
                 .get(fetchedReaction.message.guild.id)
                 .get('QUOTE_ID'),
             ));
+          const counter = await QuoteCounter.findOne({
+            guildId: fetchedReaction.message.guild.id,
+          });
+          let quoteNumber;
+          if (!counter) {
+            const newCounter = new QuoteCounter({
+              guildId: fetchedReaction.message.guild.id,
+              counter: 1,
+            });
+            await newCounter.save();
+            quoteNumber = 1;
+          } else {
+            quoteNumber = counter.counter;
+            counter.counter += 1;
+            await counter.save();
+          }
           const image = await createQuote({
+            quoteNumber: quoteNumber,
             avatarURL: fetchedReaction.message.author.displayAvatarURL({
               extension: 'png',
               size: 512,
