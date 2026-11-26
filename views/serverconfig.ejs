@@ -164,7 +164,7 @@
     <br />
     <p>Den Text am besten in Discord schreiben und hier per Copy&Paste einfügen, damit Pings funktionieren.</p>
     <br />
-    <p>Möchtest du den Nutzer pingen, welcher die Benachrichtigung ausgelöst hat, so setze bitte "-userping-" (ohne Anführungszeichen) an der gewünschten Stelle als Platzhalter ein. Dies wird Serverseitig durch den User ersetzt.</p>
+    <p>Möchtest du den Nutzer pingen, welcher die Benachrichtigung ausgelöst hat, so setze bitte [userPing] an der gewünschten Stelle als Platzhalter ein. Dies wird Serverseitig durch den User ersetzt.</p>
     <br />
     <img src="/images/embed_example.png" alt="Beispielbild" class="selected-gif-preview">
     <br />
@@ -174,7 +174,15 @@
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
         <input type="hidden" name="messageType" value="WELCOME">
         <input type="hidden" name="giphyId" id="welcomeGifId" value="<%= (gifTextList.get('WELCOME') && gifTextList.get('WELCOME').gif) ? gifTextList.get('WELCOME').gif : '' %>">
-
+        <h3>Rolle Pingen</h3>
+        <select name="ping">
+          <option value="" <%= !pingselection.welcome ? 'selected' : '' %>></option>
+          <% alleRollen.forEach(function(role) { %>
+          <option value="<%= role.id %>" <%= pingselection.welcome && role.id === pingselection.welcome ? 'selected' : '' %>>
+            <%= role.name %>
+          </option>
+          <% }); %>
+        </select>
         <h3>Willkommensnachricht-Titel:</h3>
         <input type="text" id="welcomeHeader" name="header" required value="<%= gifTextList.get('WELCOME')?.header || '' %>" />
         <br />
@@ -202,7 +210,15 @@
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
         <input type="hidden" name="messageType" value="BYE">
         <input type="hidden" name="giphyId" id="byeGifId" value="<%= (gifTextList.get('BYE') && gifTextList.get('BYE').gif) ? gifTextList.get('BYE').gif : '' %>">
-
+        <h3>Rolle Pingen</h3>
+        <select name="ping">
+          <option value="" <%= !pingselection.bye ? 'selected' : '' %>></option>
+          <% alleRollen.forEach(function(role) { %>
+          <option value="<%= role.id %>" <%= pingselection.bye && role.id === pingselection.bye ? 'selected' : '' %>>
+            <%= role.name %>
+          </option>
+          <% }); %>
+        </select>
         <h3>Verabschiedungsnachricht-Titel:</h3>
         <input type="text" id="byeHeader" name="header" required value="<%= gifTextList.get('BYE')?.header || '' %>" />
         <br />
@@ -230,6 +246,15 @@
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
         <input type="hidden" name="messageType" value="BOOST">
         <input type="hidden" name="giphyId" id="boostGifId" value="<%= (gifTextList.get('BOOST') && gifTextList.get('BOOST').gif) ? gifTextList.get('BOOST').gif : '' %>">
+        <h3>Rolle Pingen</h3>
+        <select name="ping">
+          <option value="" <%= !pingselection.boost ? 'selected' : '' %>></option>
+          <% alleRollen.forEach(function(role) { %>
+          <option value="<%= role.id %>" <%= pingselection.boost && role.id === pingselection.boost ? 'selected' : '' %>>
+            <%= role.name %>
+          </option>
+          <% }); %>
+        </select>
         <h3>Boostnachricht-Titel:</h3>
         <input type="text" id="boostHeader" name="header" required value="<%= gifTextList.get('BOOST')?.header || '' %>" />
         <br />
@@ -257,6 +282,15 @@
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
         <input type="hidden" name="messageType" value="BUMPREM">
         <input type="hidden" name="giphyId" id="bumpRemGifId" value="<%= (gifTextList.get('BUMPREM') && gifTextList.get('BUMPREM').gif) ? gifTextList.get('BUMPREM').gif : '' %>">
+        <h3>Rolle Pingen</h3>
+        <select name="ping">
+          <option value="" <%= !pingselection.bump ? 'selected' : '' %>></option>
+          <% alleRollen.forEach(function(role) { %>
+          <option value="<%= role.id %>" <%= pingselection.bump && role.id === pingselection.bump ? 'selected' : '' %>>
+            <%= role.name %>
+          </option>
+          <% }); %>
+        </select>
         <h3>Bump-Erinnerungs-Titel:</h3>
         <input type="text" id="bumpRemHeader" name="header" required value="<%= gifTextList.get('BUMPREM')?.header || '' %>" />
         <br />
@@ -283,6 +317,7 @@
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
         <input type="hidden" name="messageType" value="BUMPTHX">
         <input type="hidden" name="giphyId" id="bumpThxGifId" value="<%= (gifTextList.get('BUMPTHX') && gifTextList.get('BUMPTHX').gif) ? gifTextList.get('BUMPTHX').gif : '' %>">
+        <input type="hidden" name="ping" value="">
         <h3>Bump-Dankes-Titel:</h3>
         <input type="text" id="bumpThxHeader" name="header" required value="<%= gifTextList.get('BUMPTHX')?.header || '' %>" />
         <br />
@@ -310,6 +345,15 @@
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
         <input type="hidden" name="messageType" value="BIRTH">
         <input type="hidden" name="giphyId" id="birthGifId" value="<%= (gifTextList.get('BIRTH') && gifTextList.get('BIRTH').gif) ? gifTextList.get('BIRTH').gif : '' %>">
+        <h3>Rolle Pingen</h3>
+        <select name="ping">
+          <option value="" <%= !pingselection.birth ? 'selected' : '' %>></option>
+          <% alleRollen.forEach(function(role) { %>
+          <option value="<%= role.id %>" <%= pingselection.birth && role.id === pingselection.birth ? 'selected' : '' %>>
+            <%= role.name %>
+          </option>
+          <% }); %>
+        </select>
         <p>Weitere Platzhalter [oldAge] [newAge] [birthDate]</p>
         <h3>Geburtstagsnachricht-Titel:</h3>
         <input type="text" id="birthHeader" name="header" required value="<%= gifTextList.get('BIRTH')?.header || '' %>" />
@@ -338,6 +382,7 @@
         <input type="hidden" name="guildId" value="<%= selectedServerId %>">
         <input type="hidden" name="messageType" value="YEAR">
         <input type="hidden" name="giphyId" id="yearGifId" value="<%= (gifTextList.get('YEAR') && gifTextList.get('YEAR').gif) ? gifTextList.get('YEAR').gif : '' %>">
+        <input type="hidden" name="ping" value="">
         <p>Weitere Platzhalter [oldYear] [newYear]</p>
         <h3>Neujahrsnachricht-Titel:</h3>
         <input type="text" id="yearHeader" name="header" required value="<%= gifTextList.get('YEAR')?.header || '' %>" />

@@ -26,6 +26,13 @@ router.get('/', async (req, res) => {
     let defaultRole = [];
     let gifTextList = new Map();
     let ruleSecret = '';
+    let pingselection = {
+      welcome: undefined,
+      bye: undefined,
+      boost: undefined,
+      bump: undefined,
+      birth: undefined,
+    };
     const inactive = {
       inacton: false,
       inacttime: 0,
@@ -101,29 +108,11 @@ router.get('/', async (req, res) => {
       gifTextList: gifTextList,
       ruleSecret: ruleSecret,
       inactive: inactive,
+      pingselection: pingselection,
     });
   } catch (error) {
     console.log(error);
-    return res.render('serverconfig', {
-      guildIds: req.session.guildIds,
-      servers: null,
-      selectedServerId: null,
-      alleRollen: [],
-      defaultRole: '',
-      uses: idUses,
-      error: error.message,
-      giphyApiKey: process.env.GIPHY_API,
-      gifTextList: new Map(),
-      ruleSecret: '',
-      inactive: {
-        inacton: false,
-        inacttime: 0,
-        lurkon: false,
-        lurktime: 0,
-        deleteon: false,
-        deletetime: 0,
-      },
-    });
+    return res.render('serverconfig', getErrorReturn(req, error));
   }
 });
 
@@ -157,26 +146,7 @@ router.post('/change-member-role', async (req, res) => {
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
-    return res.render('serverconfig', {
-      guildIds: req.session.guildIds,
-      servers: null,
-      selectedServerId: null,
-      alleRollen: [],
-      defaultRole: '',
-      uses: idUses,
-      error: error.message,
-      giphyApiKey: process.env.GIPHY_API,
-      gifTextList: new Map(),
-      ruleSecret: '',
-      inactive: {
-        inacton: false,
-        inacttime: 0,
-        lurkon: false,
-        lurktime: 0,
-        deleteon: false,
-        deletetime: 0,
-      },
-    });
+    return res.render('serverconfig', getErrorReturn(req, error));
   }
 });
 
@@ -191,26 +161,7 @@ router.post('/message', async (req, res) => {
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
-    return res.render('serverconfig', {
-      guildIds: req.session.guildIds,
-      servers: null,
-      selectedServerId: null,
-      alleRollen: [],
-      defaultRole: '',
-      uses: idUses,
-      error: error.message,
-      giphyApiKey: process.env.GIPHY_API,
-      gifTextList: new Map(),
-      ruleSecret: '',
-      inactive: {
-        inacton: false,
-        inacttime: 0,
-        lurkon: false,
-        lurktime: 0,
-        deleteon: false,
-        deletetime: 0,
-      },
-    });
+    return res.render('serverconfig', getErrorReturn(req, error));
   }
 });
 
@@ -257,26 +208,7 @@ router.post('/inactivity', async (req, res) => {
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
-    return res.render('serverconfig', {
-      guildIds: req.session.guildIds,
-      servers: null,
-      selectedServerId: null,
-      alleRollen: [],
-      defaultRole: '',
-      uses: idUses,
-      error: error.message,
-      giphyApiKey: process.env.GIPHY_API,
-      gifTextList: new Map(),
-      ruleSecret: '',
-      inactive: {
-        inacton: false,
-        inacttime: 0,
-        lurkon: false,
-        lurktime: 0,
-        deleteon: false,
-        deletetime: 0,
-      },
-    });
+    return res.render('serverconfig', getErrorReturn(req, error));
   }
 });
 
@@ -317,26 +249,7 @@ router.post('/set-rule-secret', async (req, res) => {
     return res.redirect(targetUrl);
   } catch (error) {
     console.log(error);
-    return res.render('serverconfig', {
-      guildIds: req.session.guildIds,
-      servers: null,
-      selectedServerId: null,
-      alleRollen: [],
-      defaultRole: '',
-      uses: idUses,
-      error: error.message,
-      giphyApiKey: process.env.GIPHY_API,
-      gifTextList: new Map(),
-      ruleSecret: '',
-      inactive: {
-        inacton: false,
-        inacttime: 0,
-        lurkon: false,
-        lurktime: 0,
-        deleteon: false,
-        deletetime: 0,
-      },
-    });
+    return res.render('serverconfig', getErrorReturn(req, error));
   }
 });
 
@@ -415,5 +328,35 @@ function addToList(identifier, content, map, kind) {
     }
   }
   return map;
+}
+
+function getErrorReturn(req, error) {
+  return {
+    guildIds: req.session.guildIds,
+    servers: null,
+    selectedServerId: null,
+    alleRollen: [],
+    defaultRole: '',
+    uses: idUses,
+    error: error.message,
+    giphyApiKey: process.env.GIPHY_API,
+    gifTextList: new Map(),
+    ruleSecret: '',
+    inactive: {
+      inacton: false,
+      inacttime: 0,
+      lurkon: false,
+      lurktime: 0,
+      deleteon: false,
+      deletetime: 0,
+    },
+    pingselection: {
+      welcome: undefined,
+      bye: undefined,
+      boost: undefined,
+      bump: undefined,
+      birth: undefined,
+    },
+  };
 }
 module.exports = router;
