@@ -167,10 +167,12 @@ function startJob(client) {
                 guildId: guildId,
                 userId: playerTags.get(key),
               });
-              await QuizStats.deleteOne({
-                guildId: guildId,
-                userId: playerTags.get(key),
-              });
+              if (quizUserIds.includes(playerTags.get(key).userId)) {
+                await QuizStats.deleteOne({
+                  guildId: guildId,
+                  userId: playerTags.get(key),
+                });
+              }
               const tempvorst = await Vorstellung.findOne({
                 guildId: guildId,
                 userId: playerTags.get(key),
