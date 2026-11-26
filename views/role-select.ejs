@@ -93,11 +93,6 @@
           <label for="selMulti">Dürfen mehrere Rollen zugewiesen werden?</label>
           <input type="checkbox" id="selMulti" name="selMulti" />
           <br />
-          <input type="radio" id="addRadioOld" name="addRadio" value="old" checked>
-          <label for="addRadioNew">Bestehende Rollen wählen:</label>
-          <input type="radio" id="addRadioNew" name="addRadio" value="new">
-          <label for="addRadioNew">Neue Rollen erstellen:</label>
-          <br />
           <div id="roleSelAdd">
             <% rollen.forEach(function(role) { %>
             <br />
@@ -149,32 +144,6 @@
     const updateSelMulti = document.getElementById('update-selMulti');
     const updateCheckboxes = document.querySelectorAll('.rl-sel-ckbx');
     const updateButtons = document.querySelectorAll('.rol-sel-upd-btn');
-    const roleSelAddDiv = document.getElementById('roleSelAdd');
-    const addRadioOld = document.getElementById('addRadioOld');
-    const addRadioNew = document.getElementById('addRadioNew');
-    addRadioOld.addEventListener('change', updateRoleSelAddContent);
-    addRadioNew.addEventListener('change', updateRoleSelAddContent);
-
-    function updateRoleSelAddContent() {
-      if (addRadioOld.checked) {
-        roleSelAddDiv.innerHTML = `
-        <% rollen.forEach(function(role) { %>
-            <br />
-            <input id="role-<%= role.id %>" type="checkbox" name="roles" class="rl-sel-ckbx" value="<%= role.id %>">
-            <label for="role-<%= role.id %>"><%= role.name %></label>
-            <% }); %>
-            <br />
-      `;
-      } else if (addRadioNew.checked) {
-        roleSelAddDiv.innerHTML = `
-        <br />
-        <label for="newRoleNames">Neue Rollen:</label>
-        <textarea id="newRoleNames" name="newRoleNames" rows="4" cols="50" required/>
-        <br />
-      `;
-      }
-    }
-
 
     function validateForm() {
       const inputValue = selName.value.trim().toLowerCase();
