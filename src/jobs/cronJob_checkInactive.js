@@ -4,7 +4,8 @@ const cron = require('node-cron');
 const Level = require('../models/Level');
 const Config = require('../models/Config');
 const QuizStats = require('../models/QuizStats');
-const GameUser = require('../models/GameUser.js');
+const GameUser = require('../models/GameUser');
+const Vorstellung = require('../models/Vorstellung');
 
 let checkInactiveJob = null;
 
@@ -144,6 +145,16 @@ function startJob(client) {
             quizUserIds[quizUserIds.length] = stat.userId;
           }
           if (confCache.get(guild.id).get('INACTIVE_DELETE_ON') === 'J') {
+            let tempchannel = null;
+            if (serverConfCache.get(guildId).get('VORSTELLUNG_ID')) {
+              tempchannel =
+                guild.channels.cache.get(
+                  serverConfCache.get(guild.id).get('VORSTELLUNG_ID'),
+                ) ||
+                (await guild.channels.fetch(
+                  serverConfCache.get(guild.id).get('VORSTELLUNG_ID'),
+                ));
+            }
             for (const key of playerTags.keys()) {
               console.log(
                 `User ${key} hasn't send a message in at least 30 Days.`,
@@ -156,11 +167,24 @@ function startJob(client) {
                 guildId: guildId,
                 userId: playerTags.get(key),
               });
-              if (quizUserIds.includes(playerTags.get(key).userId)) {
-                await QuizStats.deleteOne({
-                  guildId: guildId,
-                  userId: playerTags.get(key),
-                });
+              await QuizStats.deleteOne({
+                guildId: guildId,
+                userId: playerTags.get(key),
+              });
+              const tempvorst = await Vorstellung.findOne({
+                guildId: guildId,
+                userId: playerTags.get(key),
+              });
+              if (tempvorst) {
+                if (tempchannel) {
+                  const targetmessage = tempchannel.messages.fetch(
+                    tempvorst.messageId,
+                  );
+                  if (targetmessage) {
+                    await targetmessage.delete();
+                  }
+                }
+                await tempvorst.deleteOne();
               }
             }
           }
