@@ -418,5 +418,4 @@ async function createQuote({ quoteNumber, avatarURL, quote, author = '' }) {
 
 module.exports = {
   createQuote,
-  getNextQuoteNumber,
 };
