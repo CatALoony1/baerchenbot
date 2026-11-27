@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { serverConfCache } = require('../../utils/data/cache');
 module.exports = {
   once: true,
 
@@ -6,24 +7,36 @@ module.exports = {
     console.log(`Logged in as ${client.user.tag}!`);
     try {
       let targetUser = undefined;
-      let targetChannel = undefined;
+      let targetChannels = [];
+      let counter = -1;
       const guilds = await client.guilds.cache;
       let message = `Bot ist gestartet.\nDer Bot ist laut API auf ${guilds.size} Server(n):\n`;
-      await guilds.forEach(async (guild) => {
+      guilds.forEach((guild) => {
         if (!targetUser) {
-          targetUser = await guild.members.fetch(process.env.ADMIN_ID);
+          targetUser = guild.members.cache.get(process.env.ADMIN_ID);
         }
-        if (!targetChannel) {
-          targetChannel =
-            guild.channels.cache.get('1527947035804696678') ||
-            (await guild.channels.fetch('1527947035804696678'));
+        if (
+          targetChannels.length != counter &&
+          serverConfCache.get(guild.id) &&
+          serverConfCache.get(guild.id).get('LOG_ID')
+        ) {
+          targetChannels.push(
+            guild.channels.cache.get(
+              serverConfCache.get(guild.id).get('LOG_ID'),
+            ),
+          );
+          if (counter == -1) {
+            counter = 1;
+          } else {
+            counter++;
+          }
         }
         message = `${message}- ${guild.name} (ID: ${guild.id})`;
       });
       if (targetUser) {
         await targetUser.send(message);
       }
-      if (targetChannel) {
+      for (const targetChannel of targetChannels) {
         await targetChannel.send(message);
       }
     } catch (error) {
