@@ -6,8 +6,6 @@ const gameUserSchema = new Schema(
     userId: {
       type: String,
       required: true,
-      unique: true,
-      index: true,
     },
     guildId: {
       type: String,
@@ -30,6 +28,8 @@ const gameUserSchema = new Schema(
     toObject: { virtuals: true },
   },
 );
+
+gameUserSchema.index({ userId: 1, guildId: 1 }, { unique: true });
 
 gameUserSchema.virtual('bankkonto', {
   ref: 'Bankkonten',

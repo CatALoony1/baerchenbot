@@ -405,6 +405,7 @@ async function useItemTier(interaction) {
     const tierart = interaction.values[0];
     const user = await GameUser.findOne({
       userId: interaction.user.id,
+      guildId: interaction.guild.id,
     }).populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },
@@ -514,11 +515,15 @@ async function useItemTier(interaction) {
     }
     const user = await GameUser.findOne({
       userId: interaction.user.id,
+      guildId: interaction.guild.id,
     }).populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },
     });
-    const targetUser = await GameUser.findOne({ userId: targetUserId });
+    const targetUser = await GameUser.findOne({
+      userId: targetUserId,
+      guildId: interaction.guild.id,
+    });
     const randomTierOhneBesitzer = await getRandomTier(tierart);
     if (randomTierOhneBesitzer.length === 0) {
       await interaction.update({
@@ -643,9 +648,13 @@ async function getRandomTier(tierartName) {
 
 async function useItemFarbrolle(interaction) {
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-  const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
-    { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-  );
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  }).populate({
+    path: 'inventar',
+    populate: { path: 'items.item', model: 'Items' },
+  });
   const itemId = user.inventar.items.findIndex(
     (item) => item.item.name === 'Farbrolle',
   );
@@ -689,9 +698,13 @@ async function useItemFarbrolle(interaction) {
 
 async function useItemVoiceChannel(interaction, client) {
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-  const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
-    { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-  );
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  }).populate({
+    path: 'inventar',
+    populate: { path: 'items.item', model: 'Items' },
+  });
   const itemId = user.inventar.items.findIndex(
     (item) => item.item.name === 'Voicechannel',
   );
@@ -753,9 +766,13 @@ async function useItemVoiceChannel(interaction, client) {
 
 async function useItemRolleNamensliste(interaction) {
   await interaction.deferReply({ flags: MessageFlags.Ephemeral });
-  const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
-    { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-  );
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  }).populate({
+    path: 'inventar',
+    populate: { path: 'items.item', model: 'Items' },
+  });
   const itemId = user.inventar.items.findIndex(
     (item) => item.item.name === 'Rolle (Namensliste)',
   );
@@ -797,9 +814,13 @@ async function useItemRolleNamensliste(interaction) {
 }
 
 async function useItemDoppelteXp(interaction) {
-  const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
-    { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-  );
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  }).populate({
+    path: 'inventar',
+    populate: { path: 'items.item', model: 'Items' },
+  });
   const itemId = user.inventar.items.findIndex(
     (item) => item.item.name === 'Doppelte XP',
   );
@@ -894,9 +915,13 @@ async function useItemObersterPlatz(interaction) {
     });
     return;
   }
-  const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
-    { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-  );
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  }).populate({
+    path: 'inventar',
+    populate: { path: 'items.item', model: 'Items' },
+  });
   const itemId = user.inventar.items.findIndex(
     (item) => item.item.name === 'Oberster Platz',
   );
@@ -943,7 +968,10 @@ async function useItemObersterPlatz(interaction) {
 }
 
 async function useItemBankkontoUpgrade(interaction) {
-  const user = await GameUser.findOne({ userId: interaction.user.id })
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  })
     .populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },
@@ -981,7 +1009,10 @@ function getRandom(min, max) {
 }
 
 async function useItemUmarmung(interaction) {
-  const user = await GameUser.findOne({ userId: interaction.user.id })
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  })
     .populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },
@@ -1024,7 +1055,10 @@ async function useItemUmarmung(interaction) {
 }
 
 async function useItemKuss(interaction) {
-  const user = await GameUser.findOne({ userId: interaction.user.id })
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  })
     .populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },
@@ -1095,6 +1129,7 @@ async function useItemBombe(interaction) {
     const targetUserId = interaction.customId.split('_')[4];
     const user = await GameUser.findOne({
       userId: interaction.user.id,
+      guildId: interaction.guild.id,
     }).populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },
@@ -1266,9 +1301,13 @@ async function useItemBlattläuseKlauBanane(interaction) {
     });
     return;
   }
-  const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
-    { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-  );
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  }).populate({
+    path: 'inventar',
+    populate: { path: 'items.item', model: 'Items' },
+  });
   const itemId = user.inventar.items.findIndex(
     (item) => item.item.name === 'Klau-Banane',
   );
@@ -1304,9 +1343,13 @@ async function useItemBlattläuseKlauBanane(interaction) {
 
 async function useItemSchuldschein(interaction) {
   const targetUserId = interaction.values[0];
-  const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
-    { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-  );
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  }).populate({
+    path: 'inventar',
+    populate: { path: 'items.item', model: 'Items' },
+  });
   const itemId = user.inventar.items.findIndex(
     (item) => item.item.name === 'Schuldschein',
   );
@@ -1366,6 +1409,7 @@ async function useItemKeks(interaction) {
     if (selectedAction == 'essen') {
       const user = await GameUser.findOne({
         userId: interaction.user.id,
+        guildId: interaction.guild.id,
       }).populate({
         path: 'inventar',
         populate: { path: 'items.item', model: 'Items' },
@@ -1421,6 +1465,7 @@ async function useItemKeks(interaction) {
     const targetUserId = interaction.values[0];
     const user = await GameUser.findOne({
       userId: interaction.user.id,
+      guildId: interaction.guild.id,
     }).populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },
@@ -1472,9 +1517,13 @@ async function useItemKeks(interaction) {
       });
       return;
     }
-    const otheruser = await GameUser.findOne({ userId: targetUserId }).populate(
-      { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-    );
+    const otheruser = await GameUser.findOne({
+      userId: targetUserId,
+      guildId: interaction.guild.id,
+    }).populate({
+      path: 'inventar',
+      populate: { path: 'items.item', model: 'Items' },
+    });
     if (!otheruser || !otheruser.inventar) {
       await interaction.update({
         content:
@@ -1486,6 +1535,7 @@ async function useItemKeks(interaction) {
     }
     const user = await GameUser.findOne({
       userId: interaction.user.id,
+      guildId: interaction.guild.id,
     }).populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },
@@ -1534,6 +1584,7 @@ async function useItemKeks(interaction) {
     const amount = parseInt(interaction.values[0]);
     const user = await GameUser.findOne({
       userId: interaction.user.id,
+      guildId: interaction.guild.id,
     }).populate({
       path: 'inventar',
       populate: { path: 'items.item', model: 'Items' },

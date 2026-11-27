@@ -51,7 +51,10 @@ async function handleShop(interaction) {
 
 async function handleUseItem(interaction) {
   const targetUserObj = interaction.member;
-  const user = await GameUser.findOne({ userId: targetUserObj.id }).populate({
+  const user = await GameUser.findOne({
+    userId: targetUserObj.id,
+    guildId: interaction.guild.id,
+  }).populate({
     path: 'inventar',
     populate: { path: 'items.item', model: 'Items' },
   });
@@ -233,9 +236,13 @@ async function handleOwnAnimals(interaction) {
 }
 
 async function handleKeksEssen(interaction) {
-  const user = await GameUser.findOne({ userId: interaction.user.id }).populate(
-    { path: 'inventar', populate: { path: 'items.item', model: 'Items' } },
-  );
+  const user = await GameUser.findOne({
+    userId: interaction.user.id,
+    guildId: interaction.guild.id,
+  }).populate({
+    path: 'inventar',
+    populate: { path: 'items.item', model: 'Items' },
+  });
   const itemId = user.inventar.items.findIndex(
     (item) => item.item.name === 'Keks',
   );

@@ -66,7 +66,10 @@ async function shopButtons(interaction) {
           .replaceAll('.', ''),
       );
       console.log(`Item: ${itemName}, Price: ${price}`);
-      const user = await GameUser.findOne({ userId: interaction.user.id })
+      const user = await GameUser.findOne({
+        userId: interaction.user.id,
+        guildId: interaction.guild.id,
+      })
         .populate('bankkonto')
         .populate({
           path: 'inventar',
