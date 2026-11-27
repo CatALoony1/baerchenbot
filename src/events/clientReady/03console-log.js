@@ -8,47 +8,34 @@ module.exports = {
     try {
       let targetUser = undefined;
       let targetChannels = [];
-      let counter = -1;
       const guilds = await client.guilds.cache;
       let message = `Bot ist gestartet.\nDer Bot ist laut API auf ${guilds.size} Server(n):\n`;
       await guilds.forEach(async (guild) => {
         if (!targetUser) {
           targetUser = guild.members.cache.get(process.env.ADMIN_ID);
         }
-        console.log(targetChannels.length != counter);
-
-        if (targetChannels.length != counter) {
-          const config = await waitForDefined(
-            () => serverConfCache.get(guild.id),
-            {
-              timeoutMs: 4000,
-              intervalMs: 50,
-            },
-          );
-          console.log(serverConfCache.get(guild.id));
-          console.log(config);
-          const logId = await waitForDefined(() => config.get('LOG_ID'), {
+        const config = await waitForDefined(
+          () => serverConfCache.get(guild.id),
+          {
             timeoutMs: 4000,
             intervalMs: 50,
-          });
-          console.log(logId);
-          if (logId) {
-            console.log(
-              guild.channels.cache.get(
-                serverConfCache.get(guild.id).get('LOG_ID'),
-              ),
-            );
-            targetChannels.push(
-              guild.channels.cache.get(
-                serverConfCache.get(guild.id).get('LOG_ID'),
-              ),
-            );
-            if (counter == -1) {
-              counter = 1;
-            } else {
-              counter++;
-            }
-          }
+          },
+        );
+        const logId = await waitForDefined(() => config.get('LOG_ID'), {
+          timeoutMs: 4000,
+          intervalMs: 50,
+        });
+        if (logId) {
+          console.log(
+            guild.channels.cache.get(
+              serverConfCache.get(guild.id).get('LOG_ID'),
+            ),
+          );
+          targetChannels.push(
+            guild.channels.cache.get(
+              serverConfCache.get(guild.id).get('LOG_ID'),
+            ),
+          );
         }
         message = `${message}- ${guild.name} (ID: ${guild.id})\n`;
       });
