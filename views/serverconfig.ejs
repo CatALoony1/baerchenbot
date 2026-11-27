@@ -160,6 +160,13 @@
       <button type="submit">Speichern</button>
     </form>
     <br />
+    <form action="/serverconfig/webhook-url" method="POST">
+      <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+      <label for="webhookUrl">Webhook-URL:</label>
+      <input type="text" id="webhookUrl" name="webhookUrl" required value="<%= webhookUrl || '' %>" />
+      <button type="submit">Speichern</button>
+    </form>
+    <br />
     <hr />
     <br />
     <p>Den Text am besten in Discord schreiben und hier per Copy&Paste einfügen, damit Pings funktionieren.</p>
