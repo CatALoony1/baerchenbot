@@ -148,6 +148,29 @@
             </form>
           </td>
         </tr>
+        <tr>
+          <td><%= uses.MIESMUSCHEL_ROLE_ID %></td>
+          <td>MIESMUSCHEL_ROLE_ID</td>
+          <td>
+            <form action="/serverconfig/change-member-role" method="POST">
+              <input type="hidden" name="guildId" value="<%= selectedServerId %>">
+              <input type="hidden" name="variableName" value="MIESMUSCHEL_ROLE_ID">
+              <select name="newMemberRole" onchange="this.form.submit()">
+                <% const hasSelectedValueAnotherVier = typeof defaultRole !== 'undefined' && defaultRole && defaultRole[4]; %>
+
+                <option value="" disabled <%= !hasSelectedValueAnotherVier ? 'selected' : '' %> hidden>
+                  -- Bitte Rolle auswählen --
+                </option>
+
+                <% alleRollen.forEach(function(role) { %>
+                <option value="<%= role.id %>" <%= hasSelectedValueAnotherVier && role.id === defaultRole[4] ? 'selected' : '' %>>
+                  <%= role.name %>
+                </option>
+                <% }); %>
+              </select>
+            </form>
+          </td>
+        </tr>
       </tbody>
     </table>
     <% } %>

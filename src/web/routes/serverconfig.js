@@ -70,6 +70,8 @@ router.get('/', async (req, res) => {
             defaultRole[2] = confi.objectId;
           } else if (confi.variableName == 'BOOSTER_ROLE_ID') {
             defaultRole[3] = confi.objectId;
+          } else if (confi.variableName == 'MIESMUSCHEL_ROLE_ID') {
+            defaultRole[4] = confi.objectId;
           }
         }
         const cfg = await Config.find({
