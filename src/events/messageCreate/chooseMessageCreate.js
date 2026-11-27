@@ -12,7 +12,7 @@ module.exports = {
       return;
     }
     let gueltig = true;
-    if (message.author.id === 'TODOJG_BUMP_MENTION') {
+    if (message.author.bot && message.author.tag.includes('DISBOARD')) {
       await bumpDone(message);
     } else if (!message.author.bot) {
       if (
