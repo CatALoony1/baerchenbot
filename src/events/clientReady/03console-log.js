@@ -16,7 +16,7 @@ module.exports = {
           targetUser = guild.members.cache.get(process.env.ADMIN_ID);
         }
         console.log(targetChannels.length != counter);
-        console.log(serverConfCache.get(guild.id).get('LOG_ID'));
+        console.log(serverConfCache.get(guild.id));
         if (
           targetChannels.length != counter &&
           serverConfCache.get(guild.id) &&
@@ -38,7 +38,7 @@ module.exports = {
             counter++;
           }
         }
-        message = `${message}- ${guild.name} (ID: ${guild.id})`;
+        message = `${message}- ${guild.name} (ID: ${guild.id})\n`;
       });
       if (targetUser) {
         await targetUser.send(message);
