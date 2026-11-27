@@ -144,10 +144,6 @@ module.exports = {
       name: 'Geburtstag:',
       value: `${fetchedLevel.geburtstag}`,
     });
-    messageEdited.addFields({
-      name: 'Levelbarfarbe:',
-      value: `${fetchedLevel.color}`,
-    });
 
     interaction.editReply({ embeds: [messageEdited] });
   },

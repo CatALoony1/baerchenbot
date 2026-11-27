@@ -17,10 +17,6 @@ const levelSchema = new Schema({
     type: Number,
     default: 0,
   },
-  color: {
-    type: String,
-    default: '#e824b3',
-  },
   allxp: {
     type: Number,
     default: 0,
