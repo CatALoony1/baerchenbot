@@ -102,12 +102,6 @@ module.exports = {
         .setDisplayName(targetUserObj.user.displayName)
         .setOverlay(80)
         .setBackground('./img/banner.png')
-        .setBackgroundCrop({
-          x: 0,
-          y: 250,
-          width: 1915,
-          height: 578,
-        })
         //.setBackground('#7DC9D1')
         .setFonts(canvacord.Font.loadDefault())
         .setStyles({
