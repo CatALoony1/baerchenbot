@@ -57,7 +57,7 @@ const answers = new Map([
  * @returns
  */
 async function botMention(message) {
-  console.log(`Bot Mentioned`);
+  console.log(`Miesmuschel was mentioned`);
   const number = getRandom(1, answers.size);
 
   const response = await fetch(
