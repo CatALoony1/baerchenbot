@@ -21,6 +21,7 @@ const channelTypeMapping = {
   regeln: 'REGELN_ID',
   quote: 'QUOTE_ID',
   welcome: 'WELCOME_ID',
+  miesmuschel: 'MIESMUSCHEL_ID',
 };
 router.get('/', async (req, res) => {
   try {

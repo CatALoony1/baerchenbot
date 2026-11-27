@@ -24,6 +24,8 @@ const idUses = {
   REGELN_ID: 'Channel in welchem die Regeln des Servers stehen.',
   QUOTE_ID: 'Channel in welchem Zitate von Usern gepostet werden können.',
   WELCOME_ID: 'Channel in dem die Willkommensnachricht geschickt wird.',
+  MIESMUSCHEL_ID:
+    'Channel in dem der magischen Miesmuschel Fragen gestellt werden können.',
 };
 
 module.exports = idUses;
