@@ -15,8 +15,8 @@ module.exports = {
         if (!targetUser) {
           targetUser = guild.members.cache.get(process.env.ADMIN_ID);
         }
-        console.log(targetChannels.length);
-        console.log(counter);
+        console.log(targetChannels.length != counter);
+        console.log(serverConfCache.get(guild.id).get('LOG_ID'));
         if (
           targetChannels.length != counter &&
           serverConfCache.get(guild.id) &&
