@@ -108,7 +108,7 @@ module.exports = {
           progressbar: {
             thumb: {
               style: {
-                backgroundColor: '#9B6B43',
+                backgroundColor: '#F6C1A2',
               },
             },
           },
