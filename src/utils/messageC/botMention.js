@@ -1,5 +1,6 @@
 const { Message } = require('discord.js');
 const getGifById = require('../getGifById');
+require('dotenv').config();
 
 function getRandom(min, max) {
   min = Math.ceil(min);
@@ -58,48 +59,31 @@ const answers = new Map([
 async function botMention(message) {
   console.log(`Bot Mentioned`);
   const number = getRandom(1, answers.size);
-  const delay = 2000;
-  if (number == 22) {
-    let sleep = async (ms) => await new Promise((r) => setTimeout(r, ms));
-    let newMessage = await message.reply(answers.get(number));
-    newMessage = await newMessage.reply(`Self destruction initialized!`);
-    await sleep(delay);
-    newMessage = await newMessage.reply(`3`);
-    await sleep(delay);
-    newMessage = await newMessage.reply(`2`);
-    await sleep(delay);
-    newMessage = await newMessage.reply(`1`);
-    await sleep(delay);
-    const boom = getRandom(1, 4);
-    if (boom == 1) {
-      newMessage = await newMessage.reply(`BOOM💥`);
-      if (getRandom(1, 5) == 5) {
-        await sleep(delay);
-        newMessage = await newMessage.reply(`Evil Bot starting up...`);
-        await sleep(delay);
-        const gifUrl = await getGifById('ckJF143W1gBS8Hk833');
-        if (!gifUrl.includes('http')) {
-          console.log('ERROR Evil gif');
-          return;
-        }
-        await newMessage.reply(gifUrl);
-      }
-    } else if (boom == 2) {
-      await newMessage.reply(`Self destruction canceled, you are safe!`);
-    } else if (boom == 3) {
-      const gifUrl = await getGifById('Ust7qbx5r3IcUuVPoc');
-      if (!gifUrl.includes('http')) {
-        console.log('ERROR Element of Surprise gif');
-        return;
-      }
-      await newMessage.reply(gifUrl);
-    }
-  } else if (number >= 44 && number <= 49) {
-    const image = answers.get(number);
-    await message.reply({ files: [image] });
-  } else {
-    await message.reply(answers.get(number));
-  }
+
+  const response = await fetch(
+    `https://discord.com/api/v10/channels/${message.channel.id}/messages`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bot ${process.env.MIESMUSCHEL_ID}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: answers.get(number),
+        message_reference: {
+          message_id: message.id,
+          channel_id: message.channel.id,
+          guild_id: message.guild.id,
+        },
+        allowed_mentions: {
+          replied_user: true,
+        },
+      }),
+    },
+  );
+  console.log(
+    `Bot Mention Response: ${response.status} ${response.statusText}`,
+  );
 }
 
 module.exports = botMention;

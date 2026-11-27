@@ -48,6 +48,8 @@ jobs:
             CLIENT_ID=${{ secrets.DEV_CLIENT_ID }}
             ADMIN_ID=${{ secrets.ADMIN_ID }}
             DEV_PORT=${{ secrets.DEV_PORT }}
+            MIESMUSCHEL_ID=${{ secrets.MIESMUSCHEL_ID }}
+            MIESMUSCHEL_CLIENT_ID=${{ secrets.MIESMUSCHEL_CLIENT_ID }}
             EOF
 
             # 4. Docker-Image bauen

@@ -3,8 +3,9 @@ const botMention = require('../../utils/messageC/botMention');
 const bumpDone = require('../../utils/messageC/bumpDone');
 const giveUserXp = require('../../utils/messageC/giveUserXp');
 const hangman = require('../../utils/messageC/hangman');
-const { serverConfCache } = require('../../utils/data/cache');
+const { serverConfCache, confCache } = require('../../utils/data/cache');
 const vorstellungcheck = require('../../utils/messageC/vorstellungcheck.js');
+require('dotenv').config();
 
 module.exports = {
   run: async (message, client) => {
@@ -25,8 +26,13 @@ module.exports = {
       } else if (message.content.includes('TODOJG_KI_MENTION')) {
         await aiMention(message);
       } else if (
-        message.content.includes(client.user.id) &&
-        message.content.includes('?')
+        serverConfCache.get(message.guild.id) &&
+        serverConfCache.get(message.guild.id).get('MIESMUSCHEL_ID') &&
+        message.channel.id ===
+          serverConfCache.get(message.guild.id).get('MIESMUSCHEL_ID') &&
+        process.env.MIESMUSCHEL_ID &&
+        process.env.MIESMUSCHEL_CLIENT_ID &&
+        message.content.includes(`<@${process.env.MIESMUSCHEL_CLIENT_ID}>`)
       ) {
         await botMention(message);
       } else if (

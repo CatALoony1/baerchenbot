@@ -18,6 +18,8 @@ const idUses = {
   MIDMEMBER_ROLE_ID:
     'Rolle für langzeit Mitglieder um weitere rechte freizuschalten.',
   BOOSTER_ROLE_ID: 'Rolle für Server Booster.',
+  MIESMUSCHEL_ROLE_ID:
+    'Rolle für die magische Miesmuschel, welche Fragen beantworten kann.',
   SELFROLES_ID:
     'Channel in welchem die Selfrole Auswahl-Menüs geschickt werden.',
   VORSTELLUNG_ID: 'Channel in welchem sich neue Mitglieder vorstellen können.',
