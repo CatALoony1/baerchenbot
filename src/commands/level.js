@@ -112,6 +112,10 @@ module.exports = {
               },
             },
           },
+          root: {
+            width: '800px',
+            height: '450px',
+          },
         });
       const data = await rank.build();
       const attachment = new AttachmentBuilder(data);
