@@ -105,8 +105,8 @@ module.exports = {
         .setBackgroundCrop({
           x: 0,
           y: 250,
-          width: 1920,
-          height: 580,
+          width: 1915,
+          height: 578,
         })
         //.setBackground('#7DC9D1')
         .setFonts(canvacord.Font.loadDefault())
