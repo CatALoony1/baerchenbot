@@ -11,31 +11,43 @@ module.exports = {
       let counter = -1;
       const guilds = await client.guilds.cache;
       let message = `Bot ist gestartet.\nDer Bot ist laut API auf ${guilds.size} Server(n):\n`;
-      guilds.forEach((guild) => {
+      await guilds.forEach(async (guild) => {
         if (!targetUser) {
           targetUser = guild.members.cache.get(process.env.ADMIN_ID);
         }
         console.log(targetChannels.length != counter);
-        console.log(serverConfCache.get(guild.id));
-        if (
-          targetChannels.length != counter &&
-          serverConfCache.get(guild.id) &&
-          serverConfCache.get(guild.id).get('LOG_ID')
-        ) {
-          console.log(
-            guild.channels.cache.get(
-              serverConfCache.get(guild.id).get('LOG_ID'),
-            ),
+
+        if (targetChannels.length != counter) {
+          const config = await waitForDefined(
+            () => serverConfCache.get(guild.id),
+            {
+              timeoutMs: 4000,
+              intervalMs: 50,
+            },
           );
-          targetChannels.push(
-            guild.channels.cache.get(
-              serverConfCache.get(guild.id).get('LOG_ID'),
-            ),
-          );
-          if (counter == -1) {
-            counter = 1;
-          } else {
-            counter++;
+          console.log(serverConfCache.get(guild.id));
+          console.log(config);
+          const logId = await waitForDefined(() => config.get('LOG_ID'), {
+            timeoutMs: 4000,
+            intervalMs: 50,
+          });
+          console.log(logId);
+          if (logId) {
+            console.log(
+              guild.channels.cache.get(
+                serverConfCache.get(guild.id).get('LOG_ID'),
+              ),
+            );
+            targetChannels.push(
+              guild.channels.cache.get(
+                serverConfCache.get(guild.id).get('LOG_ID'),
+              ),
+            );
+            if (counter == -1) {
+              counter = 1;
+            } else {
+              counter++;
+            }
           }
         }
         message = `${message}- ${guild.name} (ID: ${guild.id})\n`;
@@ -51,3 +63,30 @@ module.exports = {
     }
   },
 };
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function waitForDefined(
+  getValue,
+  { timeoutMs = 3000, intervalMs = 50 } = {},
+) {
+  const deadline = Date.now() + timeoutMs;
+
+  while (true) {
+    const value = getValue();
+    if (value !== undefined) {
+      return value;
+    }
+
+    const remaining = deadline - Date.now();
+    if (remaining <= 0) {
+      throw new Error(
+        `Timed out after ${timeoutMs}ms waiting for value to be defined`,
+      );
+    }
+
+    await sleep(Math.min(intervalMs, remaining));
+  }
+}
