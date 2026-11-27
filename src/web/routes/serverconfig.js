@@ -26,7 +26,6 @@ router.get('/', async (req, res) => {
     let defaultRole = [];
     let gifTextList = new Map();
     let ruleSecret = '';
-    let webhookUrl = '';
     let pingselection = {
       welcome: undefined,
       bye: undefined,
@@ -70,8 +69,6 @@ router.get('/', async (req, res) => {
             defaultRole[2] = confi.objectId;
           } else if (confi.variableName == 'BOOSTER_ROLE_ID') {
             defaultRole[3] = confi.objectId;
-          } else if (confi.variableName == 'MIESMUSCHEL_ROLE_ID') {
-            defaultRole[4] = confi.objectId;
           }
         }
         const cfg = await Config.find({
@@ -83,8 +80,6 @@ router.get('/', async (req, res) => {
             gifTextList = addToList(type, value, gifTextList, kind);
           } else if (key === 'RULE_SECRET') {
             ruleSecret = value;
-          } else if (key === 'WEBHOOK_URL') {
-            webhookUrl = value;
           } else if (key == 'INACTIVE_ON') {
             inactive.inacton = value === 'J';
           } else if (key == 'INACTIVE_LURK_ON') {
@@ -124,7 +119,6 @@ router.get('/', async (req, res) => {
       giphyApiKey: process.env.GIPHY_API,
       gifTextList: gifTextList,
       ruleSecret: ruleSecret,
-      webhookUrl: webhookUrl,
       inactive: inactive,
       pingselection: pingselection,
     });
@@ -277,35 +271,6 @@ router.post('/set-rule-secret', async (req, res) => {
     return res.render('serverconfig', getErrorReturn(req, error));
   }
 });
-router.post('/webhook-url', async (req, res) => {
-  try {
-    const { webhookUrl, guildId } = req.body;
-    console.log(`Setting webhook URL ${webhookUrl} for guild ${guildId}`);
-    const cfg = await Config.findOne({
-      guildId: guildId,
-      key: 'WEBHOOK_URL',
-    });
-    if (cfg) {
-      cfg.value = webhookUrl;
-      await cfg.save();
-    } else {
-      const newCfg = new Config({
-        guildId: guildId,
-        key: 'WEBHOOK_URL',
-        value: webhookUrl,
-      });
-      await newCfg.save();
-    }
-    await refreshConfCache(guildId);
-    const targetUrl = guildId
-      ? `/serverconfig?serverId=${guildId}`
-      : '/serverconfig';
-    return res.redirect(targetUrl);
-  } catch (error) {
-    console.log(error);
-    return res.render('serverconfig', getErrorReturn(req, error));
-  }
-});
 
 async function addToDb(giphyId, text, header, ping, guildId, identifier) {
   const gifId = giphyId || '';
@@ -409,7 +374,6 @@ function getErrorReturn(req, error) {
     giphyApiKey: process.env.GIPHY_API,
     gifTextList: new Map(),
     ruleSecret: '',
-    webhookUrl: '',
     inactive: {
       inacton: false,
       inacttime: 0,
