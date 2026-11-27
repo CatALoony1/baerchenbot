@@ -2,6 +2,7 @@ const Bump = require('../../models/Bump');
 const Level = require('../../models/Level');
 const { Message, EmbedBuilder } = require('discord.js');
 const { confCache } = require('../data/cache');
+const getGifById = require('../getGifById');
 
 /**
  *
@@ -26,16 +27,53 @@ async function bumpDone(message) {
       level.bumps += 1;
       level.save();
       const member = await message.guild.members.fetch(userid);
-      const embed = new EmbedBuilder()
-        .setTitle('Dankeschön für deine Untersützung!❤️')
-        .setDescription(
-          `Danke <@${userid}>, dass du den Server gebumpt hast. Um unsere Dankbarkeit zu zeigen bekommst du für 24 Stunden die Rolle **Bumper**, durch diese Rolle erhälst du einen Bonus von 10% auf jegliche erhaltene Erfahrung und 15% auf jegliche ${confCache.get(interaction.guild.id).get('MONEY_NAME') || 'Geld'}!`,
-        )
-        .setThumbnail(
-          member.user.displayAvatarURL({ format: 'png', dynamic: true }),
-        )
-        .setColor(0x0033cc);
-      newMessage = await channel.send({ embeds: [embed] });
+      if (
+        (confCache.get(guildId).get('BUMPTHX_HEADER') &&
+          confCache.get(guildId).get('BUMPTHX_HEADER').length > 0) ||
+        (confCache.get(guildId).get('BUMPTHX_GIF') &&
+          confCache.get(guildId).get('BUMPTHX_GIF').length > 0) ||
+        (confCache.get(guildId).get('BUMPTHX_TXT') &&
+          confCache.get(guildId).get('BUMPTHX_TXT').length > 0)
+      ) {
+        let gifUrl = null;
+        if (
+          confCache.get(guildId).get('BUMPTHX_GIF') &&
+          confCache.get(guildId).get('BUMPTHX_GIF').trim().length > 0
+        ) {
+          const gifUrl = await getGifById(
+            confCache.get(guildId).get('BUMPTHX_GIF'),
+          );
+          if (!gifUrl.includes('http')) {
+            console.log('ERROR bumpthx gif');
+            console.log(gifUrl);
+            gifUrl = null;
+          }
+        }
+        let txt = confCache.get(guildId).get('BUMPTHX_TXT');
+        let header = confCache.get(guildId).get('BUMPTHX_HEADER');
+
+        const embed = new EmbedBuilder()
+          .setThumbnail(
+            member.user.displayAvatarURL({ format: 'png', dynamic: true }),
+          )
+          .setColor(0x0033cc);
+        if (header && header.trim().length > 0) {
+          embed.setTitle(
+            header.replaceAll('[userPing]', `<@${guildMember.id}>`),
+          );
+        }
+        if (txt && txt.trim().length > 0) {
+          embed.setDescription(
+            txt.replaceAll('[userPing]', `<@${guildMember.id}>`),
+          );
+        }
+        if (gifUrl) {
+          embed.setImage(gifUrl);
+        }
+        newMessage = await channel.send({
+          embeds: [embed],
+        });
+      }
     }
     const query = {
       guildId: guildId,

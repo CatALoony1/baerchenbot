@@ -1,7 +1,8 @@
-const Discord = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 const cron = require('node-cron');
 const Bump = require('../models/Bump');
 const getGifById = require('../utils/getGifById');
+const { serverConfCache, confCache } = require('../utils/data/cache');
 
 let bumpReminderJob = null;
 
@@ -18,30 +19,83 @@ function startJob(client) {
         guildId: guildId,
       };
       try {
-        const bumpEntry = await Bump.findOne(query);
-        if (bumpEntry) {
-          if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
-            let role = guild.roles.cache.find(
-              (role) => role.name === 'Bump-Ping',
-            );
-            const gifUrl = await getGifById('SQD2LlZy731O8');
-            if (!gifUrl.includes('http')) {
-              console.log('ERROR Bump gif');
-              return;
+        if (
+          serverConfCache.get(guildId) &&
+          serverConfCache.get(guildId).get('BUMP_ID') &&
+          ((confCache.get(guildId).get('BUMPREM_HEADER') &&
+            confCache.get(guildId).get('BUMPREM_HEADER').length > 0) ||
+            (confCache.get(guildId).get('BUMPREM_GIF') &&
+              confCache.get(guildId).get('BUMPREM_GIF').length > 0) ||
+            (confCache.get(guildId).get('BUMPREM_TXT') &&
+              confCache.get(guildId).get('BUMPREM_TXT').length > 0))
+        ) {
+          const bumpEntry = await Bump.findOne(query);
+          if (bumpEntry) {
+            if (bumpEntry.endTime < Date.now() && bumpEntry.reminded === 'N') {
+              const targetChannel =
+                guild.channels.cache.get(
+                  serverConfCache.get(guildId).get('BUMP_ID'),
+                ) ||
+                (await guild.channels.fetch(
+                  serverConfCache.get(guildId).get('BUMP_ID'),
+                ));
+              if (!targetChannel) {
+                console.log('ERROR Bump channel');
+                continue;
+              }
+              let gifUrl = null;
+              if (
+                confCache.get(guildId).get('BUMPREM_GIF') &&
+                confCache.get(guildId).get('BUMPREM_GIF').trim().length > 0
+              ) {
+                const gifUrl = await getGifById(
+                  confCache.get(guildId).get('BUMPREM_GIF'),
+                );
+                if (!gifUrl.includes('http')) {
+                  console.log('ERROR Welcome gif');
+                  console.log(gifUrl);
+                  gifUrl = null;
+                }
+              }
+              let txt = confCache.get(guildId).get('BUMPREM_TXT');
+              let header = confCache.get(guildId).get('BUMPREM_HEADER');
+              let ping = confCache.get(guildId).get('BUMPREM_PING');
+              if (txt && !header && !gif && !ping) {
+                await targetChannel.send(
+                  txt.replaceAll('[userPing]', `<@${newMember.id}>`),
+                );
+              } else {
+                const bump = new EmbedBuilder().setColor(0x0033cc);
+                if (header && header.trim().length > 0) {
+                  bump.setTitle(
+                    header.replaceAll('[userPing]', `<@${newMember.id}>`),
+                  );
+                }
+                if (txt && txt.trim().length > 0) {
+                  bump.setDescription(
+                    txt.replaceAll('[userPing]', `<@${newMember.id}>`),
+                  );
+                }
+                if (gifUrl) {
+                  bump.setImage(gifUrl);
+                }
+                if (ping && ping.length > 0) {
+                  await targetChannel.send({
+                    content: `<@&${ping}>`,
+                    embeds: [bump],
+                  });
+                } else {
+                  await targetChannel.send({
+                    content: content,
+                    embeds: [bump],
+                  });
+                }
+              }
+              console.log('Bump reminded');
+              bumpEntry.remindedId = message.id;
+              bumpEntry.reminded = 'J';
+              bumpEntry.save();
             }
-            const bump = new Discord.EmbedBuilder()
-              .setColor(0x0033cc)
-              .setTitle('Es ist Zeit zu bumpen!')
-              .setImage(gifUrl);
-            const targetChannel = await client.channels.fetch('TODOJG_BUMP');
-            const message = await targetChannel.send({
-              content: `${role}`,
-              embeds: [bump],
-            });
-            console.log('Bump reminded');
-            bumpEntry.remindedId = message.id;
-            bumpEntry.reminded = 'J';
-            bumpEntry.save();
           }
         }
       } catch (error) {
