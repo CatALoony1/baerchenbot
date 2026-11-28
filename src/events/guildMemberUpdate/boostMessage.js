@@ -35,7 +35,7 @@ module.exports = {
             confCache.get(newMember.guild.id).get('BOOST_GIF') &&
             confCache.get(newMember.guild.id).get('BOOST_GIF').trim().length > 0
           ) {
-            const gifUrl = await getGifById(
+            gifUrl = await getGifById(
               confCache.get(newMember.guild.id).get('BOOST_GIF'),
             );
             if (!gifUrl.includes('http')) {

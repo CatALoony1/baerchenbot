@@ -31,9 +31,7 @@ function startJob(client) {
           confCache.get(guild.id).get('YEAR_GIF') &&
           confCache.get(guild.id).get('YEAR_GIF').trim().length > 0
         ) {
-          const gifUrl = await getGifById(
-            confCache.get(guild.id).get('YEAR_GIF'),
-          );
+          gifUrl = await getGifById(confCache.get(guild.id).get('YEAR_GIF'));
           if (!gifUrl.includes('http')) {
             console.log('ERROR Welcome gif');
             console.log(gifUrl);

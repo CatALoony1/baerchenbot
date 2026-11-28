@@ -48,7 +48,7 @@ function startJob(client) {
                 confCache.get(guildId).get('BUMPREM_GIF') &&
                 confCache.get(guildId).get('BUMPREM_GIF').trim().length > 0
               ) {
-                const gifUrl = await getGifById(
+                gifUrl = await getGifById(
                   confCache.get(guildId).get('BUMPREM_GIF'),
                 );
                 if (!gifUrl.includes('http')) {

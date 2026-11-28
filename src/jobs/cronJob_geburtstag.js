@@ -78,7 +78,7 @@ async function jobFunction(client) {
               confCache.get(guild.id).get('BIRTH_GIF') &&
               confCache.get(guild.id).get('BIRTH_GIF').trim().length > 0
             ) {
-              const gifUrl = await getGifById(
+              gifUrl = await getGifById(
                 confCache.get(guild.id).get('BIRTH_GIF'),
               );
               if (!gifUrl.includes('http')) {

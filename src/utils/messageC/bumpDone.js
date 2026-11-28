@@ -40,9 +40,7 @@ async function bumpDone(message) {
           confCache.get(guildId).get('BUMPTHX_GIF') &&
           confCache.get(guildId).get('BUMPTHX_GIF').trim().length > 0
         ) {
-          const gifUrl = await getGifById(
-            confCache.get(guildId).get('BUMPTHX_GIF'),
-          );
+          gifUrl = await getGifById(confCache.get(guildId).get('BUMPTHX_GIF'));
           if (!gifUrl.includes('http')) {
             console.log('ERROR bumpthx gif');
             console.log(gifUrl);
