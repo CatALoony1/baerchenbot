@@ -73,6 +73,7 @@ async function sendWelcomeMessage(guildMember) {
         const gifUrl = await getGifById(
           confCache.get(guildMember.guild.id).get('WELCOME_GIF'),
         );
+        console.log(gifUrl);
         if (!gifUrl.includes('http')) {
           console.log('ERROR Welcome gif');
           console.log(gifUrl);
