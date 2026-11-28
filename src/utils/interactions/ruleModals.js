@@ -82,37 +82,38 @@ async function sendWelcomeMessage(guildMember) {
       let txt = confCache.get(guildMember.guild.id).get('WELCOME_TXT');
       let header = confCache.get(guildMember.guild.id).get('WELCOME_HEADER');
       let ping = confCache.get(guildMember.guild.id).get('WELCOME_PING');
-      if (txt && !header && !gif && !ping) {
-        await targetChannel.send(
-          txt.replaceAll('[userPing]', `<@${guildMember.id}>`),
-        );
-      } else {
-        const welcome = new EmbedBuilder().setColor(0x0033cc).setAuthor({
+      const members = await guildMember.guild.members.cache;
+      const humanMemNum = members.filter((member) => !member.user.bot).size;
+      const welcome = new EmbedBuilder()
+        .setColor(0x0033cc)
+        .setAuthor({
           name: guildMember.user.username,
           iconURL: guildMember.user.displayAvatarURL({ size: 256 }),
+        })
+        .setFooter({
+          text: `Nummer ${humanMemNum} in der ${guildMember.guild.name}`,
         });
-        if (header && header.trim().length > 0) {
-          welcome.setTitle(
-            header.replaceAll('[userPing]', `<@${guildMember.id}>`),
-          );
-        }
-        if (txt && txt.trim().length > 0) {
-          welcome.setDescription(
-            txt.replaceAll('[userPing]', `<@${guildMember.id}>`),
-          );
-        }
-        if (gifUrl) {
-          welcome.setImage(gifUrl);
-        }
-        let content = `<@${guildMember.id}>`;
-        if (ping && ping.length > 0) {
-          content = `<@&${ping}> ${content}`;
-        }
-        await targetChannel.send({
-          content: content,
-          embeds: [welcome],
-        });
+      if (header && header.trim().length > 0) {
+        welcome.setTitle(
+          header.replaceAll('[userPing]', `<@${guildMember.id}>`),
+        );
       }
+      if (txt && txt.trim().length > 0) {
+        welcome.setDescription(
+          txt.replaceAll('[userPing]', `<@${guildMember.id}>`),
+        );
+      }
+      if (gifUrl) {
+        welcome.setImage(gifUrl);
+      }
+      let content = `<@${guildMember.id}>`;
+      if (ping && ping.length > 0) {
+        content = `<@&${ping}> ${content}`;
+      }
+      await targetChannel.send({
+        content: content,
+        embeds: [welcome],
+      });
     }
   } catch (error) {
     console.log(error);
