@@ -70,10 +70,9 @@ async function sendWelcomeMessage(guildMember) {
         confCache.get(guildMember.guild.id).get('WELCOME_GIF') &&
         confCache.get(guildMember.guild.id).get('WELCOME_GIF').trim().length > 0
       ) {
-        const gifUrl = await getGifById(
+        gifUrl = await getGifById(
           confCache.get(guildMember.guild.id).get('WELCOME_GIF'),
         );
-        console.log(gifUrl);
         if (!gifUrl.includes('http')) {
           console.log('ERROR Welcome gif');
           console.log(gifUrl);
@@ -85,13 +84,15 @@ async function sendWelcomeMessage(guildMember) {
       let ping = confCache.get(guildMember.guild.id).get('WELCOME_PING');
       const members = await guildMember.guild.members.cache;
       const humanMemNum = members.filter((member) => !member.user.bot).size;
-      const welcome = new EmbedBuilder().setColor(0x0033cc).setAuthor({
-        name: guildMember.user.username,
-        iconURL: guildMember.user.displayAvatarURL({ size: 256 }),
-      });
-      //.setFooter({
-      //   text: `Nummer ${humanMemNum} in der ${guildMember.guild.name}`,
-      //});
+      const welcome = new EmbedBuilder()
+        .setColor(0x0033cc)
+        .setAuthor({
+          name: guildMember.user.username,
+          iconURL: guildMember.user.displayAvatarURL({ size: 256 }),
+        })
+        .setFooter({
+          text: `Nummer ${humanMemNum} in der ${guildMember.guild.name}`,
+        });
       if (header && header.trim().length > 0) {
         welcome.setTitle(
           header.replaceAll('[userPing]', `<@${guildMember.id}>`),
@@ -103,10 +104,8 @@ async function sendWelcomeMessage(guildMember) {
         );
       }
       if (gifUrl) {
-        console.log('test');
-        welcome.setImage({ url: gifUrl });
+        welcome.setImage(gifUrl);
       }
-      console.log(welcome);
       let content = `<@${guildMember.id}>`;
       if (ping && ping.length > 0) {
         content = `<@&${ping}> ${content}`;
@@ -115,7 +114,6 @@ async function sendWelcomeMessage(guildMember) {
         content: content,
         embeds: [welcome],
       });
-      await targetChannel.send({ content: gifUrl });
     }
   } catch (error) {
     console.log(error);
