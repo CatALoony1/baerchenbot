@@ -58,7 +58,7 @@ module.exports = {
             iconURL: guildMember.user.displayAvatarURL({ size: 256 }),
           })
           .setFooter({
-            text: `Nummer ${humanMemNum} in der ${guildMember.guild.name}`,
+            text: `Da waren es nur noch ${humanMemNum}`,
           });
         if (header && header.trim().length > 0) {
           bye.setTitle(header.replaceAll('[userPing]', `<@${guildMember.id}>`));
