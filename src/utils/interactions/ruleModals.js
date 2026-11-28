@@ -106,6 +106,7 @@ async function sendWelcomeMessage(guildMember) {
       if (gifUrl) {
         welcome.setImage(gifUrl);
       }
+      console.log(welcome);
       let content = `<@${guildMember.id}>`;
       if (ping && ping.length > 0) {
         content = `<@&${ping}> ${content}`;
@@ -114,6 +115,7 @@ async function sendWelcomeMessage(guildMember) {
         content: content,
         embeds: [welcome],
       });
+      await targetChannel.send(gifUrl);
     }
   } catch (error) {
     console.log(error);
