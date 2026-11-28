@@ -15,6 +15,7 @@ async function ruleModals(interaction) {
       cfg &&
       cfg.value.trim().toLowerCase() === loesungswort.trim().toLowerCase()
     ) {
+      let oldMember = false;
       if (
         serverConfCache.get(interaction.member.guild.id) &&
         serverConfCache
@@ -26,12 +27,17 @@ async function ruleModals(interaction) {
             .get(interaction.member.guild.id)
             .get('NEWMEMBER_ROLE_ID'),
         );
-        await interaction.member.roles.add(role);
+        oldMember = interaction.member.roles.cache.has(role.id);
+        if (!oldMember) {
+          await interaction.member.roles.add(role);
+        }
       }
       await interaction.editReply(
         'Richtiges Lösungswort! Du hast nun Zugriff auf den Server.',
       );
-      await sendWelcomeMessage(interaction.member);
+      if (!oldMember) {
+        await sendWelcomeMessage(interaction.member);
+      }
     } else {
       await interaction.editReply(
         'Falsches Lösungswort! Bitte überprüfe die Regeln und versuche es erneut.',
